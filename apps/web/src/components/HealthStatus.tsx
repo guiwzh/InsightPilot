@@ -1,20 +1,11 @@
-import type { HealthResponse } from '@insightpilot/shared'
 import { Space, Tag, Tooltip } from 'antd'
-import { useEffect, useState } from 'react'
+import { useHealth } from '../api/client'
 
-/** 顶栏的服务状态：数据库、样例数据、当前模型。第 3 周引入 TanStack Query 后改用 useQuery */
+/** 顶栏的服务状态：数据库、样例数据、当前模型 */
 export function HealthStatus() {
-  const [health, setHealth] = useState<HealthResponse>()
-  const [failed, setFailed] = useState(false)
+  const { data: health, isError } = useHealth()
 
-  useEffect(() => {
-    // 数据库不可用时接口返回 503，但 body 结构不变，照样展示
-    fetch('/api/health')
-      .then((res) => res.json() as Promise<HealthResponse>)
-      .then(setHealth, () => setFailed(true))
-  }, [])
-
-  if (failed) return <Tag color="error">server 未启动</Tag>
+  if (isError) return <Tag color="error">server 未启动</Tag>
   if (!health) return null
 
   return (

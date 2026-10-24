@@ -1,11 +1,13 @@
 import { useChat } from '@ai-sdk/react'
 import { Bubble, Prompts, Sender, Welcome, type BubbleListProps } from '@ant-design/x'
 import { RobotOutlined, UserOutlined } from '@ant-design/icons'
-import { DefaultChatTransport, type UIMessage } from 'ai'
+import { DefaultChatTransport } from 'ai'
 import { Alert, Avatar, Button, Flex } from 'antd'
 import { useState } from 'react'
+import type { InsightMessage } from '../../types'
+import { AssistantMessage, hasVisibleContent } from './AssistantMessage'
 
-const transport = new DefaultChatTransport({ api: '/api/chat' })
+const transport = new DefaultChatTransport<InsightMessage>({ api: '/api/chat' })
 
 const EXAMPLES = [
   '9 月最后一周各渠道新增用户和下单转化率，按天看趋势',
@@ -14,17 +16,22 @@ const EXAMPLES = [
 ]
 
 const roles: BubbleListProps['role'] = {
-  ai: { placement: 'start', avatar: <Avatar icon={<RobotOutlined />} /> },
+  // 助手消息里有轨迹和表格，去掉气泡背景并占满宽度
+  ai: {
+    placement: 'start',
+    variant: 'borderless',
+    avatar: <Avatar icon={<RobotOutlined />} />,
+    styles: { root: { width: '100%' }, body: { flex: 1, minWidth: 0 }, content: { width: '100%' } },
+  },
   user: { placement: 'end', variant: 'outlined', avatar: <Avatar icon={<UserOutlined />} /> },
 }
 
-/** 第 1 周只渲染文本；第 2 周起按 part.type 渲染工具轨迹，第 3 周渲染图表 */
-const textOf = (message: UIMessage) => message.parts.map((part) => (part.type === 'text' ? part.text : '')).join('')
+const textOf = (message: InsightMessage) => message.parts.map((part) => (part.type === 'text' ? part.text : '')).join('')
 
 export function ChatPage() {
   const [input, setInput] = useState('')
   // throttle：流式过程中最多每 50ms 触发一次重渲染，长回答不卡顿
-  const { messages, sendMessage, status, stop, error, regenerate } = useChat({ transport, throttle: 50 })
+  const { messages, sendMessage, status, stop, error, regenerate } = useChat<InsightMessage>({ transport, throttle: 50 })
   const busy = status === 'submitted' || status === 'streaming'
 
   const send = (text: string) => {
@@ -33,16 +40,17 @@ export function ChatPage() {
     setInput('')
   }
 
-  const items = messages.map((message, index) => {
-    const content = textOf(message)
+  const items: BubbleListProps['items'] = messages.map((message, index) => {
     const isLast = index === messages.length - 1
-    return {
-      key: message.id,
-      role: message.role === 'user' ? 'user' : 'ai',
-      content,
-      // 助手消息已创建、但第一个字还没到时显示加载动画
-      loading: busy && isLast && message.role === 'assistant' && !content,
-    }
+    return message.role === 'user'
+      ? { key: message.id, role: 'user', content: textOf(message) }
+      : {
+          key: message.id,
+          role: 'ai',
+          content: <AssistantMessage message={message} />,
+          // 助手消息已创建、但还没有任何文字或工具调用时显示加载动画
+          loading: busy && isLast && !hasVisibleContent(message),
+        }
   })
   // 请求已发出、助手消息还没创建时，先放一个占位气泡
   if (status === 'submitted' && messages.at(-1)?.role === 'user') {
@@ -50,14 +58,14 @@ export function ChatPage() {
   }
 
   return (
-    <Flex vertical gap={16} style={{ height: '100%', maxWidth: 880, margin: '0 auto', padding: '16px 24px' }}>
+    <Flex vertical gap={16} style={{ height: '100%', maxWidth: 960, margin: '0 auto', padding: '16px 24px' }}>
       {messages.length === 0 ? (
         <Flex vertical gap={24} style={{ flex: 1, paddingTop: 48 }}>
           <Welcome
             variant="borderless"
             icon={<Avatar size={48} icon={<RobotOutlined />} />}
             title="你好，我是 InsightPilot"
-            description="用自然语言提问，我来查数、画图。数据查询工具正在接入，目前只能聊天。"
+            description="用自然语言提问，我会查表结构、写 SQL、查数据，并把结果整理给你。"
           />
           <Prompts
             title="试试这样问"

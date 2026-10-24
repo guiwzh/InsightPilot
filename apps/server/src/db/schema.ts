@@ -1,5 +1,6 @@
 // 应用自己的表，全部放在 app schema。
 // 用 `pnpm db:push` 同步到数据库；drizzle.config.ts 里的 schemaFilter 保证 push 不会碰 shop 样例数据。
+import type { ResultColumn } from '@insightpilot/shared'
 import { boolean, index, integer, jsonb, numeric, pgSchema, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
 export const app = pgSchema('app')
@@ -65,13 +66,14 @@ export const agentRuns = app.table(
   (t) => [index('agent_runs_created_idx').on(t.createdAt), index('agent_runs_visitor_idx').on(t.visitorId, t.createdAt)],
 )
 
-// run_sql 的完整结果存这里，只把 id 交给模型；前端按 id 拉数据渲染图表
+// run_sql 的完整结果存这里，只把 id 交给模型；前端按 id 拉数据渲染表格和图表
 export const queryResults = app.table('query_results', {
   id: uuid('id').primaryKey().defaultRandom(),
   runId: uuid('run_id').references(() => agentRuns.id, { onDelete: 'set null' }),
   sql: text('sql').notNull(),
-  columns: jsonb('columns').$type<{ name: string; type: string }[]>().notNull(),
-  rows: jsonb('rows').$type<Record<string, unknown>[]>().notNull(),
+  columns: jsonb('columns').$type<ResultColumn[]>().notNull(),
+  // 每行是按 columns 顺序排列的数组，列名重复时也不会互相覆盖
+  rows: jsonb('rows').$type<unknown[][]>().notNull(),
   rowCount: integer('row_count').notNull(),
   truncated: boolean('truncated').notNull().default(false),
   createdAt: createdAt(),

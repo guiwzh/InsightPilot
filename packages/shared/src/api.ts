@@ -1,4 +1,15 @@
 // 前后端共用的接口类型。server 按它返回，web 按它读取，改一处两边都能在类型检查时发现
+import type { ResultColumn } from './tools'
+
+/** GET /api/results/:id。rows 按 columns 顺序存成数组，列名重复（如两个 id）也不会互相覆盖 */
+export type QueryResultResponse = {
+  id: string
+  sql: string
+  columns: ResultColumn[]
+  rows: unknown[][]
+  rowCount: number
+  truncated: boolean
+}
 
 export type HealthResponse = {
   ok: boolean

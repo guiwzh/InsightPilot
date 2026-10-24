@@ -22,7 +22,7 @@ pnpm dev               # 前端 http://localhost:5173，后端 http://localhost:
 ```
 apps/web          React 19 + Vite 8 + antd 6 + Ant Design X，对话页
 apps/server       Hono + AI SDK 7 + Drizzle
-  src/core        Agent 能力（提示词、模型、之后的工具），Web / MCP / 评测共用
+  src/core        Agent 能力：提示词、模型、工具、SQL 防线、业务口径，Web / MCP / 评测共用
   src/db          app schema 表结构、管理员连接和只读连接
 packages/shared   前后端共用的类型和 Zod schema（如图表 DSL）
 db/init.sql       建 schema、只读角色 analyst_ro、时区
@@ -36,6 +36,7 @@ db/seed.ts        造数脚本（固定随机种子，结果可复现）
 |---|---|
 | `pnpm dev` | 同时启动前端和后端 |
 | `pnpm typecheck` | 全仓类型检查 |
+| `pnpm test` | 运行单测（目前是 SQL 防线 sql-guard） |
 | `pnpm db:push` | 把 `apps/server/src/db/schema.ts` 的变更同步到数据库（只动 app schema） |
 | `pnpm db:seed` | 重建并重新生成 shop 样例数据 |
 | `pnpm db:reset` | 删除数据卷后从头来一遍：init.sql → push → seed |
