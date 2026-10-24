@@ -5,7 +5,8 @@ import { DefaultChatTransport } from 'ai'
 import { Alert, Avatar, Button, Flex } from 'antd'
 import { useState } from 'react'
 import type { InsightMessage } from '../../types'
-import { AssistantMessage, hasVisibleContent } from './AssistantMessage'
+import { AssistantMessage, hasVisibleContent, textOf } from './AssistantMessage'
+import { MessageActions } from './MessageActions'
 
 const transport = new DefaultChatTransport<InsightMessage>({ api: '/api/chat' })
 
@@ -16,7 +17,7 @@ const EXAMPLES = [
 ]
 
 const roles: BubbleListProps['role'] = {
-  // 助手消息里有轨迹和表格，去掉气泡背景并占满宽度
+  // 助手消息里有轨迹、图表和表格，去掉气泡背景并占满宽度
   ai: {
     placement: 'start',
     variant: 'borderless',
@@ -26,10 +27,12 @@ const roles: BubbleListProps['role'] = {
   user: { placement: 'end', variant: 'outlined', avatar: <Avatar icon={<UserOutlined />} /> },
 }
 
-const textOf = (message: InsightMessage) => message.parts.map((part) => (part.type === 'text' ? part.text : '')).join('')
+const userText = (message: InsightMessage) => message.parts.map((part) => (part.type === 'text' ? part.text : '')).join('')
 
 export function ChatPage() {
   const [input, setInput] = useState('')
+  // 被用户主动停止的消息，在下方标出"已停止生成"
+  const [stoppedIds, setStoppedIds] = useState<ReadonlySet<string>>(new Set())
   // throttle：流式过程中最多每 50ms 触发一次重渲染，长回答不卡顿
   const { messages, sendMessage, status, stop, error, regenerate } = useChat<InsightMessage>({ transport, throttle: 50 })
   const busy = status === 'submitted' || status === 'streaming'
@@ -40,17 +43,31 @@ export function ChatPage() {
     setInput('')
   }
 
+  const handleStop = () => {
+    const last = messages.at(-1)
+    if (last?.role === 'assistant') setStoppedIds((ids) => new Set(ids).add(last.id))
+    void stop()
+  }
+
   const items: BubbleListProps['items'] = messages.map((message, index) => {
     const isLast = index === messages.length - 1
-    return message.role === 'user'
-      ? { key: message.id, role: 'user', content: textOf(message) }
-      : {
-          key: message.id,
-          role: 'ai',
-          content: <AssistantMessage message={message} />,
-          // 助手消息已创建、但还没有任何文字或工具调用时显示加载动画
-          loading: busy && isLast && !hasVisibleContent(message),
-        }
+    if (message.role === 'user') return { key: message.id, role: 'user', content: userText(message) }
+
+    const active = busy && isLast
+    return {
+      key: message.id,
+      role: 'ai',
+      content: <AssistantMessage message={message} active={active} />,
+      // 助手消息已创建、但还没有任何文字或工具调用时显示加载动画
+      loading: active && !hasVisibleContent(message),
+      footer: active ? undefined : (
+        <MessageActions
+          text={textOf(message)}
+          stopped={stoppedIds.has(message.id)}
+          onRegenerate={isLast ? () => void regenerate() : undefined}
+        />
+      ),
+    }
   })
   // 请求已发出、助手消息还没创建时，先放一个占位气泡
   if (status === 'submitted' && messages.at(-1)?.role === 'user') {
@@ -65,7 +82,7 @@ export function ChatPage() {
             variant="borderless"
             icon={<Avatar size={48} icon={<RobotOutlined />} />}
             title="你好，我是 InsightPilot"
-            description="用自然语言提问，我会查表结构、写 SQL、查数据，并把结果整理给你。"
+            description="用自然语言提问，我会查表结构、写 SQL、查数据，并把结果画成图表。"
           />
           <Prompts
             title="试试这样问"
@@ -96,7 +113,7 @@ export function ChatPage() {
         value={input}
         onChange={(value) => setInput(value)}
         onSubmit={send}
-        onCancel={() => void stop()}
+        onCancel={handleStop}
         loading={busy}
         placeholder="用自然语言提问，例如：上周各渠道的新增用户有多少？"
         autoSize={{ minRows: 1, maxRows: 6 }}

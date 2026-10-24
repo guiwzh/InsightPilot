@@ -61,7 +61,11 @@ GROUP BY 1`,
        round(count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') * 100.0
              / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2) AS "下单转化率(%)"
 FROM shop.user_events GROUP BY 1`,
-    notes: '用户只说"转化率"时默认指下单转化率。按渠道统计时，渠道取用户的注册渠道（users.channel_id）。',
+    notes: `用户只说"转化率"时默认指下单转化率。按渠道统计时，渠道取用户的注册渠道（users.channel_id）。
+跨多天汇总（如"9 月整体"）时，分子分母都按"日期 + 用户"去重，不能只按用户去重：
+SELECT round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') * 100.0
+             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2)
+FROM shop.user_events WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'`,
   },
   {
     name: '支付转化率',

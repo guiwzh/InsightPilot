@@ -1,6 +1,7 @@
 // run_sql 的实现：AST 校验 → 只读连接执行 → 完整结果存库 → 只把预览交给模型。
 // 出错时抛出带错误码和修复建议的 Error，AI SDK 会把 message 作为工具错误交还模型，让它自己改 SQL。
 import type { ResultColumn, ResultColumnType, RunSqlOutput } from '@insightpilot/shared'
+import { eq } from 'drizzle-orm'
 import { db, readonlySql } from '../db/client'
 import { queryResults } from '../db/schema'
 import { guardSql, MAX_ROWS, WRAP_PREFIX } from './sql-guard'
@@ -41,6 +42,16 @@ export async function runSql(sql: string): Promise<RunSqlOutput> {
     preview: rows.slice(0, PREVIEW_ROWS),
     note: buildNote(rows.length, truncated),
   }
+}
+
+/** render_chart 校验字段时只需要列信息和行数，不必把整份结果读出来 */
+export async function loadResultMeta(resultId: string) {
+  const [row] = await db
+    .select({ columns: queryResults.columns, rowCount: queryResults.rowCount })
+    .from(queryResults)
+    .where(eq(queryResults.id, resultId))
+    .limit(1)
+  return row
 }
 
 function executeReadonly(sql: string) {

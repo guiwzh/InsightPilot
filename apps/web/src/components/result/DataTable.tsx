@@ -1,8 +1,7 @@
-import type { ResultColumnType } from '@insightpilot/shared'
-import { Alert, Card, Skeleton, Table, Typography } from 'antd'
+import type { QueryResultResponse, ResultColumnType } from '@insightpilot/shared'
+import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useMemo } from 'react'
-import { useQueryResult } from '../api/client'
 
 type Row = Record<string, unknown> & { key: number }
 
@@ -17,12 +16,9 @@ function formatCell(value: unknown, type: ResultColumnType) {
   return String(value)
 }
 
-/** run_sql 的完整结果。按 resultId 从后端拉取，不经过模型 */
-export function ResultTable({ resultId, title }: { resultId: string; title?: string }) {
-  const { data, isLoading, error } = useQueryResult(resultId)
-
+/** 查询结果的明细表。rows 是按列顺序排列的数组，用列序号作 dataIndex，列名重复也不冲突 */
+export function DataTable({ data }: { data: QueryResultResponse }) {
   const { columns, dataSource } = useMemo(() => {
-    if (!data) return { columns: [], dataSource: [] }
     const columns: ColumnsType<Row> = data.columns.map((column, index) => ({
       key: index,
       dataIndex: String(index),
@@ -38,26 +34,18 @@ export function ResultTable({ resultId, title }: { resultId: string; title?: str
     return { columns, dataSource }
   }, [data])
 
-  if (error) return <Alert type="error" showIcon message="结果加载失败" description={error.message} />
-
   return (
-    <Card size="small" title={title ?? '查询结果'} styles={{ body: { padding: 0 } }}>
-      {isLoading || !data ? (
-        <Skeleton active paragraph={{ rows: 4 }} style={{ padding: 16 }} />
-      ) : (
-        <Table<Row>
-          size="small"
-          columns={columns}
-          dataSource={dataSource}
-          scroll={{ x: 'max-content' }}
-          pagination={{ pageSize: 10, hideOnSinglePage: true, showSizeChanger: false, size: 'small' }}
-          footer={() => (
-            <Typography.Text type="secondary">
-              共 {data.rowCount} 行{data.truncated ? '（超过 1000 行，已截断）' : ''}
-            </Typography.Text>
-          )}
-        />
+    <Table<Row>
+      size="small"
+      columns={columns}
+      dataSource={dataSource}
+      scroll={{ x: 'max-content' }}
+      pagination={{ pageSize: 10, hideOnSinglePage: true, showSizeChanger: false, size: 'small' }}
+      footer={() => (
+        <Typography.Text type="secondary">
+          共 {data.rowCount} 行{data.truncated ? '（超过 1000 行，已截断）' : ''}
+        </Typography.Text>
       )}
-    </Card>
+    />
   )
 }

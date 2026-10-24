@@ -1,4 +1,5 @@
 import { XProvider } from '@ant-design/x'
+import '@ant-design/x-markdown/themes/light.css'
 import xZhCN from '@ant-design/x/locale/zh_CN'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { App as AntdApp } from 'antd'

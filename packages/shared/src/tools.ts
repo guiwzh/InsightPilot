@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import type { ChartSpec, ChartSpecInput } from './chart-spec'
 
 // Agent 工具的输入（Zod）和输出（TS 类型）。server 定义工具时用，web 渲染工具轨迹时用，
 // 两边共用一份定义，工具改了字段，前端在类型检查时就能发现。
@@ -79,10 +80,17 @@ export type RunSqlOutput = {
   note: string
 }
 
+export type RenderChartOutput = {
+  /** 校验通过、resultId 已补全的配置，前端按它渲染 */
+  spec: ChartSpec
+  rowCount: number
+}
+
 /** 与 AI SDK 的 UITools 结构一致，web 端用它给 UIMessage 的工具 part 加类型 */
 export type InsightUITools = {
   list_tables: { input: z.infer<typeof ListTablesInput>; output: ListTablesOutput }
   describe_table: { input: z.infer<typeof DescribeTableInput>; output: DescribeTableOutput }
   get_metric_definitions: { input: z.infer<typeof GetMetricDefinitionsInput>; output: GetMetricDefinitionsOutput }
   run_sql: { input: z.infer<typeof RunSqlInput>; output: RunSqlOutput }
+  render_chart: { input: ChartSpecInput; output: RenderChartOutput }
 }

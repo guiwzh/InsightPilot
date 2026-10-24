@@ -36,7 +36,7 @@ db/seed.ts        造数脚本（固定随机种子，结果可复现）
 |---|---|
 | `pnpm dev` | 同时启动前端和后端 |
 | `pnpm typecheck` | 全仓类型检查 |
-| `pnpm test` | 运行单测（目前是 SQL 防线 sql-guard） |
+| `pnpm test` | 运行单测：SQL 防线、图表 DSL 校验、specToOption |
 | `pnpm db:push` | 把 `apps/server/src/db/schema.ts` 的变更同步到数据库（只动 app schema） |
 | `pnpm db:seed` | 重建并重新生成 shop 样例数据 |
 | `pnpm db:reset` | 删除数据卷后从头来一遍：init.sql → push → seed |
