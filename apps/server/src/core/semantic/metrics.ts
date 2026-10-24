@@ -21,7 +21,7 @@ export const METRICS: MetricDefinition[] = [
     definition:
       '已支付的订单数（paid_at 不为空），按下单时间 created_at 归属日期，与 GMV 一致。用户只说"订单数"时默认指支付订单数；"下单数"包含未支付和已取消的订单。',
     sql: "SELECT created_at::date AS day, count(*) FROM shop.orders WHERE paid_at IS NOT NULL GROUP BY 1",
-    notes: '只有用户明确说"按支付时间"时，才按 paid_at 归属日期。',
+    notes: '"支付订单"里的"支付"指订单已支付这个状态，统计时间仍按下单时间；只有用户明确说"按支付时间"时，才按 paid_at 归属日期。',
   },
   {
     name: '商品销售额',
@@ -70,7 +70,8 @@ FROM shop.user_events WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-
   {
     name: '支付转化率',
     aliases: ['付款转化率'],
-    definition: '当天有 pay 事件的去重用户数 / 当天有 visit 事件的去重用户数。',
+    definition:
+      '当天有 pay 事件的去重用户数 / 当天有 visit 事件的去重用户数。跨多天汇总时，分子分母都按"日期 + 用户"去重（count(DISTINCT (occurred_at::date, user_id))），不能只按用户去重。',
     sql: `SELECT occurred_at::date AS day,
        round(count(DISTINCT user_id) FILTER (WHERE event_type = 'pay') * 100.0
              / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2)
@@ -79,7 +80,8 @@ FROM shop.user_events GROUP BY 1`,
   {
     name: '加购率',
     aliases: ['加购转化率', '加入购物车比例'],
-    definition: '当天有 add_cart 事件的去重用户数 / 当天有 visit 事件的去重用户数。',
+    definition:
+      '当天有 add_cart 事件的去重用户数 / 当天有 visit 事件的去重用户数。跨多天汇总时，分子分母都按"日期 + 用户"去重（count(DISTINCT (occurred_at::date, user_id))），不能只按用户去重。',
     sql: `SELECT occurred_at::date AS day,
        round(count(DISTINCT user_id) FILTER (WHERE event_type = 'add_cart') * 100.0
              / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2)
@@ -108,7 +110,8 @@ FROM (SELECT user_id, count(*) AS n FROM shop.orders WHERE paid_at IS NOT NULL G
   {
     name: '毛利',
     aliases: ['毛利额', '利润', '毛利率'],
-    definition: '已支付且未退款订单中，(成交单价 - 成本价) × 数量 之和；毛利率 = 毛利 / 商品成交额（单价 × 数量之和），不扣优惠。',
+    definition:
+      '已支付且未退款订单中，(成交单价 - 成本价) × 数量 之和；毛利率 = 毛利 / 商品成交额（单价 × 数量之和），不扣优惠。分子分母都只算已支付且未退款的订单，已退款订单整个排除，不能只从分子里排除。',
     sql: `SELECT sum((i.unit_price - p.cost) * i.quantity) AS "毛利"
 FROM shop.order_items i
 JOIN shop.orders o ON o.id = i.order_id

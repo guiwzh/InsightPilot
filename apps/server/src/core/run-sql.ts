@@ -11,16 +11,22 @@ export const PREVIEW_ROWS = 100
 
 export class ToolError extends Error {}
 
-export async function runSql(sql: string): Promise<RunSqlOutput> {
+/**
+ * errorHints：报错时是否附带针对错误码的修复建议。
+ * 关掉后模型只能看到数据库的原始报错，评测时用来衡量修复建议对自修正的帮助。
+ */
+export async function runSql(sql: string, { errorHints = true } = {}): Promise<RunSqlOutput> {
   const guard = guardSql(sql)
-  if (!guard.ok) throw new ToolError(`[${guard.code}] ${guard.message}。修复建议：${guard.hint}`)
+  if (!guard.ok) {
+    throw new ToolError(`[${guard.code}] ${guard.message}${errorHints ? `。修复建议：${guard.hint}` : ''}`)
+  }
 
   const startedAt = performance.now()
   let result: Awaited<ReturnType<typeof executeReadonly>>
   try {
     result = await executeReadonly(guard.executableSql)
   } catch (error) {
-    throw new ToolError(describePgError(error))
+    throw new ToolError(describePgError(error, errorHints))
   }
   const durationMs = Math.round(performance.now() - startedAt)
 
@@ -97,7 +103,7 @@ const PG_ERROR_HINTS: Record<string, string> = {
   '42501': '没有权限。只能查询 shop 下的表',
 }
 
-function describePgError(error: unknown): string {
+function describePgError(error: unknown, withHints: boolean): string {
   const e = error as { code?: string; message?: string; hint?: string; position?: string }
   const code = e.code ?? 'UNKNOWN'
   const tag = code === '57014' ? 'TIMEOUT' : 'SQL_ERROR'
@@ -106,6 +112,6 @@ function describePgError(error: unknown): string {
   if (position > 0) parts.push(`（出错位置在原 SQL 第 ${position} 个字符附近）`)
   if (e.hint) parts.push(`。PostgreSQL 提示：${e.hint.replace(/\.$/, '')}`)
   const hint = PG_ERROR_HINTS[code]
-  if (hint) parts.push(`。修复建议：${hint}`)
+  if (hint && withHints) parts.push(`。修复建议：${hint}`)
   return parts.join('')
 }

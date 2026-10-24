@@ -15,6 +15,11 @@ export function fastModel(): LanguageModel {
 
 export const fastModelId = deepseek ? env.MODEL_FAST : 'demo'
 
+/** 能力更强也更贵的模型，SQL 连续失败时升级使用 */
+export function strongModel(): LanguageModel {
+  return deepseek ? deepseek(env.MODEL_STRONG) : demoModel()
+}
+
 const DEMO_TEXT =
   '（演示模式）还没有配置 DEEPSEEK_API_KEY，这是一段模拟的流式回复。' +
   '在仓库根目录的 .env 中填入 key 并重启 server，就会接入真实模型。'

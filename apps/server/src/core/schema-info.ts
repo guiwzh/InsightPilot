@@ -22,7 +22,11 @@ export async function listTables(): Promise<ListTablesOutput> {
   return tableListCache
 }
 
-export async function describeTables(requested: string[]): Promise<DescribeTableOutput> {
+/**
+ * hints：是否带上中文注释、常见取值和取值范围。
+ * 关掉后只剩列名、类型和主外键，评测时用来衡量这些信息对准确率的贡献。
+ */
+export async function describeTables(requested: string[], { hints = true } = {}): Promise<DescribeTableOutput> {
   const names = [...new Set(requested.map((name) => name.trim().toLowerCase().replace(/^shop\./, '')))]
   const known = names.filter((name) => (SHOP_TABLES as readonly string[]).includes(name))
   const notFound = names.filter((name) => !known.includes(name))
@@ -32,10 +36,24 @@ export async function describeTables(requested: string[]): Promise<DescribeTable
     for (const detail of await loadTableDetails(missing)) tableDetailCache.set(detail.name, detail)
   }
 
+  const details = known.map((name) => tableDetailCache.get(name)!)
   return {
-    tables: known.map((name) => tableDetailCache.get(name)!),
+    tables: hints ? details : details.map(withoutHints),
     ...(notFound.length > 0 && { notFound }),
   }
+}
+
+function withoutHints(table: TableDetail): TableDetail {
+  return {
+    ...table,
+    comment: '',
+    columns: table.columns.map(({ comment: _comment, commonValues: _values, range: _range, ...column }) => ({ ...column, comment: '' })),
+  }
+}
+
+export async function listTablesFor({ hints = true } = {}): Promise<ListTablesOutput> {
+  const list = await listTables()
+  return hints ? list : { tables: list.tables.map((table) => ({ ...table, comment: '' })) }
 }
 
 async function loadTableDetails(tables: string[]): Promise<TableDetail[]> {

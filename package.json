@@ -13,7 +13,8 @@
     "db:seed": "tsx db/seed.ts",
     "db:reset": "docker compose down -v && docker compose up -d --wait && pnpm db:push && pnpm db:seed",
     "typecheck": "pnpm -r typecheck && tsc -p tsconfig.json",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "eval": "pnpm --filter @insightpilot/server eval"
   },
   "devDependencies": {
     "@faker-js/faker": "10.6.0",

@@ -10,18 +10,25 @@ import {
 import { tool, type StopCondition, type ToolSet } from 'ai'
 import { z } from 'zod'
 import { loadResultMeta, PREVIEW_ROWS, runSql, ToolError } from './run-sql'
-import { describeTables, listTables } from './schema-info'
+import { describeTables, listTablesFor } from './schema-info'
 import { findMetrics } from './semantic/metrics'
 
 const normalizeSql = (sql: string) => sql.replace(/\s+/g, ' ').replace(/;+\s*$/, '').trim().toLowerCase()
 const isUuid = (value: string) => z.uuid().safeParse(value).success
+
+export type ToolOptions = {
+  /** describe_table / list_tables 是否带中文注释和常见取值 */
+  schemaHints: boolean
+  /** run_sql 报错时是否附带修复建议 */
+  errorHints: boolean
+}
 
 /**
  * 每次对话请求创建一套新的工具：run_sql 要记住本轮上一次执行的 SQL（拦截重复调用），
  * render_chart 要知道本轮最近一次成功查询的 resultId（模型可以不抄那串 UUID）。
  * Web 接口、MCP、评测脚本都从这里拿工具，行为完全一致。
  */
-export function buildTools() {
+export function buildTools({ schemaHints, errorHints }: ToolOptions = { schemaHints: true, errorHints: true }) {
   let lastSql: string | undefined
   let lastResultId: string | undefined
 
@@ -29,14 +36,14 @@ export function buildTools() {
     list_tables: tool({
       description: '列出 shop 数据库中所有可查询的表、中文说明和大致行数。不确定该查哪张表时先调用。',
       inputSchema: ListTablesInput,
-      execute: () => listTables(),
+      execute: () => listTablesFor({ hints: schemaHints }),
     }),
 
     describe_table: tool({
       description:
         '查看表的列名、类型、中文注释、主外键，以及常见取值（如订单状态的枚举值）和取值范围。写 SQL 前必须先查看涉及的表，不要猜列名。',
       inputSchema: DescribeTableInput,
-      execute: ({ tables }) => describeTables(tables),
+      execute: ({ tables }) => describeTables(tables, { hints: schemaHints }),
     }),
 
     get_metric_definitions: tool({
@@ -55,7 +62,7 @@ export function buildTools() {
           throw new ToolError('[DUPLICATE] 这条 SQL 和上一次执行的完全相同，结果不会有变化。请修改 SQL，或者基于已有结果直接回答。')
         }
         lastSql = normalized
-        const output = await runSql(sql)
+        const output = await runSql(sql, { errorHints })
         lastResultId = output.resultId
         return output
       },
