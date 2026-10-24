@@ -1,0 +1,28 @@
+# 开发环境：只起 PostgreSQL。变量来自同目录的 .env
+# 目录名是中文，compose 无法据此推导项目名，所以显式指定
+name: insightpilot
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: insightpilot-pg
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: Asia/Shanghai
+    ports:
+      # 只绑定本机，避免数据库暴露到局域网
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # PostgreSQL 18 镜像的数据目录改为 /var/lib/postgresql（不再是 .../data）
+      - pgdata:/var/lib/postgresql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  pgdata:

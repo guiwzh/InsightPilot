@@ -1,0 +1,24 @@
+{
+  "name": "insightpilot",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @insightpilot/server --filter @insightpilot/web dev",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:push": "pnpm --filter @insightpilot/server db:push",
+    "db:seed": "tsx db/seed.ts",
+    "db:reset": "docker compose down -v && docker compose up -d --wait && pnpm db:push && pnpm db:seed",
+    "typecheck": "pnpm -r typecheck && tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "10.6.0",
+    "@types/node": "24.19.2",
+    "postgres": "3.4.9",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3"
+  }
+}
