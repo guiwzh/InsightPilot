@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createFixedWindow } from './rate-limit'
+import { createFixedWindow } from './fixed-window'
 
 describe('createFixedWindow', () => {
   it('窗口内超过上限就拒绝', () => {

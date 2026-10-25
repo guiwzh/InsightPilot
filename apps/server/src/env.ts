@@ -20,6 +20,11 @@ const EnvSchema = z.object({
   SERVER_PORT: z.coerce.number().int().positive().default(8787),
   // 防刷三道闸：同一 IP 每分钟的对话请求数、每个访客每天的 token 数、全站每天的花费（元）
   CHAT_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(10),
+  // 部署在 Caddy 后面时设为 true，限流按 X-Forwarded-For 识别真实 IP；直接暴露在公网时不要打开，否则 IP 可以伪造
+  TRUST_PROXY: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   VISITOR_DAILY_TOKENS: z.coerce.number().int().positive().default(400_000),
   SITE_DAILY_BUDGET_CNY: z.coerce.number().positive().default(10),
 })

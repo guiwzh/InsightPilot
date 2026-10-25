@@ -1,0 +1,27 @@
+# 每次 push 和 PR：类型检查、单测、构建。都不需要数据库和 API key。
+# 评测（pnpm eval）要调用模型、花钱，不放在 CI 里自动跑。
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.6.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: 构建
+        run: |
+          pnpm --filter @insightpilot/web build
+          pnpm --filter @insightpilot/server build

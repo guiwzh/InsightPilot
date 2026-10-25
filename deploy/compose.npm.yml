@@ -1,0 +1,15 @@
+# 服务器上已经有 Nginx Proxy Manager（NPM）占用 80/443 时使用：
+# 把 web 容器接到 NPM 所在的 Docker 网络，NPM 里新建代理，转发到 insightpilot-web:80，证书也由 NPM 申请。
+# 用法：docker compose -f docker-compose.prod.yml -f compose.npm.yml up -d
+services:
+  web:
+    networks:
+      default:
+      proxy:
+        aliases:
+          - insightpilot-web
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-nginx-proxy-manage_default}
+    external: true

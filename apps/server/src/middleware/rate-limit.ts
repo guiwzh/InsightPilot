@@ -1,32 +1,14 @@
 import { getConnInfo } from '@hono/node-server/conninfo'
 import type { Context } from 'hono'
 import { createMiddleware } from 'hono/factory'
+import { env } from '../env'
+import { clientIpFrom } from './client-ip'
+import { createFixedWindow } from './fixed-window'
 
-/**
- * 固定窗口计数：每个 key 每个窗口内最多 limit 次。
- * 纯内存实现，单进程部署够用；多实例部署时要换成 Redis 之类的共享存储。
- */
-export function createFixedWindow({ windowMs, limit }: { windowMs: number; limit: number }) {
-  const windows = new Map<string, { count: number; resetAt: number }>()
-
-  return function hit(key: string, now = Date.now()) {
-    let window = windows.get(key)
-    if (!window || window.resetAt <= now) {
-      window = { count: 0, resetAt: now + windowMs }
-      windows.set(key, window)
-    }
-    window.count++
-    // 顺手清理过期的 key，防止内存无限增长
-    if (windows.size > 10_000) {
-      for (const [k, w] of windows) if (w.resetAt <= now) windows.delete(k)
-    }
-    return { allowed: window.count <= limit, retryAfterMs: window.resetAt - now }
-  }
-}
-
-/** 客户端 IP。第 6 周部署到 Caddy 后面时，改为读取 Caddy 设置的 X-Forwarded-For */
+/** 客户端 IP。部署在代理后面（TRUST_PROXY=true）时从 X-Forwarded-For 里找，规则见 client-ip.ts */
 export function clientIp(c: Context) {
-  return getConnInfo(c).remote.address ?? 'unknown'
+  const remote = getConnInfo(c).remote.address
+  return env.TRUST_PROXY ? clientIpFrom(c.req.header('x-forwarded-for'), remote) : (remote ?? 'unknown')
 }
 
 export function rateLimit({ windowMs, limit }: { windowMs: number; limit: number }) {

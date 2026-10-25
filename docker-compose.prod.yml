@@ -1,0 +1,64 @@
+# 生产环境：web（Caddy：前端 + HTTPS + 反向代理）→ server（Node API）→ postgres。
+# 变量来自同目录的 .env（只放在服务器上，不进 git），部署流程见 scripts/deploy.sh。
+# 项目名和开发环境不同，在本机试跑时不会覆盖开发用的数据库。
+name: insightpilot-prod
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: Asia/Shanghai
+    # 2G 内存的机器：收紧连接数和缓存
+    command: postgres -c shared_buffers=128MB -c effective_cache_size=384MB -c max_connections=40
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    mem_limit: 320m
+    # 不映射端口：数据库只在容器网络内可见
+
+  server:
+    image: insightpilot-server:${TAG:-latest}
+    restart: unless-stopped
+    env_file: ${ENV_FILE:-.env}
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      DATABASE_URL_READONLY: postgres://analyst_ro:${ANALYST_RO_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      # 只能经 Caddy 访问，可以信任 X-Forwarded-For
+      TRUST_PROXY: "true"
+      # 让 V8 在容器内存上限之前就开始回收
+      NODE_OPTIONS: --max-old-space-size=200
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 320m
+
+  web:
+    image: insightpilot-web:${TAG:-latest}
+    restart: unless-stopped
+    # 独占服务器时直接对外开放 80/443；前面已经有反向代理时，把 WEB_BIND 设为 127.0.0.1、换成空闲端口，只供本机调试
+    ports:
+      - "${WEB_BIND:-0.0.0.0}:${HTTP_PORT:-80}:80"
+      - "${WEB_BIND:-0.0.0.0}:${HTTPS_PORT:-443}:443"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+    volumes:
+      # 证书存在这里，重启不丢，避免反复申请触发 Let's Encrypt 限额
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - server
+    mem_limit: 64m
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

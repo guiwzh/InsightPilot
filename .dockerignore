@@ -1,0 +1,6 @@
+# 镜像只需要构建产物（apps/*/dist）和部署配置，其余都不送进构建上下文
+**/node_modules
+**/.env
+.git
+docs
+apps/server/evals/reports
