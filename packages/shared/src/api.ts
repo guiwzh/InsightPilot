@@ -11,6 +11,38 @@ export type QueryResultResponse = {
   truncated: boolean
 }
 
+/** GET /api/conversations：当前访客的会话列表，按最近更新排序 */
+export type ConversationSummary = {
+  id: string
+  title: string
+  updatedAt: string
+}
+
+/** GET /api/conversations/:id。messages 是 AI SDK 的 UIMessage，原样还给 useChat */
+export type ConversationDetail = ConversationSummary & {
+  messages: unknown[]
+}
+
+/** GET /api/stats?days=7：看板数据，来自 agent_runs */
+export type StatsResponse = {
+  days: number
+  summary: {
+    runs: number
+    successRate: number
+    totalCostCny: number
+    avgCostCny: number
+    p50LatencyMs: number
+    p95LatencyMs: number
+    avgTtftMs: number
+    cacheHitRate: number
+    toolErrorRate: number
+    /** 导出审批里"允许"的比例；没有审批记录时为 null */
+    approvalRate: number | null
+  }
+  daily: { day: string; runs: number; costCny: number; p50LatencyMs: number; p95LatencyMs: number; cacheHitRate: number }[]
+  tools: { name: string; calls: number; errors: number; avgMs: number }[]
+}
+
 export type HealthResponse = {
   ok: boolean
   db: {

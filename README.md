@@ -39,6 +39,7 @@ db/seed.ts        造数脚本（固定随机种子，结果可复现）
 | `pnpm test` | 运行单测：SQL 防线、图表 DSL 校验、specToOption、评测判分器 |
 | `pnpm eval` | 用开发集 + 安全用例评测线上配置，报告写到 `apps/server/evals/reports/` |
 | `pnpm eval --ladder --runs 2` | 从基线开始逐项叠加优化，每题跑 2 次，对比每一项的增益 |
+| `pnpm eval --unstable-prefix` | 对照实验：提示词开头每次都变，看缓存命中率和成本的变化 |
 | `pnpm db:push` | 把 `apps/server/src/db/schema.ts` 的变更同步到数据库（只动 app schema） |
 | `pnpm db:seed` | 重建并重新生成 shop 样例数据 |
 | `pnpm db:reset` | 删除数据卷后从头来一遍：init.sql → push → seed |

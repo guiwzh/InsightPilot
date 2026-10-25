@@ -21,7 +21,9 @@ export function ToolTrace({ parts, active }: { parts: InsightToolPart[]; active:
 }
 
 function toItem(part: InsightToolPart, active: boolean): ThoughtChainItemType {
-  const status = STATUS[part.state] === 'loading' && !active ? 'abort' : STATUS[part.state]
+  // 等待用户确认时这一轮的流已经结束（active 为 false），但这一步并没有中止
+  const waiting = part.state === 'approval-requested'
+  const status = STATUS[part.state] === 'loading' && !active && !waiting ? 'abort' : STATUS[part.state]
   const base = { key: part.toolCallId, status }
   const error = part.state === 'output-error' ? part.errorText : undefined
 
@@ -83,6 +85,22 @@ function toItem(part: InsightToolPart, active: boolean): ThoughtChainItemType {
         ) : undefined,
       }
     }
+
+    case 'tool-export_csv':
+      return {
+        ...base,
+        title: '导出 CSV',
+        description:
+          part.state === 'approval-requested'
+            ? '等待你确认'
+            : part.state === 'approval-responded'
+              ? part.approval.approved ? '已允许，正在导出' : '已拒绝'
+              : part.state === 'output-denied'
+                ? '已拒绝'
+                : part.state === 'output-available'
+                  ? `${part.output.rowCount} 行`
+                  : error ?? (status === 'abort' ? '已停止' : part.input?.filename),
+      }
 
     case 'tool-render_chart': {
       const chartName = { line: '折线图', bar: '柱状图', table: '表格' }[part.input?.type ?? 'line']

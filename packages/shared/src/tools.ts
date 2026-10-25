@@ -23,6 +23,18 @@ export const RunSqlInput = z.object({
   sql: z.string().describe('一条 PostgreSQL SELECT 语句（可以用 WITH），只能查询 shop 下的表'),
 })
 
+export const ExportCsvInput = z.object({
+  resultId: z.string().optional().describe('要导出的 run_sql 结果的 resultId；不填则导出最近一次查询的结果'),
+  filename: z.string().optional().describe('文件名（不含扩展名），如"9 月各渠道新增用户"'),
+})
+
+export type ExportCsvOutput = {
+  /** 下载地址 */
+  url: string
+  filename: string
+  rowCount: number
+}
+
 export type TableSummary = {
   name: string
   comment: string
@@ -93,4 +105,5 @@ export type InsightUITools = {
   get_metric_definitions: { input: z.infer<typeof GetMetricDefinitionsInput>; output: GetMetricDefinitionsOutput }
   run_sql: { input: z.infer<typeof RunSqlInput>; output: RunSqlOutput }
   render_chart: { input: ChartSpecInput; output: RenderChartOutput }
+  export_csv: { input: z.infer<typeof ExportCsvInput>; output: ExportCsvOutput }
 }

@@ -1,11 +1,11 @@
 import { useChat } from '@ai-sdk/react'
 import { Bubble, Prompts, Sender, Welcome, type BubbleListProps } from '@ant-design/x'
 import { RobotOutlined, UserOutlined } from '@ant-design/icons'
-import { DefaultChatTransport } from 'ai'
+import { DefaultChatTransport, lastAssistantMessageIsCompleteWithApprovalResponses } from 'ai'
 import { Alert, Avatar, Button, Flex } from 'antd'
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type { InsightMessage } from '../../types'
-import { AssistantMessage, hasVisibleContent, textOf } from './AssistantMessage'
+import { AssistantMessage, hasVisibleContent, textOf, type ApprovalHandler } from './AssistantMessage'
 import { MessageActions } from './MessageActions'
 
 const transport = new DefaultChatTransport<InsightMessage>({ api: '/api/chat' })
@@ -29,13 +29,34 @@ const roles: BubbleListProps['role'] = {
 
 const userText = (message: InsightMessage) => message.parts.map((part) => (part.type === 'text' ? part.text : '')).join('')
 
-export function ChatPage() {
+type Props = {
+  /** 会话 id，也是 useChat 的 id；服务端按它保存消息 */
+  conversationId: string
+  initialMessages: InsightMessage[]
+  /** 一轮回答结束（包括出错、被停止）后调用，用来刷新会话列表 */
+  onFinished: () => void
+}
+
+export function ChatPage({ conversationId, initialMessages, onFinished }: Props) {
   const [input, setInput] = useState('')
   // 被用户主动停止的消息，在下方标出"已停止生成"
   const [stoppedIds, setStoppedIds] = useState<ReadonlySet<string>>(new Set())
-  // throttle：流式过程中最多每 50ms 触发一次重渲染，长回答不卡顿
-  const { messages, sendMessage, status, stop, error, regenerate } = useChat<InsightMessage>({ transport, throttle: 50 })
+  const { messages, sendMessage, status, stop, error, regenerate, addToolApprovalResponse } = useChat<InsightMessage>({
+    id: conversationId,
+    messages: initialMessages,
+    transport,
+    // throttle：流式过程中最多每 50ms 触发一次重渲染，长回答不卡顿
+    throttle: 50,
+    // 用户在审批卡片上做出选择后，自动把结果发回服务端继续执行
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
+    onFinish: () => onFinished(),
+  })
   const busy = status === 'submitted' || status === 'streaming'
+
+  // AssistantMessage 用 memo 包着，回调要保持引用稳定，否则所有历史消息都会跟着重渲染
+  const approveRef = useRef(addToolApprovalResponse)
+  approveRef.current = addToolApprovalResponse
+  const handleApproval = useCallback<ApprovalHandler>((id, approved) => void approveRef.current({ id, approved }), [])
 
   const send = (text: string) => {
     if (!text.trim() || busy) return
@@ -57,7 +78,7 @@ export function ChatPage() {
     return {
       key: message.id,
       role: 'ai',
-      content: <AssistantMessage message={message} active={active} />,
+      content: <AssistantMessage message={message} active={active} onApproval={handleApproval} />,
       // 助手消息已创建、但还没有任何文字或工具调用时显示加载动画
       loading: active && !hasVisibleContent(message),
       footer: active ? undefined : (
@@ -99,7 +120,8 @@ export function ChatPage() {
         <Alert
           type="error"
           showIcon
-          message="回答失败"
+          title="回答失败"
+          // 限流、预算用完时服务端返回的是中文提示，直接展示
           description={error.message}
           action={
             <Button size="small" onClick={() => void regenerate()}>

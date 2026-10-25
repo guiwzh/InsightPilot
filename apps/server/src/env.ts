@@ -18,6 +18,10 @@ const EnvSchema = z.object({
   MODEL_STRONG: z.string().default('deepseek-v4-pro'),
   // 不用通用的 PORT：很多工具和平台会自动注入 PORT，容易和前端端口撞车
   SERVER_PORT: z.coerce.number().int().positive().default(8787),
+  // 防刷三道闸：同一 IP 每分钟的对话请求数、每个访客每天的 token 数、全站每天的花费（元）
+  CHAT_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(10),
+  VISITOR_DAILY_TOKENS: z.coerce.number().int().positive().default(400_000),
+  SITE_DAILY_BUDGET_CNY: z.coerce.number().positive().default(10),
 })
 
 const parsed = EnvSchema.safeParse(process.env)

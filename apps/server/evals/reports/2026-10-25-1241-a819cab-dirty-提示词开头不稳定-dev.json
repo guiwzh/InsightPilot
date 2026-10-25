@@ -1,0 +1,3501 @@
+{
+  "gitSha": "a819cab-dirty",
+  "set": "dev",
+  "runs": 2,
+  "experiments": [
+    {
+      "label": "提示词开头不稳定",
+      "options": {
+        "semanticLayer": true,
+        "schemaHints": true,
+        "errorHints": true,
+        "fewShot": true,
+        "escalation": true,
+        "thinking": false,
+        "unstablePrefix": true
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "label": "提示词开头不稳定",
+      "runs": 80,
+      "accuracy": 1,
+      "strictAccuracy": 0.9625,
+      "easy": 1,
+      "medium": 1,
+      "hard": 1,
+      "consistency": 1,
+      "avgSteps": 4.175,
+      "avgSqlCalls": 1.0625,
+      "firstSqlOkRate": 0.9875,
+      "runsWithSqlError": 1,
+      "selfCorrectionRate": 1,
+      "escalated": 0,
+      "chartFirstPassRate": 0.9545454545454546,
+      "chartCalls": 44,
+      "chartExpectationRate": 1,
+      "p50LatencyMs": 4654,
+      "p95LatencyMs": 6860,
+      "avgInputTokens": 15343.2375,
+      "avgOutputTokens": 570.6125,
+      "cacheHitRate": 0.7271477092106539,
+      "avgCostCny": 0.007127005027499998,
+      "totalCostCny": 0.5701604021999999,
+      "failures": 0,
+      "safetyPassRate": null
+    }
+  ],
+  "queries": [
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D01",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3155,
+      "inputTokens": 12481,
+      "cachedTokens": 8960,
+      "outputTokens": 202,
+      "costUsd": 0.0006762299999999999,
+      "sqls": [
+        "SELECT count(*) AS \"注册用户总数\" FROM shop.users"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"注册用户总数\" FROM shop.users"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "平台目前共有 **20,000** 名注册用户，统计截至 2026-09-30。\n\n- 注册时间从 2026-01-01 开始，最近一条注册记录出现在 2026-09-30。\n- 如果需要按渠道、城市或月份拆解新增用户情况，我可以继续查询。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D02",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3087,
+      "inputTokens": 9164,
+      "cachedTokens": 5760,
+      "outputTokens": 267,
+      "costUsd": 0.00068808,
+      "sqls": [
+        "SELECT count(*) FILTER (WHERE gender = 'F') AS \"女性用户数\",\n       count(*) AS \"全部用户数\",\n       round(count(*) FILTER (WHERE gender = 'F') * 100.0 / NULLIF(count(*), 0), 2) AS \"女性占比(%)\"\nFROM shop.users"
+      ],
+      "executedSqls": [
+        "SELECT count(*) FILTER (WHERE gender = 'F') AS \"女性用户数\",\n       count(*) AS \"全部用户数\",\n       round(count(*) FILTER (WHERE gender = 'F') * 100.0 / NULLIF(count(*), 0), 2) AS \"女性占比(%)\"\nFROM shop.users"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "女性用户共 11,049 人，占全部 20,000 名用户的 55.25%。\n\n- 女性用户数：11,049 人\n- 全部用户数：20,000 人（含性别未填写的用户）\n- 女性占比：55.25%\n\n补充说明：性别字段为 NULL 表示未填写，这部分用户计入了分母；如需只看“已填写性别”用户中的女性占比，可以再帮你算。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D03",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3390,
+      "inputTokens": 9173,
+      "cachedTokens": 5888,
+      "outputTokens": 210,
+      "costUsd": 0.000636414,
+      "sqls": [
+        "SELECT count(*) AS \"新增用户数\"\nFROM shop.users\nWHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"新增用户数\"\nFROM shop.users\nWHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月（9/1–9/30）共新增 5713 名用户，统计依据是用户注册时间 registered_at。\n\n如需进一步查看新增用户按渠道的分布、按天的走势，或与 8 月对比增长率，告诉我即可。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D04",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3891,
+      "inputTokens": 13958,
+      "cachedTokens": 9984,
+      "outputTokens": 369,
+      "costUsd": 0.0008474520000000001,
+      "sqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV(元)\",\n       count(*) AS \"支付订单数\",\n       round(avg(pay_amount), 2) AS \"客单价(元)\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV(元)\",\n       count(*) AS \"支付订单数\",\n       round(avg(pay_amount), 2) AS \"客单价(元)\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月 GMV 为 **10,623,267.32 元**（约 1062.3 万元），口径是按下单时间归属 9 月、且已支付（paid_at 不为空）订单的实付金额之和，已退款订单也计入。\n\n- 支付订单数：10,579 单\n- 客单价：1,004.18 元\n\n只有一个汇总数字，因此没有画图。需要看 9 月每天或各渠道的 GMV 走势，我可以继续拆。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D05",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3562,
+      "inputTokens": 9701,
+      "cachedTokens": 6144,
+      "outputTokens": 388,
+      "costUsd": 0.0007847819999999999,
+      "sqls": [
+        "SELECT count(*) FILTER (WHERE status = 'cancelled') AS \"取消订单数\",\n       count(*) AS \"订单总数\",\n       round(count(*) FILTER (WHERE status = 'cancelled') * 100.0 / NULLIF(count(*), 0), 2) AS \"取消占比(%)\"\nFROM shop.orders\nWHERE created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) FILTER (WHERE status = 'cancelled') AS \"取消订单数\",\n       count(*) AS \"订单总数\",\n       round(count(*) FILTER (WHERE status = 'cancelled') * 100.0 / NULLIF(count(*), 0), 2) AS \"取消占比(%)\"\nFROM shop.orders\nWHERE created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月共有 773 笔订单被取消**，占 9 月全部 11,369 笔订单的 6.80%。\n\n- 统计方式：按订单状态 `cancelled`，并按订单的**下单时间**（created_at）归属到 9 月；该状态表示已取消、未支付。\n- 9 月订单总数 11,369 笔，其中取消 773 笔，其余为已支付、已完成、已退款等状态。\n- 这个取消占比反映的是“下单后未支付就取消”的比例；已支付后退款的情况记录在 `refunded` 状态中，不计入取消数。\n\n如果你想查看取消订单在 9 月内的逐日或逐周变化，或者想按渠道、类目拆分取消情况，告诉我，我再查。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D06",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 3691,
+      "inputTokens": 12908,
+      "cachedTokens": 9344,
+      "outputTokens": 379,
+      "costUsd": 0.000790032,
+      "sqls": [
+        "SELECT category_l1 AS \"一级类目\", count(*) AS \"商品数\",\n       round(count(*) * 100.0 / sum(count(*)) OVER (), 2) AS \"占比(%)\"\nFROM shop.products\nGROUP BY 1 ORDER BY 2 DESC"
+      ],
+      "executedSqls": [
+        "SELECT category_l1 AS \"一级类目\", count(*) AS \"商品数\",\n       round(count(*) * 100.0 / sum(count(*)) OVER (), 2) AS \"占比(%)\"\nFROM shop.products\nGROUP BY 1 ORDER BY 2 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "全库共有 1000 个商品（按品类计数合计），6 个一级类目分布如下：\n\n- **服饰最多**：227 个，占 22.70%；食品次之，217 个，占 21.70%，两大头部类目合计接近一半（44.4%）。\n- **美妆居中**：168 个，占 16.80%；家居 136 个（13.60%）、数码 134 个（13.40%）规模接近。\n- **母婴最少**：118 个，占 11.80%，约为服饰的一半。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D07",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4927,
+      "inputTokens": 12902,
+      "cachedTokens": 9088,
+      "outputTokens": 549,
+      "costUsd": 0.0009287639999999999,
+      "sqls": [
+        "SELECT p.name AS \"商品名称\", p.category_l1 AS \"一级类目\", p.category_l2 AS \"二级类目\",\n       p.price AS \"售价(元)\", p.cost AS \"成本价(元)\", round(p.price - p.cost, 2) AS \"毛利(元)\"\nFROM shop.products p\nORDER BY p.price DESC\nLIMIT 5"
+      ],
+      "executedSqls": [
+        "SELECT p.name AS \"商品名称\", p.category_l1 AS \"一级类目\", p.category_l2 AS \"二级类目\",\n       p.price AS \"售价(元)\", p.cost AS \"成本价(元)\", round(p.price - p.cost, 2) AS \"毛利(元)\"\nFROM shop.products p\nORDER BY p.price DESC\nLIMIT 5"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "售价最高的 5 个商品全部来自数码类目：\n\n| 排名 | 商品 | 二级类目 | 售价(元) | 毛利(元) |\n|---|---|---|---|---|\n| 1 | 极光智能手表限定款 | 智能手表 | 6500.90 | 2885.96 |\n| 2 | 木森手机Plus | 手机 | 6298.90 | 2886.31 |\n| 3 | 拾光充电配件Plus | 充电配件 | 6088.90 | 1573.18 |\n| 4 | 小禾智能手表家庭装 | 智能手表 | 5653.90 | 1512.49 |\n| 5 | 极光智能手表经典款 | 智能手表 | 5640.90 | 1887.09 |\n\n关键发现：\n- 前 5 名商品全部属于「数码」一级类目，其中 3 个是智能手表（智能手表是高价产品集中的二级类目）。\n- 榜首是「极光智能手表限定款」，售价 6500.90 元；第 5 名「极光智能手表经典款」为 5640.90 元，前 5 名的价格区间较窄。\n- 售价高并不代表毛利高：木森手机Plus 的毛利 2886.31 元略高于榜首的 2885.96 元；「拾光充电配件Plus」售价排第 3，但毛利只有 1573.18 元，毛利率明显偏低（成本 4515.72 元，占售价比最高）。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D08",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 3733,
+      "inputTokens": 13256,
+      "cachedTokens": 9600,
+      "outputTokens": 517,
+      "costUsd": 0.0008874,
+      "sqls": [
+        "SELECT c.name AS \"渠道\", c.type AS \"渠道类型\", count(u.id) AS \"注册用户数\",\n       round(count(u.id) * 100.0 / NULLIF(sum(count(u.id)) OVER (), 0), 2) AS \"占比(%)\"\nFROM shop.channels c\nLEFT JOIN shop.users u ON u.channel_id = c.id\nGROUP BY 1, 2\nORDER BY 3 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\", c.type AS \"渠道类型\", count(u.id) AS \"注册用户数\",\n       round(count(u.id) * 100.0 / NULLIF(sum(count(u.id)) OVER (), 0), 2) AS \"占比(%)\"\nFROM shop.channels c\nLEFT JOIN shop.users u ON u.channel_id = c.id\nGROUP BY 1, 2\nORDER BY 3 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "截至 2026-09-30，8 个渠道累计注册用户共 20,000 人，其中自然搜索渠道最多，为 4,249 人。\n\n关键发现：\n- **自然搜索**贡献 4,249 人，占比 21.25%，是最大的单一渠道；紧随其后的**信息流广告**有 3,355 人（占 16.78%），**应用商店**有 2,629 人（占 13.15%）。\n- 8 个渠道中，用户数最少的是**达人带货**，为 1,611 人（占 8.06%）。\n- 从渠道类型看，自然流量（organic 两条：自然搜索、应用商店）合计 6,878 人，是最大来源；社交裂变（好友邀请、社区种草）合计 4,088 人，付费投放（信息流广告、搜索广告）合计 5,238 人，直播（直播间、达人带货）合计 3,796 人。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D09",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3760,
+      "inputTokens": 18325,
+      "cachedTokens": 12800,
+      "outputTokens": 455,
+      "costUsd": 0.00114015,
+      "sqls": [
+        "SELECT round(avg(rating), 2) AS \"平均分\",\n       count(*) AS \"评价数\",\n       count(*) FILTER (WHERE rating = 5) AS \"5分\",\n       count(*) FILTER (WHERE rating = 4) AS \"4分\",\n       count(*) FILTER (WHERE rating = 3) AS \"3分\",\n       count(*) FILTER (WHERE rating = 2) AS \"2分\",\n       count(*) FILTER (WHERE rating = 1) AS \"1分\",\n       round(count(*) FILTER (WHERE rating >= 4) * 100.0 / NULLIF(count(*), 0), 2) AS \"好评率(%)\"\nFROM shop.reviews"
+      ],
+      "executedSqls": [
+        "SELECT round(avg(rating), 2) AS \"平均分\",\n       count(*) AS \"评价数\",\n       count(*) FILTER (WHERE rating = 5) AS \"5分\",\n       count(*) FILTER (WHERE rating = 4) AS \"4分\",\n       count(*) FILTER (WHERE rating = 3) AS \"3分\",\n       count(*) FILTER (WHERE rating = 2) AS \"2分\",\n       count(*) FILTER (WHERE rating = 1) AS \"1分\",\n       round(count(*) FILTER (WHERE rating >= 4) * 100.0 / NULLIF(count(*), 0), 2) AS \"好评率(%)\"\nFROM shop.reviews"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "全部商品评价的平均分是 **4.18 分**，满分 5 分；样本为 7,601 条评价。\n\n- 好评（4–5 分）占 **79.54%**，其中 5 分有 4,157 条、4 分有 1,889 条。\n- 差评方面，1 分有 410 条、2 分有 394 条，两者合计占约 10.6%；3 分中评有 751 条。\n\n样本只有一条聚合结果，因此没有画图。如需按类目或按月份查看评分分布，可以继续查询。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D10",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3188,
+      "inputTokens": 13927,
+      "cachedTokens": 9856,
+      "outputTokens": 343,
+      "costUsd": 0.000846018,
+      "sqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       round(sum(pay_amount), 2) AS \"GMV\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-30' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       round(sum(pay_amount), 2) AS \"GMV\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-30' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月 30 日当天（按下单时间归属）支付订单数为 **315 单**，GMV 为 **333,952.01 元**，折算客单价约 1,060 元/单。\n\n口径说明：GMV 按已支付订单（paid_at 不为空）的实付金额 pay_amount 汇总，未剔除之后发生退款的订单；日期按下单时间 created_at 归属，范围为 9/30 00:00 至 10/1 00:00（左闭右开）。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D11",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 3554,
+      "inputTokens": 12707,
+      "cachedTokens": 9088,
+      "outputTokens": 381,
+      "costUsd": 0.0007987140000000001,
+      "sqls": [
+        "SELECT city AS \"城市\",\n       count(*) AS \"用户数\",\n       round(count(*) * 100.0 / sum(count(*)) OVER (), 2) AS \"占比(%)\"\nFROM shop.users\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 3"
+      ],
+      "executedSqls": [
+        "SELECT city AS \"城市\",\n       count(*) AS \"用户数\",\n       round(count(*) * 100.0 / sum(count(*)) OVER (), 2) AS \"占比(%)\"\nFROM shop.users\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 3"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "用户数最多的 3 个城市是上海、北京和深圳。\n\n- 上海：2296 人，占全部用户的 11.48%\n- 北京：2051 人，占 10.26%\n- 深圳：1790 人，占 8.95%\n\n这三座城市合计约占全部用户的 30.7%（基于入库用户的总数），是用户最集中的一线城市；其中上海比深圳多 506 人。\n\n注：以上按 `users` 表中的全部用户（即注册用户）统计，未限定注册时间范围。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D12",
+      "run": 1,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 2188,
+      "inputTokens": 9900,
+      "cachedTokens": 6272,
+      "outputTokens": 320,
+      "costUsd": 0.000755016,
+      "sqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV\", count(*) AS \"支付订单数\", round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL AND created_at >= '2026-07-01' AND created_at < '2026-08-01'"
+      ],
+      "executedSqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV\", count(*) AS \"支付订单数\", round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL AND created_at >= '2026-07-01' AND created_at < '2026-08-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "7 月客单价为 **906.44 元**（GMV ÷ 支付订单数，按下单时间归属日期）。\n\n- 7 月 GMV：7,980,333.19 元\n- 支付订单数：8,804 笔\n- 口径说明：统计的是 7 月下单且已支付的订单，采用实付金额 pay_amount 计入，不含未支付订单。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D13",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 4543,
+      "inputTokens": 14522,
+      "cachedTokens": 10496,
+      "outputTokens": 553,
+      "costUsd": 0.0009671879999999999,
+      "sqls": [
+        "SELECT to_char(date_trunc('month', created_at), 'YYYY-MM') AS \"月份\",\n       round(sum(pay_amount), 2) AS \"GMV(元)\",\n       count(*) AS \"支付订单数\",\n       round(avg(pay_amount), 2) AS \"客单价(元)\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-07-01' AND created_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT to_char(date_trunc('month', created_at), 'YYYY-MM') AS \"月份\",\n       round(sum(pay_amount), 2) AS \"GMV(元)\",\n       count(*) AS \"支付订单数\",\n       round(avg(pay_amount), 2) AS \"客单价(元)\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-07-01' AND created_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "7–9 月 GMV 连续三个月上涨，9 月首次突破千万：7 月 798.03 万元、8 月 889.07 万元、9 月 1062.33 万元（按已支付订单的实付金额、按下单时间归属，含后续退款订单）。\n\n关键发现：\n- 环比增长：8 月比 7 月增长 11.41%，9 月比 8 月增长 19.49%，增速在加快；9 月比 7 月高出 33.12%。\n- 订单量同步增长：支付订单数 8804 → 9751 → 10579 单。\n- 客单价也在走高：906.44 → 911.77 → 1004.18 元，9 月单笔金额明显提升，是 GMV 加速的主要推手之一。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D14",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 5267,
+      "inputTokens": 16913,
+      "cachedTokens": 12800,
+      "outputTokens": 560,
+      "costUsd": 0.0009913499999999998,
+      "sqls": [
+        "SELECT registered_at::date AS \"日期\", count(*) AS \"新增用户数\"\nFROM shop.users\nWHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT registered_at::date AS \"日期\", count(*) AS \"新增用户数\"\nFROM shop.users\nWHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月共有 30 天有注册数据；每日新增用户数整体平稳，但 9/14 至 9/20 出现一波明显的高位。\n\n关键发现：\n- **峰值集中在 9/14 至 9/20**：这 7 天的每日新增用户数在 301–370 之间；其中 9/20 最高，为 370 人；9/14 为 305 人，而从 9/13 的 161 人跳升到 9/14 的 305 人，几乎翻倍。\n- **高位之后快速回落**：9/21 降至 167 人，9/22 降至 130 人，之后回到正常水平；9/29 为最低的 126 人。\n- **其余时间大多在 126–181 人**：9/12 是这一段里的小高点，为 181 人。9/30 当天为 151 人。\n\n如果这波高位对应某个投放或活动，建议核对当时各渠道的拉新成本变化。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D15",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 4736,
+      "inputTokens": 14548,
+      "cachedTokens": 10496,
+      "outputTokens": 570,
+      "costUsd": 0.0009812879999999999,
+      "sqls": [
+        "SELECT created_at::date AS \"日期\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       count(*) AS \"支付订单数\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-21' AND created_at < '2026-09-28'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT created_at::date AS \"日期\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       count(*) AS \"支付订单数\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-21' AND created_at < '2026-09-28'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "上周（9/21–9/27）已支付订单的 GMV 合计约 223.07 万元，日均约 31.87 万元，周末明显走高。\n\n关键发现：\n- **最高是 9/22 的 35.49 万元（332 单）**，其次是 9/26 的 34.33 万元和 9/27 的 34.09 万元，这两天是周六和周日。\n- **最低是 9/25 的 27.30 万元（307 单）**，9/24 的 28.91 万元也偏低，工作日中段成交较弱。\n- 9/27 订单数最多，达 409 单，但 GMV 并非最高，说明当天客单价偏低；从 9/24 到 9/27，GMV 增长约 17.9%。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D16",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5927,
+      "inputTokens": 20254,
+      "cachedTokens": 15360,
+      "outputTokens": 703,
+      "costUsd": 0.00120198,
+      "sqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\",\n       sum(i.quantity) AS \"销量\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\nGROUP BY 1\nORDER BY 2 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\",\n       sum(i.quantity) AS \"销量\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\nGROUP BY 1\nORDER BY 2 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "8 月按类目统计的商品销售额（已支付订单，按订单明细的成交单价 × 数量计算，按下单时间归属 8 月）如下：数码类目以约 444 万元位居第一，其他类目销售额由高到低依次为服饰、家居、美妆、母婴、食品。\n\n关键发现：\n- **数码销售额 4,439,750.80 元**，是第二名服饰（1,467,225.50 元）的 3 倍多，销售额明显领先其他类目。\n- **食品类目销售额垫底**，仅 512,992.20 元；但它的**销量最高，达 5,848 件**，属于典型的低价走量；服饰销量 5,355 件、销售额 146.72 万元，客单价居中。\n- 销售额排名靠后的母婴（535,526.30 元）与食品（512,992.20 元）两者仅相差约 2.3 万元，接近垫底；而美妆销量 4,188 件、销售额 85.24 万元，单价水平高于母婴和食品。\n\n图表已按类目对比展示，数据表可查看具体销售额与销量。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D17",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5776,
+      "inputTokens": 20030,
+      "cachedTokens": 15360,
+      "outputTokens": 697,
+      "costUsd": 0.0011647799999999998,
+      "sqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       p.category_l1 AS \"一级类目\",\n       sum(i.quantity) AS \"销量\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT 5"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       p.category_l1 AS \"一级类目\",\n       sum(i.quantity) AS \"销量\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT 5"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月销量最高的二级类目是**咖啡（食品）**，销量 1551 件；销量前五中，食品类占了 3 个。\n\n关键发现：\n- 前五名销量依次为：咖啡 1551 件、零食 1360 件、洗面奶 1353 件、连衣裙 1350 件、方便速食 1282 件，几个类目的销量分布比较接近，头部之间差距很小，第 1 名与第 5 名只相差 269 件。\n- 食品类目表现最集中，因此咖啡、零食、方便速食这 3 个二级类目都进入了前五。\n- 不过高销量并不等于高销售额：洗面奶销量排第 3，但销售额为 271034.70 元；连衣裙销量排第 4，销售额为 397845.00 元，是前五名中销售额最高的。咖啡虽然销量第一，销售额为 142682.90 元，说明其单价偏低。\n\n口径说明：按已支付订单，下单时间落在 2026-09-01 至 2026-09-30 统计，销量为订单明细数量之和。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D18",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5428,
+      "inputTokens": 17431,
+      "cachedTokens": 13568,
+      "outputTokens": 574,
+      "costUsd": 0.0009645540000000001,
+      "sqls": [
+        "WITH t AS (\n  SELECT c.name AS \"渠道\",\n         count(*) AS \"新增用户数\"\n  FROM shop.users u\n  JOIN shop.channels c ON c.id = u.channel_id\n  WHERE u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT \"渠道\",\n       \"新增用户数\",\n       round(\"新增用户数\" * 100.0 / NULLIF(sum(\"新增用户数\") OVER (), 0), 2) AS \"占比(%)\"\nFROM t\nORDER BY \"新增用户数\" DESC"
+      ],
+      "executedSqls": [
+        "WITH t AS (\n  SELECT c.name AS \"渠道\",\n         count(*) AS \"新增用户数\"\n  FROM shop.users u\n  JOIN shop.channels c ON c.id = u.channel_id\n  WHERE u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT \"渠道\",\n       \"新增用户数\",\n       round(\"新增用户数\" * 100.0 / NULLIF(sum(\"新增用户数\") OVER (), 0), 2) AS \"占比(%)\"\nFROM t\nORDER BY \"新增用户数\" DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月共 8 个渠道带来新增用户，其中自然搜索和直播间最高，两者合计超过三分之一；尾部渠道贡献较低。\n\n关键发现：\n- **自然搜索 1046 人（占 18.31%）**、**直播间 1041 人（18.22%）** 位列前二，两者仅差 5 人，合计占 36.53%。\n- 达人带货 769 人（13.46%）与信息流广告 768 人（13.44%）几乎持平，处于第二梯队。\n- 尾部三个渠道新增偏少：搜索广告 484 人（8.47%）、社区种草 456 人（7.98%），投入产出值得复盘。\n\n已按渠道新增用户数生成柱状图，并在表格中附上占比。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D19",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5057,
+      "inputTokens": 19840,
+      "cachedTokens": 15232,
+      "outputTokens": 668,
+      "costUsd": 0.001137696,
+      "sqls": [
+        "WITH t AS (\n  SELECT c.name AS \"渠道\",\n         sum(o.pay_amount) AS \"GMV\",\n         count(*) AS \"订单数\"\n  FROM shop.orders o\n  JOIN shop.users u ON u.id = o.user_id\n  JOIN shop.channels c ON c.id = u.channel_id\n  WHERE o.paid_at IS NOT NULL\n    AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT \"渠道\",\n       round(\"GMV\", 2) AS \"GMV\",\n       \"订单数\",\n       round(\"GMV\" * 100.0 / NULLIF(sum(\"GMV\") OVER (), 0), 2) AS \"GMV占比(%)\"\nFROM t\nORDER BY \"GMV\" DESC"
+      ],
+      "executedSqls": [
+        "WITH t AS (\n  SELECT c.name AS \"渠道\",\n         sum(o.pay_amount) AS \"GMV\",\n         count(*) AS \"订单数\"\n  FROM shop.orders o\n  JOIN shop.users u ON u.id = o.user_id\n  JOIN shop.channels c ON c.id = u.channel_id\n  WHERE o.paid_at IS NOT NULL\n    AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT \"渠道\",\n       round(\"GMV\", 2) AS \"GMV\",\n       \"订单数\",\n       round(\"GMV\" * 100.0 / NULLIF(sum(\"GMV\") OVER (), 0), 2) AS \"GMV占比(%)\"\nFROM t\nORDER BY \"GMV\" DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月（9/1–9/30，按下单时间、仅已支付订单）各渠道用户贡献的 GMV 如下，8 个渠道合计约 1062.33 万元。\n\n- **自然搜索第一**：GMV 208.67 万元，占比 19.64%，1975 笔订单。\n- **直播间紧随其后**：196.74 万元（18.52%），2038 笔订单，是订单量最高的渠道。\n- **尾部**：搜索广告最少，57.56 万元，占 5.42%；社区种草 101.39 万元（9.54%）。\n\n可以看到头部渠道（自然搜索、直播间）合计拿走近四成 GMV，而付费投放类渠道（应用商店、信息流广告、搜索广告）合计约 27.6%，其中搜索广告的产出明显偏低，值得关注投放效率。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D20",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 4929,
+      "inputTokens": 15395,
+      "cachedTokens": 11008,
+      "outputTokens": 552,
+      "costUsd": 0.0010222739999999999,
+      "sqls": [
+        "SELECT u.city AS \"城市\",\n       count(*) AS \"支付订单数\",\n       round(sum(o.pay_amount), 2) AS \"GMV(元)\"\nFROM shop.orders o\nJOIN shop.users u ON u.id = o.user_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 5"
+      ],
+      "executedSqls": [
+        "SELECT u.city AS \"城市\",\n       count(*) AS \"支付订单数\",\n       round(sum(o.pay_amount), 2) AS \"GMV(元)\"\nFROM shop.orders o\nJOIN shop.users u ON u.id = o.user_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 5"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月支付订单数最多的 5 个城市依次是：上海 1172 单、北京 1138 单、深圳 955 单、广州 859 单、成都 727 单。\n\n关键发现：\n- 上海、北京位列第一梯队，两城订单量接近（差 34 单），合计 2310 单。\n- 北京的 GMV 反而更高，达到 1,214,227.39 元，高于上海的 1,197,184.98 元。这说明北京的客单价更高：约为北京 1067 元、上海 1021 元。\n- 第五名成都为 727 单，比第一名的上海少 445 单，头部集中在一线四城。\n\n注：口径为已支付订单（paid_at 不为空），按下单时间 created_at 归属 9 月，城市取自用户表所在城市。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D21",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 4987,
+      "inputTokens": 13725,
+      "cachedTokens": 9856,
+      "outputTokens": 541,
+      "costUsd": 0.000934518,
+      "sqls": [
+        "SELECT occurred_at::date AS \"日期\", count(DISTINCT user_id) AS \"访问用户数\"\nFROM shop.user_events\nWHERE event_type = 'visit'\n  AND occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT occurred_at::date AS \"日期\", count(DISTINCT user_id) AS \"访问用户数\"\nFROM shop.user_events\nWHERE event_type = 'visit'\n  AND occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月每天访问用户数（只统计 visit 事件去重后的用户）已按天下单归属统计，9 月 1 日到 9 月 30 日共 30 天，全部有数据。\n\n**关键发现：**\n- 峰值出现在 **9/19（2553 人）**，9/20（2496 人）次之；谷值是 **9/3（1580 人）**，峰谷差距约 60%。\n- 月内呈“中段抬升”走势：9/13–9/20 连续 8 天都在 2000 以上，明显高于月初（9/1–9/11 多在 1580–1940 之间）。\n- 月末回落：9/24–9/30 在 1712–2183 之间波动，其中 9/25 为 1712 人，9/30 为 1757 人。\n\n具体每日数值和折线图已在界面上展示。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D22",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 6,
+      "sqlCalls": 2,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 7999,
+      "inputTokens": 26498,
+      "cachedTokens": 21248,
+      "outputTokens": 1151,
+      "costUsd": 0.0015418440000000001,
+      "sqls": [
+        "SELECT occurred_at::date AS \"日期\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'visit') AS \"访问用户数\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') AS \"下单用户数\",\n       round(count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1",
+        "WITH d AS (\n  SELECT occurred_at::date AS day,\n         count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') AS ord_users,\n         count(DISTINCT user_id) FILTER (WHERE event_type = 'visit') AS visit_users\n  FROM shop.user_events\n  WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT round(sum(ord_users) * 100.0 / NULLIF(sum(visit_users), 0), 2) AS \"9月整体转化率(%)\",\n       round(avg(ord_users * 100.0 / NULLIF(visit_users, 0)), 2) AS \"日均转化率(%)\",\n       (SELECT day FROM d ORDER BY ord_users * 100.0 / visit_users DESC LIMIT 1) AS \"最高日期\",\n       (SELECT round(ord_users * 100.0 / visit_users, 2) FROM d ORDER BY ord_users * 100.0 / visit_users DESC LIMIT 1) AS \"最高值(%)\",\n       (SELECT day FROM d ORDER BY ord_users * 100.0 / visit_users ASC LIMIT 1) AS \"最低日期\",\n       (SELECT round(ord_users * 100.0 / visit_users, 2) FROM d ORDER BY ord_users * 100.0 / visit_users ASC LIMIT 1) AS \"最低值(%)\",\n       sum(visit_users) AS \"访问用户人次\",\n       sum(ord_users) AS \"下单用户人次\"\nFROM d"
+      ],
+      "executedSqls": [
+        "SELECT occurred_at::date AS \"日期\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'visit') AS \"访问用户数\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') AS \"下单用户数\",\n       round(count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1",
+        "WITH d AS (\n  SELECT occurred_at::date AS day,\n         count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') AS ord_users,\n         count(DISTINCT user_id) FILTER (WHERE event_type = 'visit') AS visit_users\n  FROM shop.user_events\n  WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT round(sum(ord_users) * 100.0 / NULLIF(sum(visit_users), 0), 2) AS \"9月整体转化率(%)\",\n       round(avg(ord_users * 100.0 / NULLIF(visit_users, 0)), 2) AS \"日均转化率(%)\",\n       (SELECT day FROM d ORDER BY ord_users * 100.0 / visit_users DESC LIMIT 1) AS \"最高日期\",\n       (SELECT round(ord_users * 100.0 / visit_users, 2) FROM d ORDER BY ord_users * 100.0 / visit_users DESC LIMIT 1) AS \"最高值(%)\",\n       (SELECT day FROM d ORDER BY ord_users * 100.0 / visit_users ASC LIMIT 1) AS \"最低日期\",\n       (SELECT round(ord_users * 100.0 / visit_users, 2) FROM d ORDER BY ord_users * 100.0 / visit_users ASC LIMIT 1) AS \"最低值(%)\",\n       sum(visit_users) AS \"访问用户人次\",\n       sum(ord_users) AS \"下单用户人次\"\nFROM d"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月下单转化率（每天有 place_order 的去重用户数 ÷ 每天有 visit 的去重用户数）整体平稳，9 月整体为 **19.30%**，日均 19.31%，没有明显趋势性变化。\n\n几个关键点：\n- **最高 9/4 的 20.07%**，**最低 9/14 的 17.51%**；9/14–9/16 是当月唯一的明显低谷（17.51%、18.16%、18.85%），之后到 9/17 回升至 19.33%。\n- 后半月流量上升但转化略被稀释：9/19–9/20 访问用户达到 2553、2496 人的月内高点，转化率分别为 19.47% 和 19.35%，基本守住大盘水平。\n- 月底（9/24–9/30）转化率稳定在 18.91%–19.61% 之间，9/30 为 19.41%，与全月均值接近。\n\n全月累计访问用户人次 56,879、下单用户人次 10,979。建议重点复盘 9/14–9/16 的流量质量与活动设置，看是引流人群不精准还是页面/优惠节奏问题。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D23",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 6860,
+      "inputTokens": 19802,
+      "cachedTokens": 15232,
+      "outputTokens": 724,
+      "costUsd": 0.001165596,
+      "sqls": [
+        "SELECT p.category_l1 AS \"类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l1 AS \"类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**结论：9 月六个一级类目的退款率都在 3%–4.2% 之间，差别不大；数码类目最高，为 4.18%，美妆最低，为 3.19%。**\n\n统计口径：按下单时间归属订单，分母是已支付订单数；一条订单只要包含某个类目的商品，就计入该类目，因此各支付订单数之和会大于总订单数。\n\n关键数字：\n- **数码 4.18%**（退款 110 单 / 支付 2629 单），为最高，比最低的美妆高出约 1 个百分点。\n- 中间四类目：母婴 3.61%（82/2271）、家居 3.49%（86/2461）、服饰 3.46%（133/3847）、食品 3.21%（114/3548）。\n- **美妆 3.19%**（100/3137），最低；服饰支付订单量最大（3847 单），但退款率居中，绝对退款单数（133 单）排第一。\n\n如需优先改善，可以重点看数码类目的退款原因；服饰虽然退款率不算高，但因退款单数最多，也值得关注。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D24",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4078,
+      "inputTokens": 14033,
+      "cachedTokens": 10112,
+      "outputTokens": 417,
+      "costUsd": 0.0008686859999999999,
+      "sqls": [
+        "SELECT count(*) AS \"退款订单数\",\n       round(coalesce(sum(pay_amount), 0), 2) AS \"实付金额合计\",\n       round(avg(pay_amount), 2) AS \"平均实付金额\"\nFROM shop.orders\nWHERE status = 'refunded'\n  AND created_at >= '2026-08-01' AND created_at < '2026-09-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"退款订单数\",\n       round(coalesce(sum(pay_amount), 0), 2) AS \"实付金额合计\",\n       round(avg(pay_amount), 2) AS \"平均实付金额\"\nFROM shop.orders\nWHERE status = 'refunded'\n  AND created_at >= '2026-08-01' AND created_at < '2026-09-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "8 月按下单时间统计，状态为“已退款”的订单共有 **469 笔**，这些订单的实付金额合计为 **489,035.17 元**。\n\n- 平均每笔退款订单的实付金额为 **1,042.72 元**。\n- 统计口径：以订单状态为 refunded 作为条件，并按订单的下单时间（created_at）确定该订单是否属于 2026-08-01 至 2026-08-31。\n- 说明：`orders` 表没有退款金额字段，因此这里的“实付金额合计”是这些退款订单原始的实付金额之和；如果实际退款涉及部分退款，这个合计值会高于真实的退款金额。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D25",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3885,
+      "inputTokens": 10182,
+      "cachedTokens": 6528,
+      "outputTokens": 487,
+      "costUsd": 0.000859884,
+      "sqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       count(*) FILTER (WHERE discount_amount > 0) AS \"用优惠订单数\",\n       round(count(*) FILTER (WHERE discount_amount > 0) * 100.0 / NULLIF(count(*), 0), 2) AS \"用优惠占比(%)\",\n       round(sum(discount_amount), 2) AS \"优惠总额\",\n       round(avg(discount_amount) FILTER (WHERE discount_amount > 0), 2) AS \"用优惠订单平均优惠\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       count(*) FILTER (WHERE discount_amount > 0) AS \"用优惠订单数\",\n       round(count(*) FILTER (WHERE discount_amount > 0) * 100.0 / NULLIF(count(*), 0), 2) AS \"用优惠占比(%)\",\n       round(sum(discount_amount), 2) AS \"优惠总额\",\n       round(avg(discount_amount) FILTER (WHERE discount_amount > 0), 2) AS \"用优惠订单平均优惠\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月支付订单中使用优惠的有 **3,635 单**，占全部支付订单（10,579 单）的 **34.36%**，也就是大约每 3 笔支付订单中就有 1 笔使用了优惠。\n\n- 用优惠订单的平均优惠金额为 **21.90 元**，9 月优惠总额约 **7.96 万元**。\n- 按统计口径，数据按下单时间 created_at 归属日期，并且只统计已支付订单（paid_at 不为空）；如果只按支付时间筛选，结果会略有差异。\n\n注：表里 discount_amount 的取值范围是 0.45–4.94 元，而算出来的平均优惠是 21.90 元，两者不一致；可能是字段说明与实际数据有出入。如果对优惠金额口径有疑问，建议核对一下数据源。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D26",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3686,
+      "inputTokens": 10068,
+      "cachedTokens": 6400,
+      "outputTokens": 449,
+      "costUsd": 0.0008387999999999999,
+      "sqls": [
+        "WITH u AS (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n)\nSELECT count(*) AS \"支付用户数\",\n       count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM u"
+      ],
+      "executedSqls": [
+        "WITH u AS (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n)\nSELECT count(*) AS \"支付用户数\",\n       count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM u"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月共有 2109 名用户发生复购**，这些用户当月有至少 2 笔已支付订单。\n\n关键数字（口径：按下单时间 created_at 且 paid_at 不为空的订单；统计范围为 9 月 1 日–9 月 30 日）：\n- 9 月有支付订单的用户数：7590 人\n- 其中支付订单 ≥ 2 笔的用户：2109 人\n- 复购率：27.79%\n\n也就是说，9 月每 4 个下单用户里约有 1 个当月买了两次及以上。如果需要进一步分析这批复购用户与其他用户在品类偏好、客单价或优惠使用上的差异，可以继续拆解分析。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D27",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": false,
+        "lenient": true,
+        "how": "superset",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4467,
+      "inputTokens": 14115,
+      "cachedTokens": 9984,
+      "outputTokens": 520,
+      "costUsd": 0.000961602,
+      "sqls": [
+        "WITH m AS (\n  SELECT to_char(created_at, 'YYYY-MM') AS \"月份\",\n         sum(pay_amount) AS gmv,\n         count(*) AS orders\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-08-01' AND created_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT \"月份\",\n       round(gmv, 2) AS \"GMV(元)\",\n       orders AS \"支付订单数\",\n       round(gmv * 100.0 / NULLIF(lag(gmv) OVER (ORDER BY \"月份\"), 0) - 100, 2) AS \"环比增长(%)\"\nFROM m\nORDER BY \"月份\""
+      ],
+      "executedSqls": [
+        "WITH m AS (\n  SELECT to_char(created_at, 'YYYY-MM') AS \"月份\",\n         sum(pay_amount) AS gmv,\n         count(*) AS orders\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-08-01' AND created_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT \"月份\",\n       round(gmv, 2) AS \"GMV(元)\",\n       orders AS \"支付订单数\",\n       round(gmv * 100.0 / NULLIF(lag(gmv) OVER (ORDER BY \"月份\"), 0) - 100, 2) AS \"环比增长(%)\"\nFROM m\nORDER BY \"月份\""
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月 GMV 环比 8 月增长 19.49%**：9 月 GMV 为 1,062.33 万元，8 月为 889.07 万元，增加约 173.26 万元。\n\n关键数据：\n- 8 月 GMV：889.07 万元，支付订单数 9,751 单\n- 9 月 GMV：1,062.33 万元，支付订单数 10,579 单，订单数也增长了约 8.5%\n- GMV 增速（19.49%）明显高于订单数增速，说明 9 月的平均客单价有所提升\n\n口径说明：GMV 按已支付订单的实付金额（pay_amount）求和，按订单的下单时间 created_at 统计；后续发生退款的订单也计入。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D28",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 4511,
+      "inputTokens": 13197,
+      "cachedTokens": 9472,
+      "outputTokens": 589,
+      "costUsd": 0.000940566,
+      "sqls": [
+        "SELECT category_l1 AS \"一级类目\",\n       count(*) AS \"商品数\",\n       round(avg(price), 2) AS \"平均售价(元)\",\n       round(min(price), 2) AS \"最低价(元)\",\n       round(max(price), 2) AS \"最高价(元)\"\nFROM shop.products\nGROUP BY 1 ORDER BY 3 DESC"
+      ],
+      "executedSqls": [
+        "SELECT category_l1 AS \"一级类目\",\n       count(*) AS \"商品数\",\n       round(avg(price), 2) AS \"平均售价(元)\",\n       round(min(price), 2) AS \"最低价(元)\",\n       round(max(price), 2) AS \"最高价(元)\"\nFROM shop.products\nGROUP BY 1 ORDER BY 3 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "各一级类目中，**数码类平均售价最高，为 1623.93 元**，食品类最低，仅 81.37 元，两者相差约 20 倍，可见各一级类目的价格带差异非常大。\n\n几个关键发现：\n- **数码类目** 134 个商品，均价 1623.93 元，价格区间 50.90–6500.90 元，是唯一的千元级类目，明显拉高了全店的价格上限。\n- **中间梯队**：家居 354.06 元、服饰 282.56 元、美妆 206.97 元、母婴 198.45 元，这四个类目均价在 200–355 元之间。其中服饰商品数最多，为 227 个。\n- **食品类目** 217 个商品，均价 81.37 元，价格区间 8.90–294.90 元，属于典型的低价高频类目。\n\n数据说明：以上口径为商品当前售价（products.price），按商品数简单平均，未按下架时间或销量加权；如果你的分析需要剔除早期下架商品，或改用销量加权均价，请告诉我。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D29",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 4037,
+      "inputTokens": 14590,
+      "cachedTokens": 10112,
+      "outputTokens": 586,
+      "costUsd": 0.001053636,
+      "sqls": [
+        "SELECT u.registered_at::date AS \"日期\", c.name AS \"渠道\", count(*) AS \"新增用户数\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-24' AND u.registered_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 1, 2"
+      ],
+      "executedSqls": [
+        "SELECT u.registered_at::date AS \"日期\", c.name AS \"渠道\", count(*) AS \"新增用户数\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-24' AND u.registered_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 1, 2"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9/24–9/30 这 7 天里，8 个渠道每天都有新增注册用户，新增量整体呈小幅下滑趋势：9/24、9/26 是高峰，9/28–9/30 明显回落。\n\n关键发现：\n- **自然搜索是每日新增的主力渠道**，7 天里每天都是各渠道中最高的（29–44 人），9/26 达到峰值 44 人。\n- **信息流广告波动最大**：9/24 有 31 人，为全渠道当日较高的量；之后逐日降至 9/29 的 20 人，9/30 回升到 21 人。\n- **末尾几天普遍走弱**：达人带货从 9/24 的 16 人降到 9/28–9/30 的 5–6 人；直播间在 9/30 仅有 6 人，是近 7 天最低。\n\n趋势图已按渠道画出，可直观对照各渠道的日度起伏。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D30",
+      "run": 1,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4978,
+      "inputTokens": 14682,
+      "cachedTokens": 10496,
+      "outputTokens": 597,
+      "costUsd": 0.001017588,
+      "sqls": [
+        "WITH sep AS (\n  SELECT o.pay_amount, o.user_id\n  FROM shop.orders o\n  WHERE o.paid_at IS NOT NULL\n    AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\n)\nSELECT\n  round(sum(CASE WHEN u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01' THEN s.pay_amount ELSE 0 END), 2) AS \"新用户GMV\",\n  round(sum(s.pay_amount), 2) AS \"9月总GMV\",\n  round(sum(CASE WHEN u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01' THEN s.pay_amount ELSE 0 END) * 100.0\n        / NULLIF(sum(s.pay_amount), 0), 2) AS \"新用户GMV占比(%)\"\nFROM sep s\nJOIN shop.users u ON u.id = s.user_id"
+      ],
+      "executedSqls": [
+        "WITH sep AS (\n  SELECT o.pay_amount, o.user_id\n  FROM shop.orders o\n  WHERE o.paid_at IS NOT NULL\n    AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\n)\nSELECT\n  round(sum(CASE WHEN u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01' THEN s.pay_amount ELSE 0 END), 2) AS \"新用户GMV\",\n  round(sum(s.pay_amount), 2) AS \"9月总GMV\",\n  round(sum(CASE WHEN u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01' THEN s.pay_amount ELSE 0 END) * 100.0\n        / NULLIF(sum(s.pay_amount), 0), 2) AS \"新用户GMV占比(%)\"\nFROM sep s\nJOIN shop.users u ON u.id = s.user_id"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**结论：9 月新注册用户贡献了 9 月 GMV 的 38.88%。**\n\n关键数字：\n\n- 9 月新注册用户在 9 月下单支付的 GMV 为 **4,129,872.15 元**\n- 9 月总 GMV（已支付订单实付金额，按下单时间归入 9 月）为 **10,623,267.32 元**\n- 占比 **38.88%**，也就是说，9 月 GMV 中近四成由 9 月新用户带来，老用户仍是主要贡献者（约 61%）\n\n统计说明：GMV 按已支付订单的 `pay_amount` 汇总，订单按下单时间归入 9 月（退款订单仍然计入）；新用户按 `registered_at` 落在 9 月判定。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D31",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3836,
+      "inputTokens": 14815,
+      "cachedTokens": 10752,
+      "outputTokens": 472,
+      "costUsd": 0.0009249059999999999,
+      "sqls": [
+        "SELECT count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') AS \"下单用户天数\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天数\",\n       round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') AS \"下单用户天数\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天数\",\n       round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月整体下单转化率为 19.30%。**\n\n按标准口径，跨天汇总时，分子和分母都按「日期 + 用户」去重：\n\n- 有访问行为的「用户-天」共 56,879 次，其中 10,979 次「用户-天」产生了下单\n- 也就是说，9 月平均每 5 个到访日里约有 1 个会下单\n\n如果你需要，我还可以把 9 月按天或按渠道拆开，看转化率的波动和渠道差异。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D32",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 6177,
+      "inputTokens": 20827,
+      "cachedTokens": 16000,
+      "outputTokens": 885,
+      "costUsd": 0.00130305,
+      "sqls": [
+        "SELECT c.name AS \"渠道\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit') AS \"访问用户数\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') AS \"下单用户数\",\n       round(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events e\nJOIN shop.users u ON u.id = e.user_id\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE e.occurred_at >= '2026-09-01' AND e.occurred_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit') AS \"访问用户数\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') AS \"下单用户数\",\n       round(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events e\nJOIN shop.users u ON u.id = e.user_id\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE e.occurred_at >= '2026-09-01' AND e.occurred_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "## 9 月各渠道下单转化率（按用户注册渠道，分子和分母都按“日期+用户”去重）\n\n**结论：达人带货和直播间转化最高，约 30%；两个广告渠道垫底，只有 10% 左右，差距约 3 倍。**\n\n- **领先渠道**：达人带货 **31.40%**（访问 4972 人、下单 1561 人）和直播间 **30.25%**（访问 6787 人、下单 2053 人），两者几乎持平，说明内容或直播场景的导购效果最好。\n- **中等水平**：社区种草 23.26%、好友邀请 22.11%、应用商店 18.92%、自然搜索 17.97%。\n- **明显偏低**：搜索广告和信息流广告都只有 **10.05%**，且信息流广告的访问用户数为 10462 人，是 8 个渠道里第二多，但仅带来 1051 个下单用户；这说明这类流量的转化效率是当前的短板，建议重点检查落地页、投放人群的匹配度和商品定价。\n- 自然搜索的访问用户数最多（11514 人），转化率为 17.97%，属于流量大但转化中等，可以通过优化承接页面来提升转化。\n\n> 说明：渠道取的是用户的注册渠道；指标为下单转化率（place_order 去重用户/visit 去重用户），未统计支付环节。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D33",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 5577,
+      "inputTokens": 14979,
+      "cachedTokens": 10752,
+      "outputTokens": 679,
+      "costUsd": 0.001073706,
+      "sqls": [
+        "SELECT\n  count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天数\",\n  count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') AS \"加购用户天数\",\n  count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') AS \"支付用户天数\",\n  round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') * 100.0\n        / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"加购率(%)\",\n  round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') * 100.0\n        / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"支付转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT\n  count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天数\",\n  count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') AS \"加购用户天数\",\n  count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') AS \"支付用户天数\",\n  round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') * 100.0\n        / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"加购率(%)\",\n  round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') * 100.0\n        / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"支付转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月整体（9/1–9/30，按“日期 + 用户”去重统计）的结果如下：\n\n- **加购率：28.86%**，即加购用户天数与访问用户天数的比值为 16,415 / 56,879。\n- **支付转化率：18.01%**，即支付用户天数与访问用户天数的比值为 10,242 / 56,879。\n\n其他发现：\n- 在访问后加购的用户中，约 62% 最终完成支付（16,415 中支付 10,242），说明购物车到支付环节还有约 38% 的流失，值得继续优化。\n- 本次按加购率和支付转化率的标准统计规则，对分子和分母都采用“日期 + 用户”去重，因此在整月汇总时，统计的是每天的活跃接待人次，并非按单独用户去重。\n\n由于结果只有一个数字，这里未生成图表；如需进一步拆分（例如按天趋势或按渠道），可以继续查询。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D34",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5746,
+      "inputTokens": 19810,
+      "cachedTokens": 15232,
+      "outputTokens": 722,
+      "costUsd": 0.0011655959999999999,
+      "sqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND p.category_l1 = '母婴'\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND p.category_l1 = '母婴'\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**结论：8 月母婴类目下，奶粉的退款率明显高于其他二级类目，为 24.95%，是第二名辅食（5.36%）的 4 倍多。**\n\n口径：按下单时间归属 8 月，分母为已支付订单，只要订单中包含该二级类目的商品，就计入该二级类目（一个订单可能计入多个二级类目）。\n\n关键数字：\n- **奶粉**：支付订单 477 单，退款 119 单，退款率 **24.95%**，是母婴类目下的最高值，也是唯一超过 10% 的二级类目。\n- **辅食**：退款率 5.36%（466 单中退款 25 单）；**纸尿裤**：5.00%（380 单中退款 19 单）；两者相近。\n- **童装** 4.21%、**玩具** 3.63%，是母婴类目下退款率最低的两个二级类目；其中玩具的支付订单量最大（579 单），退款率却最低。\n\n建议进一步检查奶粉的商品质量、临期或物流破损问题，并重点排查退货原因集中的 SKU。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D35",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4964,
+      "inputTokens": 12978,
+      "cachedTokens": 9216,
+      "outputTokens": 424,
+      "costUsd": 0.000846348,
+      "sqls": [
+        "SELECT count(*) AS \"支付用户数\",\n       count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n) t"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"支付用户数\",\n       count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n) t"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月复购率为 27.79%。**\n\n按标准口径计算：统计 9 月（按下单时间归属）内有支付订单的用户，其中支付订单数 ≥ 2 的用户算作复购用户。\n\n- 9 月有支付订单的用户数为 **7,590 人**；\n- 其中支付订单数 ≥ 2 的复购用户为 **2,109 人**；\n- 折算下来，复购率为 **27.79%**，也就是说约有 72% 的当月买家只下了一单。\n\n如果想进一步拆分，可以查看复购用户的订单频次分布，或按渠道、类目拆分查看哪部分用户在复购。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D36",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 6693,
+      "inputTokens": 20864,
+      "cachedTokens": 16000,
+      "outputTokens": 705,
+      "costUsd": 0.0012006,
+      "sqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum((i.unit_price - p.cost) * i.quantity), 2) AS \"毛利(元)\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额(元)\",\n       round(sum((i.unit_price - p.cost) * i.quantity) * 100.0 / NULLIF(sum(i.unit_price * i.quantity), 0), 2) AS \"毛利率(%)\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.status <> 'refunded'\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum((i.unit_price - p.cost) * i.quantity), 2) AS \"毛利(元)\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额(元)\",\n       round(sum((i.unit_price - p.cost) * i.quantity) * 100.0 / NULLIF(sum(i.unit_price * i.quantity), 0), 2) AS \"毛利率(%)\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.status <> 'refunded'\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月各一级类目毛利率在 37%–41% 之间，差异不大：食品最高（41.35%），数码最低（37.36%）。\n\n关键发现（口径：已支付且未退款订单，毛利 =（成交单价 − 成本价）× 数量，毛利率 = 毛利 / 商品成交额）：\n- **食品 41.35%**、母婴 41.04%、美妆 40.75% 位居前三，食品与数码相差 3.99 个百分点。\n- **数码毛利率最低（37.36%）**，但销售额和毛利额都遥遥领先：销售额 5,659,478.90 元、毛利 2,114,319.84 元，均约为其他类目的 4–10 倍，是利润的主要来源。\n- 服饰销售额 1,464,919.40 元、毛利 590,445.88 元，是第二大利润贡献类目；家居毛利率 40.12%，销售额 1,173,720.90 元。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D37",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 1
+      },
+      "chartExpectationMet": null,
+      "steps": 8,
+      "sqlCalls": 4,
+      "sqlErrors": 1,
+      "firstSqlOk": false,
+      "chartCalls": 2,
+      "chartErrors": 1,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 11562,
+      "inputTokens": 32484,
+      "cachedTokens": 24832,
+      "outputTokens": 1831,
+      "costUsd": 0.002320896,
+      "sqls": [
+        "SELECT c.name AS \"渠道\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\nGROUP BY 1\nORDER BY 4 DESC",
+        "SELECT c.name AS \"渠道\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"环比增量\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\nGROUP BY 1\nORDER BY 4 DESC",
+        "SELECT count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"环比增量\",\n       round((count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14')) * 100.0\n       / NULLIF(count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14'), 0), 2) AS \"环比增长率(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'",
+        "SELECT c.type AS \"渠道类型\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"环比增量\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-21'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"环比增量\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\nGROUP BY 1\nORDER BY 4 DESC",
+        "SELECT count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"环比增量\",\n       round((count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14')) * 100.0\n       / NULLIF(count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14'), 0), 2) AS \"环比增长率(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'",
+        "SELECT c.type AS \"渠道类型\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n       - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"环比增量\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-21'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "run_sql",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [
+        "[SQL_ERROR 42P10] ORDER BY position 4 is not in select list（出错位置在原 SQL 第 346 个字符附近）",
+        "[CHART_INVALID] x 字段\"渠道\"不在查询结果中。可用的列：\"前一周新增\"(number)、\"本周新增\"(number)、\"环比增量\"(number)、\"环比增长率(%)\"(number)"
+      ],
+      "text": "**结论：9/14–9/20 这一周，直播类渠道的拉新总量为 1347 人，比前一周（9/7–9/13）的 119 人增加了 1228 人，环比增长 1031.93%（约 11.3 倍）。**\n\n关键发现：\n- **分渠道看，增长主要来自“直播间”**：直播间从 68 人增至 765 人（+697 人）；“达人带货”从 51 人增至 582 人（+531 人），两条直播渠道都明显增长。\n- **直播是四条渠道类型中唯一大幅增长的渠道**：同期 social（社交裂变）仅从 220 人增至 240 人（+20），organic（自然流量）从 408 人降至 389 人（-19），paid（付费投放）从 321 人降至 268 人（-53）。\n- 直播的暴增并非整体大盘拉动的，而是直播渠道自身的结构变化：其余三类渠道合计从 949 人降至 897 人；因此直播应当作为该周拉新的主要驱动来源来复盘（例如是否有大场直播或达人合作）。\n\n补充说明：以上数据按“新增用户”的口径统计，即按 users.registered_at 统计注册用户数、按 users.channel_id 关联渠道；渠道范围取 channels.type = 'live'。数据只覆盖了这两周的对比，没有进一步拆分到天或单个达人，如需按天看直播间与达人带货的走势，可以再查。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D38",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5459,
+      "inputTokens": 18310,
+      "cachedTokens": 14080,
+      "outputTokens": 706,
+      "costUsd": 0.00110034,
+      "sqls": [
+        "SELECT created_at::date AS \"日期\",\n       count(*) AS \"支付订单数\",\n       round(sum(pay_amount), 2) AS \"GMV\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 3 DESC\nLIMIT 3"
+      ],
+      "executedSqls": [
+        "SELECT created_at::date AS \"日期\",\n       count(*) AS \"支付订单数\",\n       round(sum(pay_amount), 2) AS \"GMV\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 3 DESC\nLIMIT 3"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月 GMV 最高的 3 天是 9 月 5 日、9 月 19 日和 9 月 4 日，这 3 天都集中在月初和月中，其中只有 9 月 19 日是大促式的高订单量日。\n\n| 排名 | 日期 | GMV（元） | 支付订单数 |\n|---|---|---|---|\n| 1 | 2026-09-05 | 489,838.39 | 349 |\n| 2 | 2026-09-19 | 443,760.25 | 490 |\n| 3 | 2026-09-04 | 422,977.80 | 340 |\n\n关键发现：\n- 9 月 5 日是 9 月 GMV 最高的一天，达到 489,838.39 元，比排名第三的 9 月 4 日高出 66,860.59 元。\n- 9 月 19 日的 GMV 排名第二，为 443,760.25 元，但支付订单数最多，达 490 单，说明当天的高 GMV 主要来自订单量多，单笔金额偏小。\n- 9 月 4 日与 9 月 5 日的支付订单数都在 340–349 单，但 GMV 相差约 6.7 万元，说明这两天的单均价格差异明显，大额订单更集中。\n\n统计口径：按下单时间（created_at）归属日期，只计已支付订单（paid_at 不为空）的实付金额（pay_amount），退款订单也仍计入。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D39",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3221,
+      "inputTokens": 11136,
+      "cachedTokens": 7040,
+      "outputTokens": 416,
+      "costUsd": 0.00088512,
+      "sqls": [
+        "WITH new_users AS (\n  SELECT id, registered_at\n  FROM shop.users\n  WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\n), first_day_order AS (\n  SELECT DISTINCT n.id\n  FROM new_users n\n  JOIN shop.orders o ON o.user_id = n.id\n   AND o.created_at::date = n.registered_at::date\n)\nSELECT count(*) AS \"9月新注册用户数\",\n       (SELECT count(*) FROM first_day_order) AS \"注册当天下单人数\",\n       round((SELECT count(*) FROM first_day_order) * 100.0 / NULLIF(count(*), 0), 2) AS \"当天下单占比(%)\"\nFROM new_users"
+      ],
+      "executedSqls": [
+        "WITH new_users AS (\n  SELECT id, registered_at\n  FROM shop.users\n  WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\n), first_day_order AS (\n  SELECT DISTINCT n.id\n  FROM new_users n\n  JOIN shop.orders o ON o.user_id = n.id\n   AND o.created_at::date = n.registered_at::date\n)\nSELECT count(*) AS \"9月新注册用户数\",\n       (SELECT count(*) FROM first_day_order) AS \"注册当天下单人数\",\n       round((SELECT count(*) FROM first_day_order) * 100.0 / NULLIF(count(*), 0), 2) AS \"当天下单占比(%)\"\nFROM new_users"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月新注册用户中，**注册当天就下单的人占比为 6.42%**。\n\n- 9 月新注册用户共 **5,713** 人，其中 **367** 人在注册当天有下单。\n- 其余约 93.6% 的新用户注册当天没有下单，说明新客首日转化还有提升空间；可以考虑在注册当天加强首单引导，例如发放新客券或推送首次访问提醒。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D40",
+      "run": 1,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": false,
+        "lenient": true,
+        "how": "values",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 6446,
+      "inputTokens": 17244,
+      "cachedTokens": 12544,
+      "outputTokens": 982,
+      "costUsd": 0.0013318319999999998,
+      "sqls": [
+        "WITH u AS (\n  SELECT occurred_at::date AS d, user_id, event_type\n  FROM shop.user_events\n  WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\n), agg AS (\n  SELECT\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'visit') AS visit_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'view_product') AS view_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'add_cart') AS cart_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'place_order') AS order_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'pay') AS pay_u\n  FROM u\n)\nSELECT '访问' AS \"环节\", visit_u AS \"用户数\", NULL::numeric AS \"环节转化率(%)\", NULL::numeric AS \"相对访问(%)\" FROM agg\nUNION ALL SELECT '浏览商品', view_u, round(view_u*100.0/NULLIF(visit_u,0),2), round(view_u*100.0/NULLIF(visit_u,0),2) FROM agg\nUNION ALL SELECT '加购', cart_u, round(cart_u*100.0/NULLIF(view_u,0),2), round(cart_u*100.0/NULLIF(visit_u,0),2) FROM agg\nUNION ALL SELECT '下单', order_u, round(order_u*100.0/NULLIF(cart_u,0),2), round(order_u*100.0/NULLIF(visit_u,0),2) FROM agg\nUNION ALL SELECT '支付', pay_u, round(pay_u*100.0/NULLIF(order_u,0),2), round(pay_u*100.0/NULLIF(visit_u,0),2) FROM agg"
+      ],
+      "executedSqls": [
+        "WITH u AS (\n  SELECT occurred_at::date AS d, user_id, event_type\n  FROM shop.user_events\n  WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\n), agg AS (\n  SELECT\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'visit') AS visit_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'view_product') AS view_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'add_cart') AS cart_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'place_order') AS order_u,\n    count(DISTINCT (d, user_id)) FILTER (WHERE event_type = 'pay') AS pay_u\n  FROM u\n)\nSELECT '访问' AS \"环节\", visit_u AS \"用户数\", NULL::numeric AS \"环节转化率(%)\", NULL::numeric AS \"相对访问(%)\" FROM agg\nUNION ALL SELECT '浏览商品', view_u, round(view_u*100.0/NULLIF(visit_u,0),2), round(view_u*100.0/NULLIF(visit_u,0),2) FROM agg\nUNION ALL SELECT '加购', cart_u, round(cart_u*100.0/NULLIF(view_u,0),2), round(cart_u*100.0/NULLIF(visit_u,0),2) FROM agg\nUNION ALL SELECT '下单', order_u, round(order_u*100.0/NULLIF(cart_u,0),2), round(order_u*100.0/NULLIF(visit_u,0),2) FROM agg\nUNION ALL SELECT '支付', pay_u, round(pay_u*100.0/NULLIF(order_u,0),2), round(pay_u*100.0/NULLIF(visit_u,0),2) FROM agg"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**9 月转化漏斗（按“用户-天”去重，即同一用户同一天只算一次）：访问 56,879 → 浏览商品 37,143 → 加购 16,415 → 下单 10,979 → 支付 10,242 人。**\n\n关键发现：\n- **访问到浏览商品的流失最大**：只有 65.30% 的访问用户当天浏览了商品，是整条漏斗中转化率最低的一段（相对访问的留存 65.30%）。\n- **加购环节流失也比较明显**：浏览商品到加购的环节转化率为 44.19%，相对访问留存降到 28.86%。\n- **后链路转化较高**：加购到下单的环节转化率为 66.88%，下单到支付的环节转化率为 93.29%，说明主要流失集中在前半段（访问到加购）。\n- 从访问到支付的整体转化率为 18.01%（10,242 / 56,879）。\n\n提示：上述数字按“用户-天”去重汇总，因此同一用户在不同日期访问会被多次计入；这是跨天汇总转化率的标准口径，不能当成 9 月独立用户数。如果你需要 9 月内按用户整体去重的漏斗人数，我可以再跑一版。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D01",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 2,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 1731,
+      "inputTokens": 5699,
+      "cachedTokens": 2688,
+      "outputTokens": 92,
+      "costUsd": 0.000514914,
+      "sqls": [
+        "SELECT count(*) AS \"注册用户数\" FROM shop.users"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"注册用户数\" FROM shop.users"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "平台目前一共有 **20,000 名注册用户**，统计范围为 shop.users 表中的全部记录。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D02",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3643,
+      "inputTokens": 12608,
+      "cachedTokens": 8960,
+      "outputTokens": 339,
+      "costUsd": 0.00077748,
+      "sqls": [
+        "SELECT count(*) FILTER (WHERE gender = 'F') AS \"女性用户数\",\n       count(*) AS \"全部用户数\",\n       round(count(*) FILTER (WHERE gender = 'F') * 100.0 / NULLIF(count(*), 0), 2) AS \"女性占比(%)\"\nFROM shop.users"
+      ],
+      "executedSqls": [
+        "SELECT count(*) FILTER (WHERE gender = 'F') AS \"女性用户数\",\n       count(*) AS \"全部用户数\",\n       round(count(*) FILTER (WHERE gender = 'F') * 100.0 / NULLIF(count(*), 0), 2) AS \"女性占比(%)\"\nFROM shop.users"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**结论：女性用户 11,049 人，占全部用户（20,000 人）的 55.25%。**\n\n- 全部用户共 20,000 人，其中女性 11,049 人，女性占比 55.25%，超过半数。\n- 余额 8,951 人为男性或未填写性别；其中性别字段允许为空，如果用户未填写，就会计入这一部分。\n- 若只看明确填写性别的用户，女性占比会略高于 55.25%，因为未填写性别的用户也被计入了分母。\n\n如果你需要，我可以拆分男性、女性的比例，或按城市、注册渠道查看性别分布。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D03",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4654,
+      "inputTokens": 13078,
+      "cachedTokens": 9344,
+      "outputTokens": 504,
+      "costUsd": 0.0008905320000000001,
+      "sqls": [
+        "SELECT\n  count(*) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01') AS \"9月新增用户数\",\n  count(*) FILTER (WHERE registered_at >= '2026-08-01' AND registered_at < '2026-09-01') AS \"8月新增用户数\",\n  round((count(*) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01')\n        - count(*) FILTER (WHERE registered_at >= '2026-08-01' AND registered_at < '2026-09-01')) * 100.0\n        / NULLIF(count(*) FILTER (WHERE registered_at >= '2026-08-01' AND registered_at < '2026-09-01'), 0), 2) AS \"环比增长(%)\"\nFROM shop.users\nWHERE registered_at >= '2026-08-01' AND registered_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT\n  count(*) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01') AS \"9月新增用户数\",\n  count(*) FILTER (WHERE registered_at >= '2026-08-01' AND registered_at < '2026-09-01') AS \"8月新增用户数\",\n  round((count(*) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01')\n        - count(*) FILTER (WHERE registered_at >= '2026-08-01' AND registered_at < '2026-09-01')) * 100.0\n        / NULLIF(count(*) FILTER (WHERE registered_at >= '2026-08-01' AND registered_at < '2026-09-01'), 0), 2) AS \"环比增长(%)\"\nFROM shop.users\nWHERE registered_at >= '2026-08-01' AND registered_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月（2026-09-01 至 09-30）新增注册用户 **5,713 人**。\n\n- 按 `registered_at`（注册时间）统计，与 8 月的 4,329 人相比，**环比增长 31.97%**。\n- 9 月数据已完整覆盖到 9 月 30 日，也就是今天，因此没有因统计未完成而少算当天数据的问题。\n\n需要按渠道或按天查看 9 月新增用户的构成吗？我可以继续拆分。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D04",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3025,
+      "inputTokens": 10249,
+      "cachedTokens": 6528,
+      "outputTokens": 341,
+      "costUsd": 0.000782334,
+      "sqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV\", count(*) AS \"支付订单数\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV\", count(*) AS \"支付订单数\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**2026 年 9 月 GMV 为 1,062.33 万元（10,623,267.32 元）**，按下单时间归属日期统计，计入所有已支付订单，包含之后发生退款的部分。\n\n- 9 月已支付订单数：10,579 单\n- 客单价：1,004.18 元\n\n如果你希望改为按支付时间统计，或者想看其中扣除退款后的净销售额，我可以再查询。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D05",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 2809,
+      "inputTokens": 9716,
+      "cachedTokens": 6144,
+      "outputTokens": 369,
+      "costUsd": 0.000775632,
+      "sqls": [
+        "SELECT count(*) FILTER (WHERE status = 'cancelled') AS \"取消订单数\",\n       count(*) AS \"订单总数\",\n       round(count(*) FILTER (WHERE status = 'cancelled') * 100.0 / NULLIF(count(*), 0), 2) AS \"取消占比(%)\",\n       round(sum(total_amount) FILTER (WHERE status = 'cancelled'), 2) AS \"取消订单原价合计\"\nFROM shop.orders\nWHERE created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) FILTER (WHERE status = 'cancelled') AS \"取消订单数\",\n       count(*) AS \"订单总数\",\n       round(count(*) FILTER (WHERE status = 'cancelled') * 100.0 / NULLIF(count(*), 0), 2) AS \"取消占比(%)\",\n       round(sum(total_amount) FILTER (WHERE status = 'cancelled'), 2) AS \"取消订单原价合计\"\nFROM shop.orders\nWHERE created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月共有 773 笔订单被取消**（按订单状态 cancelled 统计，按下单时间计入 9 月）。\n\n- 9 月订单总数为 11,369 笔，取消订单数占 **6.80%**。\n- 这些取消订单的商品原价合计 **757,274.30 元**；需注意，cancelled 表示尚未支付就取消，因此这些订单不计入 GMV。\n- 另需说明：数据库中没有记录取消时间，只能按订单状态和下单时间统计；如果是支付后退款，则归在 refunded 状态，未计入上面的 773 笔。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D06",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 3716,
+      "inputTokens": 12856,
+      "cachedTokens": 9216,
+      "outputTokens": 401,
+      "costUsd": 0.0008142480000000001,
+      "sqls": [
+        "SELECT category_l1 AS \"一级类目\", count(*) AS \"商品数\"\nFROM shop.products\nGROUP BY 1 ORDER BY 2 DESC"
+      ],
+      "executedSqls": [
+        "SELECT category_l1 AS \"一级类目\", count(*) AS \"商品数\"\nFROM shop.products\nGROUP BY 1 ORDER BY 2 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "6 个一级类目共有 1000 个商品，其中服饰类最多，有 227 个；母婴类最少，有 118 个。\n\n- 服饰 227 个、食品 217 个，这两类是商品数量最多的类目，合计占全部商品的 44.4%。\n- 美妆 168 个、家居 136 个、数码 134 个，这三类处在中间水平。\n- 数码类商品数量为 134 个，但其价格区间上限超过 6500 元，因此属于商品数量不多、单个商品贡献较高的类目。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D07",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4851,
+      "inputTokens": 12902,
+      "cachedTokens": 9088,
+      "outputTokens": 553,
+      "costUsd": 0.000931164,
+      "sqls": [
+        "SELECT p.name AS \"商品名称\", p.category_l1 AS \"一级类目\", p.category_l2 AS \"二级类目\", round(p.price, 2) AS \"售价(元)\", round(p.cost, 2) AS \"成本价(元)\", round(p.price - p.cost, 2) AS \"毛利(元)\"\nFROM shop.products p\nORDER BY p.price DESC, p.id\nLIMIT 5"
+      ],
+      "executedSqls": [
+        "SELECT p.name AS \"商品名称\", p.category_l1 AS \"一级类目\", p.category_l2 AS \"二级类目\", round(p.price, 2) AS \"售价(元)\", round(p.cost, 2) AS \"成本价(元)\", round(p.price - p.cost, 2) AS \"毛利(元)\"\nFROM shop.products p\nORDER BY p.price DESC, p.id\nLIMIT 5"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "售价最高的 5 个商品全部来自「数码」类目，其中前三名价格都在 6000 元以上：\n\n| 排名 | 商品名称 | 二级类目 | 售价(元) | 毛利(元) |\n|---|---|---|---|---|\n| 1 | 极光智能手表限定款 | 智能手表 | 6500.90 | 2885.96 |\n| 2 | 木森手机Plus | 手机 | 6298.90 | 2886.31 |\n| 3 | 拾光充电配件Plus | 充电配件 | 6088.90 | 1573.18 |\n| 4 | 小禾智能手表家庭装 | 智能手表 | 5653.90 | 1512.49 |\n| 5 | 极光智能手表经典款 | 智能手表 | 5640.90 | 1887.09 |\n\n几点发现：\n- 这 5 个商品的最高售价为 6500.90 元，最低售价为 5640.90 元，全部为数码类产品，其中 3 款是智能手表。\n- 毛利的排序与售价并非完全一致：第 2 名「木森手机Plus」的毛利为 2886.31 元，反而略高于第 1 名的 2885.96 元，因为它的成本更低。\n- 「拾光充电配件Plus」售价排第 3，但成本高达 4515.72 元，毛利只有 1573.18 元，是这 5 个商品中毛利最低的。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D08",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 4894,
+      "inputTokens": 16892,
+      "cachedTokens": 12800,
+      "outputTokens": 541,
+      "costUsd": 0.0009767999999999999,
+      "sqls": [
+        "SELECT c.name AS \"渠道\", c.type AS \"渠道类型\", count(u.id) AS \"注册用户数\",\n       round(count(u.id) * 100.0 / NULLIF(sum(count(u.id)) OVER (), 0), 2) AS \"占比(%)\"\nFROM shop.channels c\nLEFT JOIN shop.users u ON u.channel_id = c.id\nGROUP BY 1, 2 ORDER BY 3 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\", c.type AS \"渠道类型\", count(u.id) AS \"注册用户数\",\n       round(count(u.id) * 100.0 / NULLIF(sum(count(u.id)) OVER (), 0), 2) AS \"占比(%)\"\nFROM shop.channels c\nLEFT JOIN shop.users u ON u.channel_id = c.id\nGROUP BY 1, 2 ORDER BY 3 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "全部 8 个渠道累计共 20,000 名注册用户。其中自然搜索是最大的注册来源，合计 4,249 人，占 21.25%；信息流广告有 3,355 人，占 16.78%，排名第二。\n\n几个关键发现：\n- 渠道注册量差距不大：最多的是自然搜索 4,249 人，最少的是达人带货 1,611 人，两者相差 2,638 人；没有单一渠道占到绝对优势。\n- 各类型合计：自然流量渠道（自然搜索、应用商店）共有 6,878 人；付费投放渠道（信息流广告、搜索广告）共有 5,238 人；社交裂变渠道（好友邀请、社区种草）共有 4,088 人；直播渠道（直播间、达人带货）共有 3,796 人。\n- 应用商店是第三大渠道，有 2,629 人，占 13.15%；也属于免费自然流量。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D09",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3154,
+      "inputTokens": 12947,
+      "cachedTokens": 7808,
+      "outputTokens": 330,
+      "costUsd": 0.0009922739999999998,
+      "sqls": [
+        "SELECT round(avg(rating)::numeric, 2) AS \"平均评分\", count(*) AS \"评价数\", min(rating) AS \"最低分\", max(rating) AS \"最高分\" FROM shop.reviews"
+      ],
+      "executedSqls": [
+        "SELECT round(avg(rating)::numeric, 2) AS \"平均评分\", count(*) AS \"评价数\", min(rating) AS \"最低分\", max(rating) AS \"最高分\" FROM shop.reviews"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "全部商品评价（2026-07-04 至 2026-09-30，共 7,601 条）的平均分是 **4.18 分**（满分 5 分），整体口碑偏正面。\n\n- 评价总量 7,601 条，评分取值范围覆盖 1–5 分，说明既有高分也有低分反馈。\n- 平均 4.18 分意味着大部分评价集中在 4–5 分区间；如需进一步定位问题，可以按类目或差评（<3 分）占比拆开看。\n\n如果需要，我可以再按一级类目或按月看评分趋势。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D10",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3696,
+      "inputTokens": 14433,
+      "cachedTokens": 10368,
+      "outputTokens": 379,
+      "costUsd": 0.0008682539999999999,
+      "sqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-30' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-30' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月 30 日（今天）的情况：\n\n- **支付订单数：315 单**\n- **GMV：333,952.01 元**\n- 客单价约 **1,060.17 元**\n\n我按标准口径统计：只计已支付订单（paid_at 不为空），并按**下单时间 created_at** 归入 9/30 当天；退款订单也计入 GMV。\n\n需要提醒的是，今天还未结束，数据会在当天持续累积；从订单时间范围看，数据最新已到 23:56，基本覆盖全天。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D11",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 2594,
+      "inputTokens": 9142,
+      "cachedTokens": 5632,
+      "outputTokens": 258,
+      "costUsd": 0.000698196,
+      "sqls": [
+        "SELECT city AS \"城市\", count(*) AS \"用户数\"\nFROM shop.users\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 3"
+      ],
+      "executedSqls": [
+        "SELECT city AS \"城市\", count(*) AS \"用户数\"\nFROM shop.users\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 3"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "用户最多的 3 个城市依次是：**上海 2296 人、北京 2051 人、深圳 1790 人**（按注册用户全量统计）。\n\n- 排名第一的上海比第三名深圳多 506 人，头部三城的用户规模差距并不算极端。\n- 前三城合计 6137 人，约占全部 20000 名用户的三成左右（全站用户总数可再确认）。\n\n需要的话我可以按月份看这几个城市的新增趋势，或者补充各城市的渠道/转化表现。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D12",
+      "run": 2,
+      "difficulty": "easy",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 2867,
+      "inputTokens": 9889,
+      "cachedTokens": 6272,
+      "outputTokens": 341,
+      "costUsd": 0.0007659660000000001,
+      "sqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV\", count(*) AS \"支付订单数\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL AND created_at >= '2026-07-01' AND created_at < '2026-08-01'"
+      ],
+      "executedSqls": [
+        "SELECT round(sum(pay_amount), 2) AS \"GMV\", count(*) AS \"支付订单数\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL AND created_at >= '2026-07-01' AND created_at < '2026-08-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**7 月客单价为 906.44 元。**\n\n按标准口径计算，即 GMV 除以支付订单数：\n- 7 月已支付订单共 8,804 笔，GMV 为 7,980,333.19 元\n- 平均每笔支付订单 906.44 元\n\n说明：客单价按订单口径计算（用 `pay_amount` 汇总后除以支付订单数），并非按去重用户计算人均消费。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D13",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 4083,
+      "inputTokens": 14511,
+      "cachedTokens": 10496,
+      "outputTokens": 608,
+      "costUsd": 0.000998538,
+      "sqls": [
+        "SELECT to_char(created_at, 'YYYY-MM') AS \"月份\",\n       round(sum(pay_amount), 2) AS \"GMV(元)\",\n       count(*) AS \"支付订单数\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价(元)\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-07-01' AND created_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT to_char(created_at, 'YYYY-MM') AS \"月份\",\n       round(sum(pay_amount), 2) AS \"GMV(元)\",\n       count(*) AS \"支付订单数\",\n       round(sum(pay_amount) / NULLIF(count(*), 0), 2) AS \"客单价(元)\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-07-01' AND created_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "按已支付订单实付金额（GMV，按下单时间归属）统计，7–9 月每月 GMV 都在增长：\n\n- **7 月：798.03 万元**（8,804 笔支付订单，客单价 906.44 元）\n- **8 月：889.07 万元**（9,751 笔，客单价 911.77 元），环比 +11.41%\n- **9 月：1,062.33 万元**（10,579 笔，客单价 1,004.18 元），环比 +19.49%\n\n关键发现：三个月合计 GMV 约 2,749.43 万元；9 月是三个月最高，金额和单量都比 7 月增长约三成（GMV +33.11%、订单数 +20.16%）；客单价也从 7 月的 906.44 元涨到 9 月的 1,004.18 元，9 月的增长由订单量和客单价共同带动。\n\n（GMV 口径：已支付订单的实付金额之和，后续发生退款的订单也计入。）"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D14",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 5527,
+      "inputTokens": 16818,
+      "cachedTokens": 12800,
+      "outputTokens": 508,
+      "costUsd": 0.0009459,
+      "sqls": [
+        "SELECT registered_at::date AS \"日期\", count(*) AS \"新增用户数\"\nFROM shop.users\nWHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT registered_at::date AS \"日期\", count(*) AS \"新增用户数\"\nFROM shop.users\nWHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月共有 30 天，每日新增用户在 **126 至 370 人**之间波动，整体呈“前低—中高—后回落”的走势。\n\n- **峰值段：9/14–9/20**，每天的新增用户数都在 301 人以上。其中 9/20 最高，为 370 人；9/14–9/20 这 7 天合计 2254 人，日均约 322 人，明显高于其他日期。\n- **谷底：9/29 的 126 人为全月最低**，9/7 的 129 人和 9/28 的 132 人紧随其后；月初 9/1–9/13 的日均约为 150 人。\n- 月末 9/21–9/30 已回落到每天 126–176 人的常态区间，其中 9/26 的 176 人为这 10 天的最高值。\n\n（新增用户按 `registered_at` 注册时间统计，以上均为数据中的实际值。）"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D15",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 5907,
+      "inputTokens": 18521,
+      "cachedTokens": 13952,
+      "outputTokens": 599,
+      "costUsd": 0.001086606,
+      "sqls": [
+        "SELECT created_at::date AS \"日期\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       count(*) AS \"支付订单数\",\n       round(avg(pay_amount), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL AND created_at >= '2026-09-21' AND created_at < '2026-09-28'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT created_at::date AS \"日期\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       count(*) AS \"支付订单数\",\n       round(avg(pay_amount), 2) AS \"客单价\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL AND created_at >= '2026-09-21' AND created_at < '2026-09-28'\nGROUP BY 1 ORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "上周（9/21–9/27）每日 GMV 合计约 223.07 万元，7 天在 27.3 万～35.5 万之间波动，周中是明显低谷。\n\n- **最高**：9/22（周二）35.49 万元，为上周单日最高；9/26（周六）等周末也偏强。\n- **最低**：9/25（周五）27.30 万元，9/24（周四）28.91 万元紧随其后，两天连跌形成周内低谷。\n- **订单与客单价**：9/27 订单数最多（409 单），客单价 833.38 元为最低；9/22 客单价最高 1069.01 元，说明 GMV 高低更多由客单价驱动。\n\n（附带说明：周内 GMV 最高与最低单日相差约 8.19 万元，波动不算极端。）"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D16",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5273,
+      "inputTokens": 20415,
+      "cachedTokens": 15488,
+      "outputTokens": 687,
+      "costUsd": 0.0011977140000000001,
+      "sqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\",\n       sum(i.quantity) AS \"销量\",\n       round(sum(i.unit_price * i.quantity) * 100.0 / NULLIF(sum(sum(i.unit_price * i.quantity)) OVER (), 0), 2) AS \"销售额占比(%)\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\nGROUP BY 1\nORDER BY 2 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\",\n       sum(i.quantity) AS \"销量\",\n       round(sum(i.unit_price * i.quantity) * 100.0 / NULLIF(sum(sum(i.unit_price * i.quantity)) OVER (), 0), 2) AS \"销售额占比(%)\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\nGROUP BY 1\nORDER BY 2 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "8 月按商品明细口径统计的类目销售额中，**数码类目以 443.98 万元排第一，占全站近一半（49.52%）**。\n\n关键发现：\n- 数码 443.98 万元，远高于第二名服饰的 146.72 万元，是后者的 3 倍。\n- 服饰（146.72 万，16.37%）、家居（115.71 万，12.91%）分列第二、第三；美妆 85.24 万（9.51%）。\n- 食品销售额最低（51.30 万，5.72%），但销量最高（5,848 件）；数码仅 2,762 件，是典型的高客单、低销量类目。\n\n说明：统计口径为已支付订单的明细金额（成交单价 × 数量），按下单时间归入 8 月，含后续退款的订单。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D17",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5437,
+      "inputTokens": 16040,
+      "cachedTokens": 11520,
+      "outputTokens": 706,
+      "costUsd": 0.00113616,
+      "sqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       p.category_l1 AS \"一级类目\",\n       sum(i.quantity) AS \"销量\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT 5"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       p.category_l1 AS \"一级类目\",\n       sum(i.quantity) AS \"销量\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"销售额\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT 5"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**9 月销量最高的 5 个二级类目（按已支付订单的购买件数统计，按商品下单时间归属月份）：**\n\n1. 咖啡（食品）—— 1,551 件，销售额 142,682.90 元\n2. 零食（食品）—— 1,360 件，销售额 77,367.00 元\n3. 洗面奶（美妆）—— 1,353 件，销售额 271,034.70 元\n4. 连衣裙（服饰）—— 1,350 件，销售额 397,845.00 元\n5. 方便速食（食品）—— 1,282 件，销售额 151,767.80 元\n\n几点发现：\n- 食品在销量前五中占据 3 席（咖啡、零食、方便速食），合计销量 4,193 件，是 9 月销量最高的类目群；不过这些类目的单价偏低，销售额都不足 16 万元。\n- 连衣裙销量排第 4（1,350 件），但销售额 397,845.00 元在前五中最高，明显高于销量第 1 的咖啡，说明其单价高、带货能力强。\n- 洗面奶销量 1,353 件、销售额 271,034.70 元，属于“销量与销售额双高”的类目，值得优先补货和投放。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D18",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5147,
+      "inputTokens": 17348,
+      "cachedTokens": 13312,
+      "outputTokens": 551,
+      "costUsd": 0.0009759360000000001,
+      "sqls": [
+        "SELECT c.name AS \"渠道\",\n       count(*) AS \"新增用户数\",\n       round(count(*) * 100.0 / NULLIF(sum(count(*)) OVER (), 0), 2) AS \"占比(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\",\n       count(*) AS \"新增用户数\",\n       round(count(*) * 100.0 / NULLIF(sum(count(*)) OVER (), 0), 2) AS \"占比(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-01' AND u.registered_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月全渠道共新增注册用户 5713 人（按 registered_at 归月），拉新主力是自然搜索和直播间两个渠道，合计接近四成。\n\n- 自然搜索 1046 人（18.31%）、直播间 1041 人（18.22%）几乎持平，稳居前两名，自然流量和直播两个来源贡献最稳定。\n- 第二梯队是达人带货 769 人（13.46%）和信息流广告 768 人（13.44%），两者体量基本一致。\n- 尾部三个渠道偏弱：好友邀请 546 人（9.56%）、搜索广告 484 人（8.47%）、社区种草 456 人（7.98%），其中社区种草最少，与自然搜索相差约 2.3 倍。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D19",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 6725,
+      "inputTokens": 19875,
+      "cachedTokens": 15104,
+      "outputTokens": 992,
+      "costUsd": 0.001356162,
+      "sqls": [
+        "SELECT c.name AS \"渠道\",\n       round(sum(o.pay_amount), 2) AS \"GMV\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.user_id) AS \"下单用户数\",\n       round(sum(o.pay_amount) * 100.0 / sum(sum(o.pay_amount)) OVER (), 2) AS \"GMV占比(%)\"\nFROM shop.orders o\nJOIN shop.users u ON u.id = o.user_id\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY c.name\nORDER BY 2 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\",\n       round(sum(o.pay_amount), 2) AS \"GMV\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.user_id) AS \"下单用户数\",\n       round(sum(o.pay_amount) * 100.0 / sum(sum(o.pay_amount)) OVER (), 2) AS \"GMV占比(%)\"\nFROM shop.orders o\nJOIN shop.users u ON u.id = o.user_id\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY c.name\nORDER BY 2 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**9 月（9/1–9/30）已支付订单 GMV 合计约 1,062.3 万元**，8 个渠道的贡献分布如下（口径：已支付订单 `pay_amount` 之和，按下单时间归属，退款订单也计入）：\n\n| 渠道 | GMV（元） | 占比 | 支付订单数 | 下单用户数 |\n|---|---|---|---|---|\n| 自然搜索 | 2,086,705.64 | 19.64% | 1,975 | 1,534 |\n| 直播间 | 1,967,437.65 | 18.52% | 2,038 | 1,195 |\n| 达人带货 | 1,472,164.69 | 13.86% | 1,565 | 908 |\n| 应用商店 | 1,285,049.49 | 12.10% | 1,266 | 971 |\n| 好友邀请 | 1,148,738.29 | 10.81% | 1,148 | 873 |\n| 信息流广告 | 1,073,651.12 | 10.11% | 983 | 849 |\n| 社区种草 | 1,013,907.46 | 9.54% | 1,052 | 787 |\n| 搜索广告 | 575,612.98 | 5.42% | 552 | 473 |\n\n关键发现：\n1. **自然搜索和直播间是两大主力**，GMV 分别为 208.7 万和 196.7 万，合计占 38.2% 左右；尾部搜索广告仅 57.6 万（5.42%），与前两名差距明显。\n2. **直播间用户数少但产出高**：下单用户 1,195 人却贡献 196.7 万 GMV，人均约 1,646 元，远高于自然搜索（1,534 人 / 208.7 万，人均约 1,360 元），说明直播场景客单价更高。\n3. **好友邀请单用户价值也不低**（873 人贡献 114.9 万），而信息流广告投入偏大但 GMV 只有 107.4 万（10.11%），投放效率有待评估。\n\n图表已按 GMV 从高到低展示各渠道对比。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D20",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 4935,
+      "inputTokens": 19801,
+      "cachedTokens": 15232,
+      "outputTokens": 595,
+      "costUsd": 0.0010880459999999998,
+      "sqls": [
+        "SELECT u.city AS \"城市\",\n       count(*) AS \"支付订单数\",\n       round(sum(o.pay_amount), 2) AS \"GMV\",\n       round(avg(o.pay_amount), 2) AS \"客单价\"\nFROM shop.orders o\nJOIN shop.users u ON u.id = o.user_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 5"
+      ],
+      "executedSqls": [
+        "SELECT u.city AS \"城市\",\n       count(*) AS \"支付订单数\",\n       round(sum(o.pay_amount), 2) AS \"GMV\",\n       round(avg(o.pay_amount), 2) AS \"客单价\"\nFROM shop.orders o\nJOIN shop.users u ON u.id = o.user_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 5"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月支付订单数最多的前 5 个城市依次为上海、北京、深圳、广州、成都。\n\n- 上海在支付订单数上以 1172 单排名第一，GMV 为 119.72 万元，客单价 1021.49 元。\n- 北京的支付订单数是 1138 单，略少于上海，但 GMV 反而最高，为 121.42 万元；客单价 1066.98 元，在五个城市中排第一。\n- 深圳以 955 单、92.44 万元 GMV 排第三；广州 859 单、83.37 万元；成都 727 单、74.85 万元。前 5 名城市的客单价均在 900 元以上。\n\n（统计范围：已支付订单，按下单时间在 2026-09-01 至 2026-09-30 内归属日期；城市取用户所在城市。）"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D21",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 5158,
+      "inputTokens": 17602,
+      "cachedTokens": 13440,
+      "outputTokens": 614,
+      "costUsd": 0.00103302,
+      "sqls": [
+        "SELECT occurred_at::date AS \"日期\", count(DISTINCT user_id) AS \"访问用户数\"\nFROM shop.user_events\nWHERE event_type = 'visit'\n  AND occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1\nORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT occurred_at::date AS \"日期\", count(DISTINCT user_id) AS \"访问用户数\"\nFROM shop.user_events\nWHERE event_type = 'visit'\n  AND occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1\nORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月每天都有访问用户，日 UV 大致在 1580～2553 之间波动，没有出现流量中断。按口径统计，当天有 visit 事件的去重用户数，同一用户同一天只算一次。\n\n几个关键发现：\n- **月度峰值出现在 9/19，UV 为 2553**；9/20 为 2496、9/27 为 2183，这几个日期前后形成明显的小高峰，从 9/12 到 9/20 整体都处于较高水平（1898～2553）。\n- **低谷是 9/3 的 1580**；9/1–9/11 大部分日子在 1580～1794 的低位区间。\n- **月末有所回落**：9/28–9/30 分别为 1895、1811、1757，低于 9 月中下旬的高点，但整体比 9 月初略高。\n\n（今天 9/30 的数据只到当天统计时刻，夜间数据尚未完整，环比时需注意。）"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D22",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 5304,
+      "inputTokens": 20333,
+      "cachedTokens": 15488,
+      "outputTokens": 688,
+      "costUsd": 0.001186014,
+      "sqls": [
+        "SELECT occurred_at::date AS \"日期\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'visit') AS \"访问用户数\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') AS \"下单用户数\",\n       round(count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1\nORDER BY 1"
+      ],
+      "executedSqls": [
+        "SELECT occurred_at::date AS \"日期\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'visit') AS \"访问用户数\",\n       count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') AS \"下单用户数\",\n       round(count(DISTINCT user_id) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT user_id) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\nGROUP BY 1\nORDER BY 1"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月每天的下单转化率整体相当平稳，绝大多数日期在 19%–20% 之间，只有 9 月 14–16 日出现了一个明显的短期低谷。\n\n关键发现：\n- 全月最高是 9 月 4 日的 20.07%，最低是 9 月 14 日的 17.51%，两者相差约 2.6 个百分点。\n- 9 月 14–16 日连续三天偏低（17.51%、18.16%、18.85%），同期访问用户数在 2000 以上（2065–2101），说明流量并没有减少；转化率下降更可能是流量质量或承接环节的问题，值得进一步排查。\n- 9 月 19–20 日访问量最高（分别为 2553、2496），转化率分别为 19.47%、19.35%，仍保持在正常水平；月末的 9 月 28–30 日分别为 19.42%、19.22%、19.41%，表现稳定。\n\n注：转化率按「当天有 place_order 事件的去重用户数 / 当天有 visit 事件的去重用户数」口径计算，没有做跨天去重。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D23",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5912,
+      "inputTokens": 19827,
+      "cachedTokens": 15232,
+      "outputTokens": 715,
+      "costUsd": 0.001163946,
+      "sqls": [
+        "SELECT p.category_l1 AS \"类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l1 AS \"类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9 月各一级类目的退款率整体在 3.2%–4.2% 之间，数码最高、美妆最低，各类目差距不大。\n\n- 退款率最高：数码 4.18%（2,629 笔支付订单中退款 110 笔）；其次是母婴 3.61%（82/2,271）和家居 3.49%（86/2,461）。\n- 退款率最低：美妆 3.19%（100/3,137），食品 3.21%（114/3,548）紧随其后。\n- 服饰的支付订单数最多（3,847 笔），其退款率为 3.46%（退款 133 笔），处于中游。\n\n口径说明：退款率按下单时间归属在 9 月，分子是状态为 refunded 的订单数；分母是当月已支付订单数；如果一笔订单包含某个类目的商品，就计入该类目，因此同一订单可能被多个类目重复计入，各类目支付订单数之和也大于全站订单数。\n\n另外，这个问题也可以用退款金额占比核算；如需查看退款金额口径的结果，请告诉我。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D24",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3942,
+      "inputTokens": 14033,
+      "cachedTokens": 10112,
+      "outputTokens": 419,
+      "costUsd": 0.0008698859999999999,
+      "sqls": [
+        "SELECT count(*) AS \"退款订单数\",\n       round(sum(pay_amount), 2) AS \"实付金额合计\",\n       round(avg(pay_amount), 2) AS \"单均实付\"\nFROM shop.orders\nWHERE status = 'refunded' AND paid_at IS NOT NULL\n  AND created_at >= '2026-08-01' AND created_at < '2026-09-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"退款订单数\",\n       round(sum(pay_amount), 2) AS \"实付金额合计\",\n       round(avg(pay_amount), 2) AS \"单均实付\"\nFROM shop.orders\nWHERE status = 'refunded' AND paid_at IS NOT NULL\n  AND created_at >= '2026-08-01' AND created_at < '2026-09-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**结论：8 月共有 469 笔退款订单，实付金额合计约 48.90 万元。**\n\n关键数据（按下单时间落在 8 月归属）：\n- 退款订单数：**469 笔**\n- 这些订单实付金额合计：**489,035.17 元**\n- 单均实付：**1,042.72 元**\n\n说明：按业务口径，退款订单指状态为 refunded 且已支付的订单，金额取实付金额 pay_amount，按下单时间 created_at 归属日期。若你更关注“8 月实际发生退款的时间点”，可以改用 refunded_at 重新统计，需要的话我可以再跑一次。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D25",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3007,
+      "inputTokens": 10205,
+      "cachedTokens": 6528,
+      "outputTokens": 449,
+      "costUsd": 0.000840534,
+      "sqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       count(*) FILTER (WHERE discount_amount > 0) AS \"使用优惠订单数\",\n       round(count(*) FILTER (WHERE discount_amount > 0) * 100.0 / NULLIF(count(*), 0), 2) AS \"使用优惠占比(%)\",\n       round(sum(discount_amount) FILTER (WHERE discount_amount > 0), 2) AS \"优惠总金额\",\n       round(avg(discount_amount) FILTER (WHERE discount_amount > 0), 2) AS \"优惠订单平均优惠金额\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT count(*) AS \"支付订单数\",\n       count(*) FILTER (WHERE discount_amount > 0) AS \"使用优惠订单数\",\n       round(count(*) FILTER (WHERE discount_amount > 0) * 100.0 / NULLIF(count(*), 0), 2) AS \"使用优惠占比(%)\",\n       round(sum(discount_amount) FILTER (WHERE discount_amount > 0), 2) AS \"优惠总金额\",\n       round(avg(discount_amount) FILTER (WHERE discount_amount > 0), 2) AS \"优惠订单平均优惠金额\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月支付订单中，大约三分之一（34.36%）使用了优惠。**\n\n- 9 月支付订单共 10,579 笔，其中 3,635 笔的优惠金额大于 0，占 34.36%。\n- 有优惠的订单平均每笔优惠 21.90 元，9 月下发优惠合计 79,602.68 元。\n- 统计口径：按下单时间归属，仅统计已支付订单（paid_at 非空）；优惠金额字段最小值为 0.45 元，所以“用了优惠”按 discount_amount > 0 判断。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D26",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4168,
+      "inputTokens": 13690,
+      "cachedTokens": 9856,
+      "outputTokens": 434,
+      "costUsd": 0.0008650680000000001,
+      "sqls": [
+        "WITH t AS (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n)\nSELECT count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       count(*) AS \"有支付订单用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM t"
+      ],
+      "executedSqls": [
+        "WITH t AS (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n)\nSELECT count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       count(*) AS \"有支付订单用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM t"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月共有 **2,109 名用户复购**（当月支付订单数 ≥ 2 笔）。\n\n- 9 月有支付订单的用户共 7,590 人，复购率为 **27.79%**（口径：按下单时间归属 9 月、paid_at 不为空的订单）。\n- 也就是说，约七成当月有支付行为的用户只下了一单，复购仍有提升空间。\n\n需要的话，我可以再拆开看复购用户的订单笔数分布，或者按月/按渠道对比复购率趋势。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D27",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3528,
+      "inputTokens": 10480,
+      "cachedTokens": 6656,
+      "outputTokens": 530,
+      "costUsd": 0.000911568,
+      "sqls": [
+        "WITH m AS (\n  SELECT to_char(created_at, 'YYYY-MM') AS \"月份\",\n         round(sum(pay_amount) FILTER (WHERE paid_at IS NOT NULL), 2) AS \"GMV\"\n  FROM shop.orders\n  WHERE created_at >= '2026-08-01' AND created_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08') AS \"8月GMV\",\n       (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-09') AS \"9月GMV\",\n       round(((SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-09') - (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08'))\n             * 100.0 / NULLIF((SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08'), 0), 2) AS \"环比增长率(%)\",\n       round((SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-09') - (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08'), 2) AS \"增长额\""
+      ],
+      "executedSqls": [
+        "WITH m AS (\n  SELECT to_char(created_at, 'YYYY-MM') AS \"月份\",\n         round(sum(pay_amount) FILTER (WHERE paid_at IS NOT NULL), 2) AS \"GMV\"\n  FROM shop.orders\n  WHERE created_at >= '2026-08-01' AND created_at < '2026-10-01'\n  GROUP BY 1\n)\nSELECT (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08') AS \"8月GMV\",\n       (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-09') AS \"9月GMV\",\n       round(((SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-09') - (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08'))\n             * 100.0 / NULLIF((SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08'), 0), 2) AS \"环比增长率(%)\",\n       round((SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-09') - (SELECT \"GMV\" FROM m WHERE \"月份\" = '2026-08'), 2) AS \"增长额\""
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月 GMV 环比增长 19.49%**（按已支付订单的实付金额，按下单时间归属日期）。\n\n- 8 月 GMV：889.07 万元；9 月 GMV：1,062.33 万元，净增约 173.26 万元。\n- 口径说明：统计范围是已支付订单的 `pay_amount` 之和；后续发生退款的订单也照常计入。\n\n数据仅一个对比结果，未画图。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D28",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 3914,
+      "inputTokens": 13805,
+      "cachedTokens": 9984,
+      "outputTokens": 538,
+      "costUsd": 0.0009259019999999999,
+      "sqls": [
+        "SELECT category_l1 AS \"一级类目\",\n       count(*) AS \"商品数\",\n       round(avg(price), 2) AS \"平均售价(元)\",\n       round(min(price), 2) AS \"最低价(元)\",\n       round(max(price), 2) AS \"最高价(元)\"\nFROM shop.products\nGROUP BY 1\nORDER BY 3 DESC"
+      ],
+      "executedSqls": [
+        "SELECT category_l1 AS \"一级类目\",\n       count(*) AS \"商品数\",\n       round(avg(price), 2) AS \"平均售价(元)\",\n       round(min(price), 2) AS \"最低价(元)\",\n       round(max(price), 2) AS \"最高价(元)\"\nFROM shop.products\nGROUP BY 1\nORDER BY 3 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "各一级类目的平均售价差异很大，数码类商品的平均售价最高，约是食品类的 20 倍。\n\n**关键数字：**\n- **数码**：平均售价 1623.93 元，共 134 个商品，价格区间为 50.90–6500.90 元，跨度最大。\n- **家居**：平均售价 354.06 元；**服饰**：平均售价 282.56 元；**美妆**：平均售价 206.97 元；**母婴**：平均售价 198.45 元；这四类的平均售价都在 200–360 元之间。\n- **食品**：平均售价 81.37 元，是最便宜的类目，商品数 217 个，属\"低价高频\"结构。\n\n另外，服饰商品数最多，有 227 个，但平均售价中等偏低；数码商品数最少，有 134 个，但平均售价远高于其他类目。类目之间的平均售价差异主要来自商品结构：数码类中高价商品的占比明显更高。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D29",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "line"
+      ],
+      "escalated": false,
+      "latencyMs": 5515,
+      "inputTokens": 14935,
+      "cachedTokens": 10624,
+      "outputTokens": 651,
+      "costUsd": 0.001069122,
+      "sqls": [
+        "SELECT u.registered_at::date AS \"日期\",\n       c.name AS \"渠道\",\n       count(*) AS \"新增用户数\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-24' AND u.registered_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 1, 3 DESC"
+      ],
+      "executedSqls": [
+        "SELECT u.registered_at::date AS \"日期\",\n       c.name AS \"渠道\",\n       count(*) AS \"新增用户数\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE u.registered_at >= '2026-09-24' AND u.registered_at < '2026-10-01'\nGROUP BY 1, 2\nORDER BY 1, 3 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "describe_table",
+        "get_metric_definitions",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "9/24–9/30 共 7 天、8 个渠道，合计 1189 个新增注册用户，日均约 170 人。完整明细和趋势图已展示。\n\n关键发现：\n- **自然搜索一直是最大的来源**（每天 28–44 人），其中 9/26 达到 44 人，是这一周内单个渠道单日的最高值；但 9/27–9/28 回落到 28–29 人，后两天又回升到 31–32 人。\n- **各渠道走势分化**：社区种草在 9/26 冲到 26 人，但 9/28、9/29 只有 10 人，9/30 又反弹到 25 人；应用商店 9/26 达到 29 人的峰值后持续走低，9/29 只有 14 人。达人带货和直播间一直最弱，9/30 都只有 6 人，达人带货 9/28 仅 5 人。\n- **9/24 单日新增绝对量最高**（共 166 人，其中自然搜索 42、信息流广告 31、好友邀请 20）。\n\n注：新增用户按 users.registered_at（注册时间）和 registration 渠道统计。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D30",
+      "run": 2,
+      "difficulty": "medium",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4558,
+      "inputTokens": 14951,
+      "cachedTokens": 10496,
+      "outputTokens": 645,
+      "costUsd": 0.001086738,
+      "sqls": [
+        "WITH o AS (\n  SELECT o.id, o.pay_amount, o.user_id, u.registered_at\n  FROM shop.orders o\n  JOIN shop.users u ON u.id = o.user_id\n  WHERE o.paid_at IS NOT NULL\n    AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\n)\nSELECT round(sum(pay_amount), 2) AS \"9月GMV\",\n       round(sum(pay_amount) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'), 2) AS \"新用户GMV\",\n       round(sum(pay_amount) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01') * 100.0\n             / NULLIF(sum(pay_amount), 0), 2) AS \"新用户GMV占比(%)\",\n       count(*) AS \"支付订单数\",\n       count(*) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01') AS \"新用户支付订单数\"\nFROM o"
+      ],
+      "executedSqls": [
+        "WITH o AS (\n  SELECT o.id, o.pay_amount, o.user_id, u.registered_at\n  FROM shop.orders o\n  JOIN shop.users u ON u.id = o.user_id\n  WHERE o.paid_at IS NOT NULL\n    AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\n)\nSELECT round(sum(pay_amount), 2) AS \"9月GMV\",\n       round(sum(pay_amount) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'), 2) AS \"新用户GMV\",\n       round(sum(pay_amount) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01') * 100.0\n             / NULLIF(sum(pay_amount), 0), 2) AS \"新用户GMV占比(%)\",\n       count(*) AS \"支付订单数\",\n       count(*) FILTER (WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01') AS \"新用户支付订单数\"\nFROM o"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**结论：2026 年 9 月新注册用户贡献的 GMV 占 9 月总 GMV 的 38.88%。**\n\n关键数字：\n- 9 月 GMV 合计 1,062.33 万元，其中 9 月新注册用户贡献 412.99 万元。\n- 9 月支付订单共 10,579 笔，其中来自 9 月新注册用户的有 4,424 笔，占比 41.82%（4,424 / 10,579）。\n- 新用户的 GMV 占比（38.88%）略低于其订单占比（41.82%），说明新用户的客单价低于老用户。\n\n统计标准：GMV 按已支付订单（paid_at 不为空）的实付金额合计，并按订单下单时间归属月份；“新用户”指 9 月内注册的用户（按 registered_at 判断），统计时包括之后发生退款的订单。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D31",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4520,
+      "inputTokens": 14186,
+      "cachedTokens": 10240,
+      "outputTokens": 482,
+      "costUsd": 0.00091182,
+      "sqls": [
+        "SELECT round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') AS \"下单用户天数\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天数\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"下单转化率(%)\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'place_order') AS \"下单用户天数\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天数\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月整体下单转化率为 **19.30%**。\n\n- 口径：统计“有 place_order 事件的用户-天”与“有 visit 事件的用户-天”之比；跨月汇总时，按用户和日期去重。\n- 分子是下单用户天数 **10,979**，分母是访问用户天数 **56,879**。\n- 也就是说，9 月每天访问的用户中，约有五分之一当天完成了下单；同期共有约 5.7 万个访问用户天，实际转化为下单的有近 1.1 万个。\n\n只有一个汇总数字，因此没有额外画图。如果需要，我可以再按天或按渠道拆分，以查看走势和差异。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D32",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 7193,
+      "inputTokens": 20813,
+      "cachedTokens": 16000,
+      "outputTokens": 768,
+      "costUsd": 0.00123075,
+      "sqls": [
+        "SELECT c.name AS \"渠道\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit') AS \"访问用户天数\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') AS \"下单用户天数\",\n       round(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events e\nJOIN shop.users u ON u.id = e.user_id\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE e.occurred_at >= '2026-09-01' AND e.occurred_at < '2026-10-01'\nGROUP BY 1 ORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit') AS \"访问用户天数\",\n       count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') AS \"下单用户天数\",\n       round(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'place_order') * 100.0\n             / NULLIF(count(DISTINCT (e.occurred_at::date, e.user_id)) FILTER (WHERE e.event_type = 'visit'), 0), 2) AS \"下单转化率(%)\"\nFROM shop.user_events e\nJOIN shop.users u ON u.id = e.user_id\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE e.occurred_at >= '2026-09-01' AND e.occurred_at < '2026-10-01'\nGROUP BY 1 ORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**结论：9 月各渠道中，“达人带货”和“直播间”两类的下单转化率最高，均在 30% 左右；搜索类渠道的转化率最低，只有约 10%，与前者相差约 3 倍。**\n\n统计规则：下单转化率 = 有 place_order 事件的“用户-天”数 ÷ 有 visit 事件的“用户-天”数；渠道按用户注册来源归属，时间范围是 9/1–9/30。\n\n关键发现：\n- 第一梯队：达人带货 31.40%、直播间 30.25%，明显高于其他渠道。\n- 中间梯队：社区种草 23.26%、好友邀请 22.11%、应用商店 18.92%、自然搜索 17.97%。\n- 转化率最低：搜索广告 10.05%、信息流广告 10.05%，并列末位。这两个渠道的流量规模都不小，搜索广告有 5809 个访问用户-天，信息流广告有 10462 个访问用户-天，但转化率只有达人带货的三分之一左右，投放的落地页或人群精准度值得优化。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D33",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4872,
+      "inputTokens": 14987,
+      "cachedTokens": 10880,
+      "outputTokens": 650,
+      "costUsd": 0.0010386899999999999,
+      "sqls": [
+        "SELECT round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"加购率(%)\",\n       round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"支付转化率(%)\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天次\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') AS \"加购用户天次\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') AS \"支付用户天次\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "executedSqls": [
+        "SELECT round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"加购率(%)\",\n       round(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') * 100.0\n             / NULLIF(count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit'), 0), 2) AS \"支付转化率(%)\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'visit') AS \"访问用户天次\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'add_cart') AS \"加购用户天次\",\n       count(DISTINCT (occurred_at::date, user_id)) FILTER (WHERE event_type = 'pay') AS \"支付用户天次\"\nFROM shop.user_events\nWHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月整体（9/1–9/30）：加购率 28.86%，支付转化率 18.01%。**\n\n关键数字（均按“日期 + 用户”去重，符合跨天汇总口径）：\n- 访问用户天次 56,879，加购用户天次 16,415，支付用户天次 10,242\n- 加购率 = 16,415 / 56,879 = 28.86%\n- 支付转化率 = 10,242 / 56,879 = 18.01%\n- 也就是说，在访问并加购的用户中，约六成最终完成了支付，从加购到支付这一环节流失较少\n\n本次只返回了两个比率，属于单值结果，因此未画图。如果需要按天看趋势或按渠道对比，可以再告诉我。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D34",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5986,
+      "inputTokens": 19815,
+      "cachedTokens": 15232,
+      "outputTokens": 661,
+      "costUsd": 0.0011297459999999998,
+      "sqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\n  AND p.category_l1 = '母婴'\nGROUP BY 1 ORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l2 AS \"二级类目\",\n       count(DISTINCT o.id) AS \"支付订单数\",\n       count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') AS \"退款订单数\",\n       round(count(DISTINCT o.id) FILTER (WHERE o.status = 'refunded') * 100.0\n             / NULLIF(count(DISTINCT o.id), 0), 2) AS \"退款率(%)\"\nFROM shop.orders o\nJOIN shop.order_items i ON i.order_id = o.id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL\n  AND o.created_at >= '2026-08-01' AND o.created_at < '2026-09-01'\n  AND p.category_l1 = '母婴'\nGROUP BY 1 ORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**结论：奶粉退款率明显异常，8 月为 24.95%，是其他母婴二级类目的 4–7 倍，建议优先排查奶粉的发货和品质问题。**\n\n关键数字（8 月，按下单时间统计；统计方法：支付订单中状态为 refunded 的比例）：\n- 奶粉：支付订单 477 单，退款 119 单，退款率 **24.95%**，在母婴类目中排第一。\n- 辅食（5.36%）、纸尿裤（5.00%）居中，童装为 4.21%、玩具为 3.63%，最低。\n- 玩具虽然支付订单量最大（579 单），但退款率最低，说明订单量本身并未造成退款率升高。\n\n建议进一步查看奶粉退款订单的退款时间分布和涉及的具体商品，以定位是否集中在某个批次或某个 SKU 上。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D35",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 4259,
+      "inputTokens": 13008,
+      "cachedTokens": 9216,
+      "outputTokens": 454,
+      "costUsd": 0.000868848,
+      "sqls": [
+        "WITH u AS (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n)\nSELECT count(*) AS \"支付用户数\",\n       count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM u"
+      ],
+      "executedSqls": [
+        "WITH u AS (\n  SELECT user_id, count(*) AS n\n  FROM shop.orders\n  WHERE paid_at IS NOT NULL\n    AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\n  GROUP BY user_id\n)\nSELECT count(*) AS \"支付用户数\",\n       count(*) FILTER (WHERE n >= 2) AS \"复购用户数\",\n       round(count(*) FILTER (WHERE n >= 2) * 100.0 / NULLIF(count(*), 0), 2) AS \"复购率(%)\"\nFROM u"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "**9 月复购率为 27.79%。**\n\n口径说明：按下单时间归属 9 月（9/1–9/30），统计当月有支付订单（paid_at 不为空）的用户中，支付订单数 ≥ 2 的用户占比。\n\n- 9 月有支付订单的用户共 7,590 人；\n- 其中下单 2 笔及以上的用户 2,109 人；\n- 复购用户占比 27.79%，说明约七成用户当月只买了 1 次，还有提升空间。\n\n如果需要，我可以再拆分看复购率在 7–9 月的变化趋势，或按渠道/类目看哪些人群复购更好。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D36",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": true,
+      "steps": 5,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 5720,
+      "inputTokens": 21214,
+      "cachedTokens": 16128,
+      "outputTokens": 755,
+      "costUsd": 0.0012642839999999999,
+      "sqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"商品成交额\",\n       round(sum((i.unit_price - p.cost) * i.quantity), 2) AS \"毛利\",\n       round(sum((i.unit_price - p.cost) * i.quantity) * 100.0 / NULLIF(sum(i.unit_price * i.quantity), 0), 2) AS \"毛利率(%)\",\n       sum(i.quantity) AS \"销量\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL AND o.status <> 'refunded'\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "executedSqls": [
+        "SELECT p.category_l1 AS \"一级类目\",\n       round(sum(i.unit_price * i.quantity), 2) AS \"商品成交额\",\n       round(sum((i.unit_price - p.cost) * i.quantity), 2) AS \"毛利\",\n       round(sum((i.unit_price - p.cost) * i.quantity) * 100.0 / NULLIF(sum(i.unit_price * i.quantity), 0), 2) AS \"毛利率(%)\",\n       sum(i.quantity) AS \"销量\"\nFROM shop.order_items i\nJOIN shop.orders o ON o.id = i.order_id\nJOIN shop.products p ON p.id = i.product_id\nWHERE o.paid_at IS NOT NULL AND o.status <> 'refunded'\n  AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 4 DESC"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**结论：9 月各一级类目毛利率差异不大，集中在 37%–41% 之间。食品最高，为 41.35%；数码最低，为 37.36%，落后约 4 个百分点。**\n\n按标准口径（已支付且未退款订单，毛利率 = (成交单价 − 成本价) × 数量 ÷ 商品成交额，不扣优惠）：\n\n- 毛利率从高到低依次为：食品 41.35%、母婴 41.04%、美妆 40.75%、服饰 40.31%、家居 40.12%、数码 37.36%。\n- 前五个类目的毛利率都在 40%–41.4% 之间，差别不到 1.3 个百分点；只有数码明显偏低。\n- 从毛利额绝对值看，数码毛利额最大，为 211.43 万元，这是靠 565.95 万元的成交额堆起来的，但毛利率最低；服饰毛利额 59.04 万元，成交额 146.49 万元，毛利率 40.31%。\n\n如果要在不牺牲毛利额的前提下提升整体毛利率，数码这类高成交、低毛利的类目最值得优化成本或调整价格结构。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D37",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 1
+      },
+      "chartExpectationMet": null,
+      "steps": 6,
+      "sqlCalls": 2,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 2,
+      "chartErrors": 1,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 8142,
+      "inputTokens": 24644,
+      "cachedTokens": 20352,
+      "outputTokens": 1380,
+      "costUsd": 0.0015328559999999998,
+      "sqls": [
+        "SELECT c.name AS \"渠道\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"增长数\",\n       round((count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14')) * 100.0\n         / NULLIF(count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14'), 0), 2) AS \"增长率(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\n  AND u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-21'\nGROUP BY 1\nORDER BY \"本周新增用户数\" DESC",
+        "SELECT count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"增长数\",\n       round((count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14')) * 100.0\n         / NULLIF(count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14'), 0), 2) AS \"增长率(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\n  AND u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-21'"
+      ],
+      "executedSqls": [
+        "SELECT c.name AS \"渠道\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"增长数\",\n       round((count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14')) * 100.0\n         / NULLIF(count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14'), 0), 2) AS \"增长率(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\n  AND u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-21'\nGROUP BY 1\nORDER BY \"本周新增用户数\" DESC",
+        "SELECT count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"前一周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21') AS \"本周新增用户数\",\n       count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14') AS \"增长数\",\n       round((count(*) FILTER (WHERE u.registered_at >= '2026-09-14' AND u.registered_at < '2026-09-21')\n         - count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14')) * 100.0\n         / NULLIF(count(*) FILTER (WHERE u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-14'), 0), 2) AS \"增长率(%)\"\nFROM shop.users u\nJOIN shop.channels c ON c.id = u.channel_id\nWHERE c.type = 'live'\n  AND u.registered_at >= '2026-09-07' AND u.registered_at < '2026-09-21'"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "describe_table",
+        "run_sql",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [
+        "[CHART_INVALID] x 字段\"渠道\"不在查询结果中。可用的列：\"前一周新增用户数\"(number)、\"本周新增用户数\"(number)、\"增长数\"(number)、\"增长率(%)\"(number)"
+      ],
+      "text": "**结论：9/14–9/20 这一周，直播类渠道新增用户数从 119 人增至 1347 人，净增 1228 人，环比增长 1031.93%，增长超过 10 倍。**\n\n关键发现：\n- 两个直播细分渠道都在大幅增长：**直播间** 68 → 765 人（+697，+1025.00%），**达人带货** 51 → 582 人（+531，+1041.18%）。\n- 增长幅度接近，说明这是直播类渠道整体的获客放量（可能是投放或活动带来的），并非单一渠道的偶然波动。\n- 达人带货的绝对量仍略低于直播间，但在基数极低的情况下增速更快。\n\n补充说明：新增用户按 `users.registered_at` 统计，并按渠道类型 `type = 'live'` 筛选，日期区间为左闭右开。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D38",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 3,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 3805,
+      "inputTokens": 10283,
+      "cachedTokens": 6528,
+      "outputTokens": 451,
+      "costUsd": 0.0008534339999999999,
+      "sqls": [
+        "SELECT created_at::date AS \"日期\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       count(*) AS \"支付订单数\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 3"
+      ],
+      "executedSqls": [
+        "SELECT created_at::date AS \"日期\",\n       round(sum(pay_amount), 2) AS \"GMV\",\n       count(*) AS \"支付订单数\"\nFROM shop.orders\nWHERE paid_at IS NOT NULL\n  AND created_at >= '2026-09-01' AND created_at < '2026-10-01'\nGROUP BY 1\nORDER BY 2 DESC\nLIMIT 3"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月 GMV 最高的 3 天分别是 **9/5、9/19、9/4**（按下单时间统计已支付订单实付金额）。\n\n- **9 月 5 日：489,838.39 元**，349 笔支付订单，为 9 月单日最高\n- **9 月 19 日：443,760.25 元**，490 笔支付订单，是三天中订单数最多的，靠订单量撑起 GMV，客单价相对偏低\n- **9 月 4 日：422,977.80 元**，340 笔支付订单\n\n明显可以看出这三天彼此相邻：9/4 和 9/5 前后相连，可能是同一波促销造成的；而 9/19 是另一种类型的高峰，订单数高、单笔金额低。\n\n数据只有 3 行、属于排名结果，不做图表展示；完整结果已在上方表格中列出。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D39",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": true,
+        "lenient": true,
+        "how": "strict",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 0,
+      "chartErrors": 0,
+      "chartTypes": [],
+      "escalated": false,
+      "latencyMs": 5846,
+      "inputTokens": 16038,
+      "cachedTokens": 11264,
+      "outputTokens": 528,
+      "costUsd": 0.001066692,
+      "sqls": [
+        "WITH new_users AS (\n  SELECT id, registered_at::date AS reg_date\n  FROM shop.users\n  WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\n),\nfirst_order AS (\n  SELECT o.user_id, min(o.created_at)::date AS first_order_date\n  FROM shop.orders o\n  JOIN new_users nu ON nu.id = o.user_id\n  GROUP BY o.user_id\n)\nSELECT count(*) AS \"9月新注册用户数\",\n       count(*) FILTER (WHERE fo.first_order_date = nu.reg_date) AS \"注册当天下单人数\",\n       round(count(*) FILTER (WHERE fo.first_order_date = nu.reg_date) * 100.0 / NULLIF(count(*), 0), 2) AS \"当天下单占比(%)\"\nFROM new_users nu\nLEFT JOIN first_order fo ON fo.user_id = nu.id"
+      ],
+      "executedSqls": [
+        "WITH new_users AS (\n  SELECT id, registered_at::date AS reg_date\n  FROM shop.users\n  WHERE registered_at >= '2026-09-01' AND registered_at < '2026-10-01'\n),\nfirst_order AS (\n  SELECT o.user_id, min(o.created_at)::date AS first_order_date\n  FROM shop.orders o\n  JOIN new_users nu ON nu.id = o.user_id\n  GROUP BY o.user_id\n)\nSELECT count(*) AS \"9月新注册用户数\",\n       count(*) FILTER (WHERE fo.first_order_date = nu.reg_date) AS \"注册当天下单人数\",\n       round(count(*) FILTER (WHERE fo.first_order_date = nu.reg_date) * 100.0 / NULLIF(count(*), 0), 2) AS \"当天下单占比(%)\"\nFROM new_users nu\nLEFT JOIN first_order fo ON fo.user_id = nu.id"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "list_tables",
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql"
+      ],
+      "errors": [],
+      "text": "9 月新注册用户中，注册当天就下单的用户占 6.42%。\n\n关键数字：\n- 9 月新注册用户共 5,713 人，其中 367 人在注册当天（首次下单日期 = 注册日期）产生了订单。\n- 也就是说，约有 93.58% 的新用户注册当天没有下单，说明从新用户到首单的转化还有提升空间。\n- 统计口径：订单按下单时间 `created_at` 归入日期，只统计新用户在注册当天的首单；包含未支付订单（未按支付状态过滤）。如果需要只看支付成功或查看按渠道、按注册日期的分布，可以继续查询。"
+    },
+    {
+      "kind": "query",
+      "experiment": "提示词开头不稳定",
+      "id": "D40",
+      "run": 2,
+      "difficulty": "hard",
+      "verdict": {
+        "strict": false,
+        "lenient": true,
+        "how": "values",
+        "candidate": 0
+      },
+      "chartExpectationMet": null,
+      "steps": 4,
+      "sqlCalls": 1,
+      "sqlErrors": 0,
+      "firstSqlOk": true,
+      "chartCalls": 1,
+      "chartErrors": 0,
+      "chartTypes": [
+        "bar"
+      ],
+      "escalated": false,
+      "latencyMs": 6283,
+      "inputTokens": 17196,
+      "cachedTokens": 12544,
+      "outputTokens": 1003,
+      "costUsd": 0.0013372319999999998,
+      "sqls": [
+        "WITH d AS (\n  SELECT event_type, count(DISTINCT (occurred_at::date, user_id)) AS cnt\n  FROM shop.user_events\n  WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\n  GROUP BY 1\n), f AS (\n  SELECT\n    max(cnt) FILTER (WHERE event_type = 'visit') AS v,\n    max(cnt) FILTER (WHERE event_type = 'view_product') AS vp,\n    max(cnt) FILTER (WHERE event_type = 'add_cart') AS ac,\n    max(cnt) FILTER (WHERE event_type = 'place_order') AS po,\n    max(cnt) FILTER (WHERE event_type = 'pay') AS py\n  FROM d\n)\nSELECT '访问' AS \"环节\", v AS \"用户数\", 100.00 AS \"环节转化率(%)\", 100.00 AS \"整体转化率(%)\" FROM f\nUNION ALL SELECT '浏览商品', vp, round(vp*100.0/NULLIF(v,0),2), round(vp*100.0/NULLIF(v,0),2) FROM f\nUNION ALL SELECT '加购', ac, round(ac*100.0/NULLIF(vp,0),2), round(ac*100.0/NULLIF(v,0),2) FROM f\nUNION ALL SELECT '下单', po, round(po*100.0/NULLIF(ac,0),2), round(po*100.0/NULLIF(v,0),2) FROM f\nUNION ALL SELECT '支付', py, round(py*100.0/NULLIF(po,0),2), round(py*100.0/NULLIF(v,0),2) FROM f"
+      ],
+      "executedSqls": [
+        "WITH d AS (\n  SELECT event_type, count(DISTINCT (occurred_at::date, user_id)) AS cnt\n  FROM shop.user_events\n  WHERE occurred_at >= '2026-09-01' AND occurred_at < '2026-10-01'\n  GROUP BY 1\n), f AS (\n  SELECT\n    max(cnt) FILTER (WHERE event_type = 'visit') AS v,\n    max(cnt) FILTER (WHERE event_type = 'view_product') AS vp,\n    max(cnt) FILTER (WHERE event_type = 'add_cart') AS ac,\n    max(cnt) FILTER (WHERE event_type = 'place_order') AS po,\n    max(cnt) FILTER (WHERE event_type = 'pay') AS py\n  FROM d\n)\nSELECT '访问' AS \"环节\", v AS \"用户数\", 100.00 AS \"环节转化率(%)\", 100.00 AS \"整体转化率(%)\" FROM f\nUNION ALL SELECT '浏览商品', vp, round(vp*100.0/NULLIF(v,0),2), round(vp*100.0/NULLIF(v,0),2) FROM f\nUNION ALL SELECT '加购', ac, round(ac*100.0/NULLIF(vp,0),2), round(ac*100.0/NULLIF(v,0),2) FROM f\nUNION ALL SELECT '下单', po, round(po*100.0/NULLIF(ac,0),2), round(po*100.0/NULLIF(v,0),2) FROM f\nUNION ALL SELECT '支付', py, round(py*100.0/NULLIF(po,0),2), round(py*100.0/NULLIF(v,0),2) FROM f"
+      ],
+      "approvalRequests": [],
+      "executedTools": [
+        "get_metric_definitions",
+        "describe_table",
+        "run_sql",
+        "render_chart"
+      ],
+      "errors": [],
+      "text": "**9 月转化漏斗（按“用户-天”去重，同一用户同一天只算一次）：**\n\n| 环节 | 用户数 | 环节转化率 | 相对访问的整体转化率 |\n|---|---|---|---|\n| 访问 | 56,879 | — | 100% |\n| 浏览商品 | 37,143 | 65.30% | 65.30% |\n| 加购 | 16,415 | 44.19% | 28.86% |\n| 下单 | 10,979 | 66.88% | 19.30% |\n| 支付 | 10,242 | 93.29% | 18.01% |\n\n关键发现：\n1. **最大流失发生在“访问→浏览商品”**：只有 65.30% 的访问用户当天浏览了商品，即约 35% 的访问没有进入商品页，这是整个漏斗的第一大缺口。\n2. **“浏览商品→加购”的转化相对最弱**：转化率为 44.19%，是各环节中比例最低的一段（其次为访问→浏览）。\n3. **下单后的支付转化很高**：下单→支付的环节转化率为 93.29%（10,979 → 10,242），说明主要瓶颈在前端浏览和加购阶段；从访问到支付的整体转化率为 18.01%。\n\n注：漏斗各环节之间没有严格按“用户-天”做路径串联（例如加购用户不一定当天浏览过商品），因此环节转化率指的是相邻环节去重用户数之比，属于汇总口径的漏斗。"
+    }
+  ],
+  "safety": []
+}

@@ -20,6 +20,11 @@ export type AgentOptions = {
   thinking: boolean
   /** 不设则用模型默认值 */
   temperature?: number
+  /**
+   * 仅用于评测对比：在系统提示词最前面放一个每次请求都不同的编号，
+   * 模拟"把当前时间、请求 ID 写在提示词开头"的常见写法，衡量它对前缀缓存和成本的影响
+   */
+  unstablePrefix?: boolean
 }
 
 /** 线上使用的配置 */
@@ -42,8 +47,12 @@ export function countSqlErrors(steps: StepResult<InsightTools>[]) {
   return steps.flatMap((step) => step.content).filter((part) => part.type === 'tool-error' && part.toolName === 'run_sql').length
 }
 
-export function agentSettings(options: AgentOptions = FULL_AGENT) {
-  const tools = buildTools(options)
+/**
+ * lastResultId：对话历史里最近一次查询的结果，多轮对话时传入，见 buildTools。
+ */
+export function agentSettings(options: AgentOptions = FULL_AGENT, { lastResultId }: { lastResultId?: string } = {}) {
+  const tools = buildTools({ ...options, lastResultId })
+  const nonce = options.unstablePrefix ? `请求编号：${crypto.randomUUID()}\n\n` : ''
 
   const prepareStep: PrepareStepFunction<InsightTools> = ({ stepNumber, steps }) => {
     const escalate = options.escalation && countSqlErrors(steps) >= ESCALATE_AFTER_SQL_ERRORS
@@ -52,18 +61,20 @@ export function agentSettings(options: AgentOptions = FULL_AGENT) {
     if (!escalate && !lastStep) return undefined
     return {
       ...(escalate && { model: strongModel() }),
-      ...(lastStep && { toolChoice: 'none' as const, instructions: buildFinalStepInstructions(options) }),
+      ...(lastStep && { toolChoice: 'none' as const, instructions: nonce + buildFinalStepInstructions(options) }),
     }
   }
 
   return {
     model: fastModel(),
-    instructions: buildInstructions(options),
+    instructions: nonce + buildInstructions(options),
     tools,
     // 关掉业务口径时，不让模型看到这个工具
     activeTools: options.semanticLayer
       ? undefined
       : (Object.keys(tools) as (keyof InsightTools)[]).filter((name) => name !== 'get_metric_definitions'),
+    // 导出数据必须由用户在界面上确认后才执行
+    toolApproval: { export_csv: 'user-approval' as const },
     stopWhen: [isStepCount(MAX_STEPS), repeatedSqlStop],
     prepareStep,
     providerOptions: { deepseek: { thinking: { type: options.thinking ? ('enabled' as const) : ('disabled' as const) } } },

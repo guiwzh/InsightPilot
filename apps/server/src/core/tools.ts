@@ -1,14 +1,17 @@
 import {
   ChartSpecInput,
   DescribeTableInput,
+  ExportCsvInput,
   GetMetricDefinitionsInput,
   ListTablesInput,
   RunSqlInput,
   validateChartSpec,
+  type ExportCsvOutput,
   type RenderChartOutput,
 } from '@insightpilot/shared'
 import { tool, type StopCondition, type ToolSet } from 'ai'
 import { z } from 'zod'
+import { safeFilename } from './csv'
 import { loadResultMeta, PREVIEW_ROWS, runSql, ToolError } from './run-sql'
 import { describeTables, listTablesFor } from './schema-info'
 import { findMetrics } from './semantic/metrics'
@@ -21,6 +24,11 @@ export type ToolOptions = {
   schemaHints: boolean
   /** run_sql 报错时是否附带修复建议 */
   errorHints: boolean
+  /**
+   * 对话历史里最近一次查询的 resultId。多轮对话（以及导出审批通过后的续跑请求）里，
+   * 模型说"把刚才的结果画成图 / 导出"时可以不填 resultId
+   */
+  lastResultId?: string
 }
 
 /**
@@ -28,9 +36,18 @@ export type ToolOptions = {
  * render_chart 要知道本轮最近一次成功查询的 resultId（模型可以不抄那串 UUID）。
  * Web 接口、MCP、评测脚本都从这里拿工具，行为完全一致。
  */
-export function buildTools({ schemaHints, errorHints }: ToolOptions = { schemaHints: true, errorHints: true }) {
+export function buildTools({ schemaHints, errorHints, lastResultId: initialResultId }: ToolOptions = { schemaHints: true, errorHints: true }) {
   let lastSql: string | undefined
-  let lastResultId: string | undefined
+  let lastResultId = initialResultId
+
+  /** 模型给的 resultId 不是合法 UUID（抄错了）或没给时，用最近一次查询的结果 */
+  const resolveResult = async (resultId: string | undefined) => {
+    const id = resultId && isUuid(resultId) ? resultId : lastResultId
+    if (!id) throw new ToolError('[NO_RESULT] 还没有成功的查询结果，请先调用 run_sql')
+    const meta = await loadResultMeta(id)
+    if (!meta) throw new ToolError(`[RESULT_NOT_FOUND] 找不到结果 ${id}。可以省略 resultId，自动使用最近一次查询的结果`)
+    return { id, meta }
+  }
 
   return {
     list_tables: tool({
@@ -73,18 +90,29 @@ export function buildTools({ schemaHints, errorHints }: ToolOptions = { schemaHi
         '把 run_sql 的查询结果画成图表展示给用户：趋势用 line，类别对比用 bar。x、y、series 必须和查询结果的列名完全一致。字段不对时会返回可用的列，改正后重试。画成功后图表已经展示给用户，回答里只需总结结论。',
       inputSchema: ChartSpecInput,
       execute: async (input): Promise<RenderChartOutput> => {
-        const resultId = input.resultId && isUuid(input.resultId) ? input.resultId : lastResultId
-        if (!resultId) throw new ToolError('[NO_RESULT] 本轮还没有成功的查询结果，请先调用 run_sql')
-
-        const meta = await loadResultMeta(resultId)
-        if (!meta) throw new ToolError(`[RESULT_NOT_FOUND] 找不到结果 ${resultId}。可以省略 resultId，自动使用最近一次查询的结果`)
-
+        const { id: resultId, meta } = await resolveResult(input.resultId)
         const errors = validateChartSpec(input, meta.columns, meta.rowCount)
         if (errors.length > 0) {
           const available = meta.columns.map((c) => `"${c.name}"(${c.type})`).join('、')
           throw new ToolError(`[CHART_INVALID] ${errors.join('；')}。可用的列：${available}`)
         }
         return { spec: { ...input, resultId }, rowCount: meta.rowCount }
+      },
+    }),
+
+    // 导出数据是"把数据带出系统"的动作，必须由用户在界面上确认（见 agent.ts 的 toolApproval）
+    export_csv: tool({
+      description:
+        '把查询结果导出为 CSV 文件供用户下载。只在用户明确要求导出、下载数据时调用。调用后需要用户在界面上确认；用户拒绝时不要重复调用，改为说明可以怎么查看数据。',
+      inputSchema: ExportCsvInput,
+      execute: async (input): Promise<ExportCsvOutput> => {
+        const { id, meta } = await resolveResult(input.resultId)
+        const filename = safeFilename(input.filename)
+        return {
+          url: `/api/results/${id}/csv?name=${encodeURIComponent(filename)}`,
+          filename: `${filename}.csv`,
+          rowCount: meta.rowCount,
+        }
       },
     }),
   } satisfies ToolSet

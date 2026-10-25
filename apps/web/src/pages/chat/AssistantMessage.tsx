@@ -4,7 +4,11 @@ import { Flex } from 'antd'
 import { memo } from 'react'
 import { ResultCard } from '../../components/result/ResultCard'
 import { isToolPart, type InsightMessage, type InsightPart, type InsightToolPart } from '../../types'
+import { ExportCard } from './ExportCard'
 import { ToolTrace } from './ToolTrace'
+
+/** 用户在导出审批卡片上的选择：approvalId 来自 part.approval.id */
+export type ApprovalHandler = (approvalId: string, approved: boolean) => void
 
 type TextPart = Extract<InsightPart, { type: 'text' }>
 type Block = { kind: 'text'; key: string; part: TextPart } | { kind: 'tools'; key: string; parts: InsightToolPart[] }
@@ -69,6 +73,13 @@ function resultCards(parts: InsightToolPart[]): CardInfo[] {
   return cards
 }
 
+/** 本条消息里最近一次成功查询的结果，导出时模型没指定 resultId 就用它 */
+function lastResultIdOf(message: InsightMessage) {
+  for (const part of [...message.parts].reverse()) {
+    if (part.type === 'tool-run_sql' && part.state === 'output-available') return part.output.resultId
+  }
+}
+
 export function hasVisibleContent(message: InsightMessage) {
   return message.parts.some((part) => (part.type === 'text' ? part.text.trim() : isToolPart(part)))
 }
@@ -87,10 +98,13 @@ export const textOf = (message: InsightMessage) =>
 export const AssistantMessage = memo(function AssistantMessage({
   message,
   active,
+  onApproval,
 }: {
   message: InsightMessage
   active: boolean
+  onApproval: ApprovalHandler
 }) {
+  const lastResultId = lastResultIdOf(message)
   return (
     <Flex vertical gap={12} style={{ width: '100%' }}>
       {toBlocks(message).map((block) => {
@@ -114,6 +128,11 @@ export const AssistantMessage = memo(function AssistantMessage({
             {resultCards(block.parts).map(({ key, ...card }) => (
               <ResultCard key={key} {...card} />
             ))}
+            {block.parts.map((part) =>
+              part.type === 'tool-export_csv' ? (
+                <ExportCard key={part.toolCallId} part={part} resultId={lastResultId} onApproval={onApproval} />
+              ) : null,
+            )}
           </Flex>
         )
       })}

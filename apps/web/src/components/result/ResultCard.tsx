@@ -45,7 +45,7 @@ function ResultCardInner({ resultId, title, spec, charting }: Props) {
     return { option: specToOption(effective, data) }
   }, [data, chartable, spec, view])
 
-  if (error) return <Alert type="error" showIcon message="结果加载失败" description={error.message} />
+  if (error) return <Alert type="error" showIcon title="结果加载失败" description={error.message} />
 
   const extra = (
     <Space size={4}>
@@ -86,7 +86,7 @@ function ResultCardInner({ resultId, title, spec, charting }: Props) {
         <ChartView ref={chartRef} option={chart.option} />
       ) : (
         <Flex vertical>
-          {chart?.error && <Alert type="warning" banner message={`图表无法渲染，已改为表格：${chart.error}`} />}
+          {chart?.error && <Alert type="warning" banner title={`图表无法渲染，已改为表格：${chart.error}`} />}
           <DataTable data={data} />
         </Flex>
       )}

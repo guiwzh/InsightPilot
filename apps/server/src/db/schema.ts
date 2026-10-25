@@ -30,15 +30,18 @@ export const messages = app.table(
     role: text('role', { enum: ['system', 'user', 'assistant'] }).notNull(),
     // UIMessage.parts 原样存储，读出来就能还给 useChat
     parts: jsonb('parts').$type<unknown[]>().notNull(),
+    // 消息在会话里的顺序。同一事务写入的多条消息 created_at 相同，不能靠它排序
+    seq: integer('seq').notNull().default(0),
     createdAt: createdAt(),
   },
-  (t) => [index('messages_conversation_idx').on(t.conversationId, t.createdAt)],
+  (t) => [index('messages_conversation_idx').on(t.conversationId, t.seq)],
 )
 
 export type ToolCallLog = {
   name: string
   durationMs: number
   ok: boolean
+  /** 需要用户确认的工具（export_csv）的确认结果 */
   approval?: 'approved' | 'denied'
   error?: string
 }
