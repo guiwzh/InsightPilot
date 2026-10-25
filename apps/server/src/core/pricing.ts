@@ -11,6 +11,9 @@ const OFF_PEAK: Record<string, Price> = {
 
 export const USD_TO_CNY = 7.1
 
+/** 价格表里有没有这个模型。没有的话成本记为 0，全站每日预算也就不起作用了 */
+export const hasPrice = (modelId: string) => Object.hasOwn(OFF_PEAK, modelId)
+
 export function isPeak(at: Date) {
   const day = at.getUTCDay()
   const hour = at.getUTCHours()

@@ -1,16 +1,19 @@
 import { Hono } from 'hono'
+import { bodyLimit } from 'hono/body-limit'
 import {
   convertToModelMessages,
   createIdGenerator,
   createUIMessageStreamResponse,
   streamText,
   toUIMessageStream,
+  type StepResult,
   type UIMessage,
 } from 'ai'
 import { z } from 'zod'
 import { agentSettings, FULL_AGENT } from '../core/agent'
 import { checkDailyBudget } from '../core/budget'
 import { lastResultIdIn, startRun } from '../core/run-log'
+import type { InsightTools } from '../core/tools'
 import { saveConversation } from '../db/chat-store'
 import { env } from '../env'
 import { rateLimit } from '../middleware/rate-limit'
@@ -24,12 +27,19 @@ const ChatRequest = z.object({
 
 const generateMessageId = createIdGenerator({ prefix: 'msg', size: 16 })
 
+/**
+ * 请求体上限。请求里是整段对话（含每次工具调用的结果），正常一轮问答只有几十 KB；
+ * 不设上限时一个请求就能把几百 MB 读进内存，消息还会原样存库
+ */
+const MAX_BODY_BYTES = 2 * 1024 * 1024
+
 /** 首字时间按这些片段计：用户能看到的第一个文字，或者第一个工具调用（界面上会出现步骤） */
 const MODEL_OUTPUT_CHUNKS = new Set(['text-delta', 'reasoning-delta', 'tool-input-start', 'tool-call'])
 
 export const chat = new Hono<AppEnv>()
   // 同一 IP 每分钟最多 N 次（含导出审批后的续跑请求）
   .use(rateLimit({ windowMs: 60_000, limit: env.CHAT_RATE_LIMIT_PER_MINUTE }))
+  .use(bodyLimit({ maxSize: MAX_BODY_BYTES, onError: (c) => c.text('这段对话太长了，请新建一个对话再问', 413) }))
   .post('/', async (c) => {
     const visitorId = c.get('visitorId')
     const parsed = ChatRequest.safeParse(await c.req.json().catch(() => null))
@@ -44,6 +54,8 @@ export const chat = new Hono<AppEnv>()
     if (!(await saveConversation(visitorId, conversationId, messages))) return c.text('会话不存在', 404)
 
     const run = startRun({ visitorId, conversationId, messages })
+    // onError 拿不到 steps：中途出错时，前面已经完成（已经计费）的步骤也要记进成本，否则每日预算会漏算
+    const finishedSteps: StepResult<InsightTools>[] = []
     const result = streamText({
       // 和评测脚本用的是同一份配置
       ...agentSettings(FULL_AGENT, { lastResultId: lastResultIdIn(messages) }),
@@ -61,9 +73,10 @@ export const chat = new Hono<AppEnv>()
           durationMs: toolExecutionMs,
           error: toolOutput.type === 'tool-error' ? toolOutput.error : undefined,
         }),
+      onStepEnd: (step) => void finishedSteps.push(step),
       onEnd: ({ steps }) => run.finish('success', steps),
       onAbort: ({ steps }) => run.finish('aborted', steps),
-      onError: ({ error }) => run.finish('error', [], error),
+      onError: ({ error }) => run.finish('error', finishedSteps, error),
     })
 
     return createUIMessageStreamResponse({
