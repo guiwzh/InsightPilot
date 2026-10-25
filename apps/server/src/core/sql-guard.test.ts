@@ -94,6 +94,9 @@ describe('拒绝：越界的表', () => {
     ['不带 schema 的系统视图', 'SELECT * FROM pg_user'],
     ['information_schema', 'SELECT * FROM information_schema.tables'],
     ['子查询里藏着越界表', 'SELECT * FROM shop.orders WHERE user_id IN (SELECT 1 FROM app.messages)'],
+    ['子查询里的同名 CTE 掩护外层的系统表', 'SELECT * FROM (WITH pg_roles AS (SELECT 1) SELECT * FROM pg_roles) a, pg_roles'],
+    ['标量子查询里的同名 CTE', 'SELECT (WITH pg_settings AS (SELECT 1) SELECT 1), * FROM pg_settings'],
+    ['大小写不同的同名 CTE', 'SELECT * FROM (WITH "PG_STAT_ACTIVITY" AS (SELECT 1) SELECT 1) a, pg_stat_activity'],
   ])('%s', (_name, sql) => {
     expect(rejected(sql).code).toBe('TABLE_NOT_ALLOWED')
   })

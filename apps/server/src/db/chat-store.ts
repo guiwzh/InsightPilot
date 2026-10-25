@@ -1,7 +1,7 @@
 // 会话持久化：conversations + messages。消息直接存 AI SDK 的 UIMessage，读出来原样还给 useChat。
 import type { ConversationDetail, ConversationSummary } from '@insightpilot/shared'
 import type { UIMessage } from 'ai'
-import { and, asc, desc, eq, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, notInArray, sql } from 'drizzle-orm'
 import { db } from './client'
 import { conversations, messages as messagesTable } from './schema'
 
@@ -33,6 +33,10 @@ export async function saveConversation(visitorId: string, conversationId: string
     }
 
     if (messages.length > 0) {
+      // 客户端每次发来的是完整的消息列表。不在列表里的是被"重新生成"换掉的旧回答，要删掉，
+      // 否则刷新后新旧两条回答会同时出现（seq 还相同），下一轮也会一起发给模型
+      const ids = messages.map((m) => m.id)
+      await tx.delete(messagesTable).where(and(eq(messagesTable.conversationId, conversationId), notInArray(messagesTable.id, ids)))
       await tx
         .insert(messagesTable)
         .values(messages.map((m, seq) => ({ id: m.id, conversationId, role: m.role, parts: m.parts, seq })))

@@ -87,7 +87,10 @@ export function guardSql(input: string): GuardResult {
     if (operation !== 'select') {
       return fail('NOT_SELECT', `语句中包含 ${operation.toUpperCase()} 操作`, '只能读取数据，不能增删改表或数据')
     }
-    const allowed = schema === 'shop' ? ALLOWED_TABLES.has(table) : schema === 'null' && (ALLOWED_TABLES.has(table) || cteNames.has(table))
+    // CTE 名是从整棵语法树收集的，不分作用域：子查询里定义一个 pg_roles，外层再引用 pg_roles，指向的其实是系统表。
+    // 不写 schema 的名字会先在 pg_catalog 里找，而系统表都以 pg_ 开头，所以 pg_ 开头的名字一律不当作 CTE
+    const isCte = cteNames.has(table) && !table.startsWith('pg_')
+    const allowed = schema === 'shop' ? ALLOWED_TABLES.has(table) : schema === 'null' && (ALLOWED_TABLES.has(table) || isCte)
     if (!allowed) {
       const name = schema === 'null' ? table : `${schema}.${table}`
       return fail('TABLE_NOT_ALLOWED', `不能查询 ${name}`, `只能查询 shop 下的表：${SHOP_TABLES.join('、')}`)
