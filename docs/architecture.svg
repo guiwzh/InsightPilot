@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1300" viewBox="0 0 1600 1300" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Source Han Sans SC','WenQuanYi Zen Hei',sans-serif">
+<title>InsightPilot 架构全景图</title>
+<defs>
+<marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+<marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+<marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ea580c"/></marker>
+<marker id="a-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+</defs>
+<rect x="0" y="0" width="1600" height="1300" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<text x="40" y="52" font-size="28" fill="#1e293b" font-weight="bold">InsightPilot 架构全景</text>
+<text x="40" y="82" font-size="14" fill="#64748b">运营同学用自然语言提问 → Agent 查表结构、读业务口径、写只读 SQL → 结果流式渲染成图表和表格</text>
+<rect x="40" y="108" width="1150" height="80" rx="12" fill="#f8fafc"/>
+<rect x="40" y="108" width="126" height="80" rx="12" fill="#e2e8f0"/>
+<rect x="150" y="108" width="16" height="80" rx="0" fill="#e2e8f0"/>
+<text x="103" y="153.0" font-size="15" fill="#334155" font-weight="bold" text-anchor="middle">用户</text>
+<rect x="40" y="222" width="1150" height="170" rx="12" fill="#eff6ff"/>
+<rect x="40" y="222" width="126" height="170" rx="12" fill="#dbeafe"/>
+<rect x="150" y="222" width="16" height="170" rx="0" fill="#dbeafe"/>
+<text x="103" y="302.0" font-size="15" fill="#1d4ed8" font-weight="bold" text-anchor="middle">前端</text>
+<text x="103" y="322.0" font-size="12" fill="#1d4ed8" text-anchor="middle">apps/web</text>
+<text x="1176" y="383" font-size="11.5" fill="#64748b" text-anchor="end">React 19 · Vite 8 · antd 6 · Ant Design X 2 · ECharts 6 · TanStack Query 5</text>
+<rect x="40" y="426" width="1150" height="108" rx="12" fill="#f5f3ff"/>
+<rect x="40" y="426" width="126" height="108" rx="12" fill="#ede9fe"/>
+<rect x="150" y="426" width="16" height="108" rx="0" fill="#ede9fe"/>
+<text x="103" y="475.0" font-size="15" fill="#6d28d9" font-weight="bold" text-anchor="middle">接入层</text>
+<text x="103" y="495.0" font-size="12" fill="#6d28d9" text-anchor="middle">生产环境</text>
+<rect x="40" y="568" width="1150" height="180" rx="12" fill="#f0fdfa"/>
+<rect x="40" y="568" width="126" height="180" rx="12" fill="#ccfbf1"/>
+<rect x="150" y="568" width="16" height="180" rx="0" fill="#ccfbf1"/>
+<text x="103" y="653.0" font-size="15" fill="#0f766e" font-weight="bold" text-anchor="middle">服务层</text>
+<text x="103" y="673.0" font-size="12" fill="#0f766e" text-anchor="middle">apps/server</text>
+<text x="180" y="739" font-size="11.5" fill="#64748b">Hono 4 · @hono/node-server · Vercel AI SDK 7 · Zod 4 · Drizzle ORM</text>
+<rect x="40" y="782" width="1150" height="210" rx="12" fill="#fffbeb"/>
+<rect x="40" y="782" width="126" height="210" rx="12" fill="#fef3c7"/>
+<rect x="150" y="782" width="16" height="210" rx="0" fill="#fef3c7"/>
+<text x="103" y="862.0" font-size="15" fill="#b45309" font-weight="bold" text-anchor="middle">Agent 核心</text>
+<text x="103" y="882.0" font-size="12" fill="#b45309" text-anchor="middle">src/core</text>
+<text x="103" y="902.0" font-size="12" fill="#b45309" text-anchor="middle">Web、MCP、评测</text>
+<text x="103" y="922.0" font-size="12" fill="#b45309" text-anchor="middle">三处共用</text>
+<text x="1176" y="983" font-size="11.5" fill="#64748b" text-anchor="end">node-sql-parser 5 · postgres.js 3 · 纯函数部分都有单测</text>
+<rect x="40" y="1026" width="1150" height="160" rx="12" fill="#f0fdf4"/>
+<rect x="40" y="1026" width="126" height="160" rx="12" fill="#dcfce7"/>
+<rect x="150" y="1026" width="16" height="160" rx="0" fill="#dcfce7"/>
+<text x="103" y="1101.0" font-size="15" fill="#15803d" font-weight="bold" text-anchor="middle">数据层</text>
+<text x="103" y="1121.0" font-size="12" fill="#15803d" text-anchor="middle">PostgreSQL 18</text>
+<rect x="430" y="120" width="500" height="58" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="444" y="154.0" font-size="14.5" fill="#334155" font-weight="bold">浏览器</text>
+<text x="507" y="154.0" font-size="12.5" fill="#334155">运营同学、面试官打开即用，无需登录（匿名访客 cookie）</text>
+<rect x="180" y="236" width="320" height="122" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="1.5"/>
+<text x="194" y="261" font-size="14.5" fill="#1d4ed8" font-weight="bold">结果卡片</text>
+<text x="194" y="283" font-size="12.5" fill="#15803d">按 resultId 拉取完整结果</text>
+<text x="194" y="302" font-size="12.5" fill="#334155">specToOption → ECharts 6</text>
+<text x="194" y="321" font-size="12.5" fill="#334155">图表 / 表格切换 · 查看 SQL · 下载图片</text>
+<rect x="520" y="236" width="320" height="122" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="1.5"/>
+<text x="534" y="261" font-size="14.5" fill="#1d4ed8" font-weight="bold">对话页</text>
+<text x="534" y="283" font-size="12.5" fill="#334155">useChat 流式接收（SSE），50ms 节流</text>
+<text x="534" y="302" font-size="12.5" fill="#334155">工具轨迹 · Markdown · 导出审批卡片</text>
+<text x="534" y="321" font-size="12.5" fill="#334155">停止 / 重新生成 · 刷新后恢复会话</text>
+<rect x="860" y="236" width="320" height="122" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="1.5"/>
+<text x="874" y="261" font-size="14.5" fill="#1d4ed8" font-weight="bold">看板与会话列表</text>
+<text x="874" y="283" font-size="12.5" fill="#334155">TanStack Query 拉取，看板 30 秒刷新</text>
+<text x="874" y="302" font-size="12.5" fill="#334155">成本、P50/P95、首字时间、缓存命中率</text>
+<text x="874" y="321" font-size="12.5" fill="#334155">会话按访客 cookie 隔离</text>
+<rect x="520" y="438" width="320" height="84" rx="10" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
+<text x="534" y="463" font-size="14.5" fill="#6d28d9" font-weight="bold">Nginx Proxy Manager</text>
+<text x="534" y="485" font-size="12.5" fill="#334155">线上：HTTPS 证书，转发给 Caddy</text>
+<text x="534" y="504" font-size="12.5" fill="#64748b">独占服务器时没有这一层</text>
+<rect x="860" y="438" width="320" height="84" rx="10" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
+<text x="874" y="463" font-size="14.5" fill="#6d28d9" font-weight="bold">Caddy 2</text>
+<text x="874" y="485" font-size="12.5" fill="#334155">前端静态文件 · /api/* 反向代理</text>
+<text x="874" y="504" font-size="12.5" fill="#334155">SSE 立即转发，不缓冲</text>
+<rect x="180" y="582" width="320" height="140" rx="10" fill="#ffffff" stroke="#2dd4bf" stroke-width="1.5"/>
+<text x="194" y="607" font-size="14.5" fill="#0f766e" font-weight="bold">其他接口</text>
+<text x="194" y="629" font-size="12.5" fill="#15803d">GET /api/results/:id（含 /csv）</text>
+<text x="194" y="648" font-size="12.5" fill="#334155">GET / DELETE /api/conversations</text>
+<text x="194" y="667" font-size="12.5" fill="#334155">GET /api/stats · /api/health</text>
+<text x="194" y="686" font-size="12.5" fill="#334155">会话按访客隔离，看板全站汇总</text>
+<rect x="520" y="582" width="660" height="32" rx="8" fill="#ffffff" stroke="#2dd4bf" stroke-width="1.5"/>
+<text x="534" y="603" font-size="12.5" fill="#0f766e">中间件：访客 cookie（所有接口）→ IP 限流 10 次/分钟 + 请求体 ≤ 2MB（对话接口）</text>
+<rect x="520" y="624" width="660" height="98" rx="10" fill="#ffffff" stroke="#2dd4bf" stroke-width="1.5"/>
+<text x="534" y="649" font-size="14.5" fill="#0f766e" font-weight="bold">POST /api/chat · 对话接口</text>
+<text x="534" y="671" font-size="12.5" fill="#334155">每日预算检查（每个访客 40 万 token · 全站 ¥10）→ 先保存会话</text>
+<text x="534" y="690" font-size="12.5" fill="#334155">streamText（Vercel AI SDK 7）：按 agentSettings 多步调用模型和工具</text>
+<text x="534" y="709" font-size="12.5" fill="#334155">UI Message Stream（SSE）流式返回 → 结束时保存消息、写 agent_runs</text>
+<rect x="180" y="796" width="320" height="170" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="194" y="821" font-size="14.5" fill="#b45309" font-weight="bold">run-sql.ts · schema-info.ts</text>
+<text x="194" y="843" font-size="12.5" fill="#334155">只读连接执行，最多 1000 行，5 秒超时</text>
+<text x="194" y="862" font-size="12.5" fill="#15803d">完整结果存 query_results</text>
+<text x="194" y="881" font-size="12.5" fill="#334155">模型只拿列信息和预览（≤ 100 行）</text>
+<text x="194" y="900" font-size="12.5" fill="#334155">长文本截断，结果超过 200 万字符拒绝</text>
+<text x="194" y="919" font-size="12.5" fill="#334155">表结构和常见取值读自系统目录</text>
+<rect x="520" y="796" width="320" height="170" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="534" y="821" font-size="14.5" fill="#b45309" font-weight="bold">tools.ts · 6 个工具</text>
+<text x="534" y="843" font-size="12.5" fill="#334155">list_tables · describe_table</text>
+<text x="534" y="862" font-size="12.5" fill="#334155">get_metric_definitions（13 个口径）</text>
+<text x="534" y="881" font-size="12.5" fill="#334155">run_sql → sql-guard（AST 白名单）</text>
+<text x="534" y="900" font-size="12.5" fill="#334155">render_chart（图表 DSL 校验）</text>
+<text x="534" y="919" font-size="12.5" fill="#334155">export_csv（需要用户确认）</text>
+<rect x="860" y="796" width="320" height="170" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="874" y="821" font-size="14.5" fill="#b45309" font-weight="bold">agent.ts · agentSettings</text>
+<text x="874" y="843" font-size="12.5" fill="#334155">提示词 + few-shot（开头固定，吃缓存）</text>
+<text x="874" y="862" font-size="12.5" fill="#334155">最多 8 步 · 拦截重复 SQL</text>
+<text x="874" y="881" font-size="12.5" fill="#334155">最后一步禁用工具，保证有文字回答</text>
+<text x="874" y="900" font-size="12.5" fill="#334155">SQL 报错 2 次后换用 Pro 模型</text>
+<text x="874" y="919" font-size="12.5" fill="#334155">能力做成开关，评测逐项消融</text>
+<rect x="180" y="1040" width="480" height="132" rx="10" fill="#ffffff" stroke="#4ade80" stroke-width="1.5"/>
+<text x="194" y="1065" font-size="14.5" fill="#15803d" font-weight="bold">shop：样例电商数据（Agent 只读）</text>
+<text x="194" y="1087" font-size="12.5" fill="#334155">channels · users · products · orders</text>
+<text x="194" y="1106" font-size="12.5" fill="#334155">order_items · user_events · reviews</text>
+<text x="194" y="1125" font-size="12.5" fill="#334155">约 2 万用户 · 3.1 万订单 · 52 万行为事件</text>
+<text x="194" y="1144" font-size="12.5" fill="#334155">账号 analyst_ro：只有 SELECT，只读事务，5 秒超时</text>
+<rect x="680" y="1040" width="500" height="132" rx="10" fill="#ffffff" stroke="#4ade80" stroke-width="1.5"/>
+<text x="694" y="1065" font-size="14.5" fill="#15803d" font-weight="bold">app：应用数据（Drizzle 定义，管理员连接）</text>
+<text x="694" y="1087" font-size="12.5" fill="#334155">conversations · messages（UIMessage 原样存）</text>
+<text x="694" y="1106" font-size="12.5" fill="#334155">agent_runs：token、成本、首字时间、工具调用</text>
+<text x="694" y="1125" font-size="12.5" fill="#15803d">query_results：完整的查询结果</text>
+<text x="694" y="1144" font-size="12.5" fill="#334155">读写方：对话接口、其他接口、run_sql</text>
+<rect x="1230" y="120" width="330" height="58" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="1244" y="154.0" font-size="14.5" fill="#334155" font-weight="bold">MCP 客户端</text>
+<text x="1367" y="154.0" font-size="12.5" fill="#334155">Claude Desktop / Cursor</text>
+<rect x="1230" y="236" width="330" height="122" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="1244" y="261" font-size="14.5" fill="#334155" font-weight="bold">MCP server · src/mcp.ts</text>
+<text x="1244" y="283" font-size="12.5" fill="#334155">stdio 传输 · 4 个只读工具</text>
+<text x="1244" y="302" font-size="12.5" fill="#334155">list_tables · describe_table</text>
+<text x="1244" y="321" font-size="12.5" fill="#334155">get_metric_definitions · run_readonly_sql</text>
+<rect x="1230" y="624" width="330" height="98" rx="10" fill="#fff1f2" stroke="#fb7185" stroke-width="1.5"/>
+<text x="1244" y="649" font-size="14.5" fill="#be123c" font-weight="bold">DeepSeek API</text>
+<text x="1244" y="671" font-size="12.5" fill="#334155">deepseek-flash（默认，V4.1 Flash）</text>
+<text x="1244" y="690" font-size="12.5" fill="#334155">deepseek-v4-pro（SQL 报错 2 次后）</text>
+<text x="1244" y="709" font-size="12.5" fill="#334155">前缀缓存命中率约 89%</text>
+<rect x="1230" y="796" width="330" height="170" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="1244" y="821" font-size="14.5" fill="#334155" font-weight="bold">评测 · evals/run.ts</text>
+<text x="1244" y="843" font-size="12.5" fill="#334155">pnpm eval：开发 40 · 测试 10 · 安全 6</text>
+<text x="1244" y="862" font-size="12.5" fill="#334155">generateText + 同一份 agentSettings</text>
+<text x="1244" y="881" font-size="12.5" fill="#334155">按执行结果判分（严格 / 宽松）</text>
+<text x="1244" y="900" font-size="12.5" fill="#334155">逐项开关做消融实验</text>
+<text x="1244" y="919" font-size="12.5" fill="#334155">报告写入 evals/reports/</text>
+<rect x="1230" y="1040" width="330" height="132" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="1244" y="1065" font-size="14.5" fill="#334155" font-weight="bold">构建 · 部署 · CI</text>
+<text x="1244" y="1087" font-size="12.5" fill="#334155">esbuild 打成单文件 · Vite 构建前端</text>
+<text x="1244" y="1106" font-size="12.5" fill="#334155">本机构建镜像，ssh 传到服务器</text>
+<text x="1244" y="1125" font-size="12.5" fill="#334155">compose：web（Caddy）· server · postgres</text>
+<text x="1244" y="1144" font-size="12.5" fill="#334155">GitHub Actions：类型检查、单测、构建</text>
+<polyline points="680,178 680,234" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<text x="692" y="211" font-size="12" fill="#334155" stroke="#ffffff" stroke-width="4" paint-order="stroke">提问</text>
+<polyline points="680,358 680,436" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<text x="692" y="412" font-size="12" fill="#334155" stroke="#ffffff" stroke-width="4" paint-order="stroke">HTTPS · /api/*（对话走 SSE）</text>
+<polyline points="840,480 858,480" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<polyline points="1020,522 1020,580" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<text x="1032" y="555" font-size="12" fill="#334155" stroke="#ffffff" stroke-width="4" paint-order="stroke">反向代理 → server:8787</text>
+<polyline points="1020,722 1020,794" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<text x="1008" y="769" font-size="12" fill="#334155" stroke="#ffffff" stroke-width="4" paint-order="stroke" text-anchor="end">streamText：按 agentSettings 多步循环</text>
+<polyline points="860,881 842,881" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<polyline points="520,881 502,881" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<polyline points="300,966 300,1038" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<text x="312" y="1013" font-size="12" fill="#334155" stroke="#ffffff" stroke-width="4" paint-order="stroke">只读 SQL（analyst_ro）</text>
+<polyline points="470,966 470,1006 800,1006 800,1038" fill="none" stroke="#16a34a" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-green)"/>
+<text x="812" y="1024" font-size="12" fill="#15803d" stroke="#ffffff" stroke-width="4" paint-order="stroke">完整结果存库</text>
+<polyline points="210,358 210,580" fill="none" stroke="#16a34a" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-green)"/>
+<text x="222" y="462" font-size="12" fill="#15803d" stroke="#ffffff" stroke-width="4" paint-order="stroke">GET /api/results/:id（同样经过代理）</text>
+<text x="222" y="480" font-size="12" fill="#15803d" stroke="#ffffff" stroke-width="4" paint-order="stroke">按 resultId 取完整结果</text>
+<text x="222" y="498" font-size="12" fill="#15803d" stroke="#ffffff" stroke-width="4" paint-order="stroke">数据不经过模型</text>
+<polyline points="1180,673 1228,673" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-orange)"/>
+<polyline points="1395,178 1395,234" fill="none" stroke="#334155" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-ink)"/>
+<text x="1407" y="211" font-size="12" fill="#334155" stroke="#ffffff" stroke-width="4" paint-order="stroke">stdio</text>
+<polyline points="1230,330 1210,330 1210,846 1182,846" fill="none" stroke="#64748b" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-dash)" stroke-dasharray="6 5"/>
+<polyline points="1230,912 1182,912" fill="none" stroke="#64748b" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#a-dash)" stroke-dasharray="6 5"/>
+<line x1="40" y1="1222" x2="76" y2="1222" stroke="#334155" stroke-width="2"/>
+<text x="86" y="1226.5" font-size="12.5" fill="#334155">请求 / 调用</text>
+<line x1="190" y1="1222" x2="226" y2="1222" stroke="#16a34a" stroke-width="2"/>
+<text x="236" y="1226.5" font-size="12.5" fill="#334155">查询结果：完整数据存库，前端按 resultId 拉取，不经过模型</text>
+<line x1="700" y1="1222" x2="736" y2="1222" stroke="#ea580c" stroke-width="2"/>
+<text x="746" y="1226.5" font-size="12.5" fill="#334155">模型调用</text>
+<line x1="840" y1="1222" x2="876" y2="1222" stroke="#64748b" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="886" y="1226.5" font-size="12.5" fill="#334155">MCP server 和评测脚本复用 src/core</text>
+<rect x="40" y="1244" width="1520" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+<text x="56" y="1266" font-size="12.5" fill="#334155">packages/shared：前后端共用的 Zod schema 和类型（工具输入输出、图表 DSL、接口响应），改一处两边都能在类型检查时发现</text>
+</svg>

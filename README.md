@@ -47,6 +47,8 @@ PostgreSQL  shop：样例电商数据（Agent 只读） · app：会话、日志
 src/core 被三处复用：Web 接口、MCP server（stdio）、评测脚本 —— 评测测到的就是线上的 Agent。
 ```
 
+完整的架构全景图、技术栈和关键链路（提问、图表、导出审批）见 [docs/架构.md](docs/架构.md)。
+
 ## 设计要点
 
 - **数据不经过模型**：`run_sql` 把完整结果存库，只给模型列信息和前 100 行；图表 DSL 只描述"哪一列画在哪"，数据由前端按 `resultId` 拉取。省 token，模型也无从编造数字。
@@ -116,7 +118,7 @@ apps/server         Hono API
 packages/shared     前后端共用的类型和 Zod schema（工具输入输出、图表 DSL）
 db                  建库脚本、样例数据表结构、造数脚本
 deploy              Dockerfile、Caddyfile
-docs                开发规划、指标记录、技术决策、失败复盘、部署、面试准备
+docs                架构、开发规划、指标记录、技术决策、失败复盘、部署、面试准备
 ```
 
 ## AI Coding
